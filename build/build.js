@@ -1,3 +1,4 @@
+var terrain = null;
 let simplex = new SimplexNoise(4);
 
 function map(val, smin, smax, emin, emax) {
@@ -43,7 +44,32 @@ function generateTexture() {
         }
     }
     
-    return c.getImageData(0,0,canvas.width,canvas.height);
+    var data = c.getImageData(0,0,canvas.width,canvas.height);
+    
+    var geo = new THREE.PlaneGeometry(data.width,data.height,data.width,data.height+1)
+
+    var material = new THREE.MeshBasicMaterial();
+    material.color = new THREE.Color(1, 1 ,1);
+    material.wireframe = true;
+    
+    for(let j=0; j<data.height; j++) {
+        for (let i = 0; i < data.width; i++) {
+            const n =  (j*(data.height)  +i)
+            const nn = (j*(data.height+1)+i)
+            const col = data.data[n*4] // the red channel
+            const v1 = geo.vertices[nn]
+            v1.z = map(col,0,255,-10,10) //map from 0:255 to -10:10
+            if(v1.z > 2.5) v1.z *= 1.3 //exaggerate the peaks
+            // v1.x += map(Math.random(),0,1,-0.5,0.5) //jitter x
+            // v1.y += map(Math.random(),0,1,-0.5,0.5) //jitter y
+        }
+    }
+    terrain = new THREE.Mesh(geo, material);
+    return terrain;
 }
 
+var terrain1 = generateTexture();
 
+function addObjects() {
+    scene.add(terrain1);
+}
