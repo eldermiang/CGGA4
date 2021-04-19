@@ -5,7 +5,8 @@ var controls
 
 function setScene() {
     scene = new THREE.Scene();
-    
+    scene.background = new THREE.Color(0x87ceeb);
+
     var ratio = window.innerWidth / window.innerHeight;
     camera = new THREE.PerspectiveCamera(45, ratio, 0.1, 1000);
     camera.position.set(0, 5, 5);
@@ -13,6 +14,7 @@ function setScene() {
 
     renderer = new THREE.WebGLRenderer();
     renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.shadowMap.enabled = true;
     document.body.appendChild(renderer.domElement);
 
     controls = new THREE.OrbitControls(camera, renderer.domElement);
