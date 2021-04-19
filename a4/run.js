@@ -3,8 +3,8 @@ createLight();
 createSun();
 
 createPlane();
-createBox();
-
+// createBox();
+allocateBoxes();
 addObjects();
 
 animate();
@@ -14,6 +14,7 @@ animate();
 // console.log(hemiLight.position);
 console.log(sun.position);
 console.log(dirLight.position);
+console.log(boxes);
 // console.log(plane.position);
 
 window.addEventListener('resize', resize);

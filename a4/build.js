@@ -6,6 +6,10 @@ var ambientLight;
 var hemiLight;
 var dirLight;
 
+var boxes = [];
+let max = 49;
+let min = -49;
+
 function createPlane() {
     var planeMaterial = new THREE.MeshLambertMaterial();
     planeMaterial.color = new THREE.Color(0.7, 0.7, 0.7);
@@ -24,8 +28,19 @@ function createBox() {
 
     var boxGeometry = new THREE.BoxGeometry(1, 1, 2);
     box = new THREE.Mesh(boxGeometry, boxMaterial);
-    box.position.set(0, 0, 1);
+    box.position.set(1, 4, 1);
     box.castShadow = true;
+    boxes.push(box);
+    scene.add(box);
+}
+
+function allocateBoxes() {
+    for (let i = 0; i <= 20; i++) {
+        createBox();
+    }
+    boxes.forEach(function(object){
+        object.position.set(Math.random() * (max - min + 1) + min, Math.random() * (max - min + 1) + min , 1)
+    });
 }
 
 function createLight() {
@@ -38,7 +53,7 @@ function createLight() {
 }
 
 function createSun() {
-    var sunPosition = new THREE.Vector3(-5, 3, 4);
+    var sunPosition = new THREE.Vector3(-5, 3, 10);
 
     var sunMaterial = new THREE.MeshBasicMaterial();
     sunMaterial.color = new THREE.Color(0xf9d71c);
@@ -58,7 +73,6 @@ function createSun() {
 
 function addObjects() {
     scene.add(plane);
-    scene.add(box);
     scene.add(sun);
 
     scene.add(camera);

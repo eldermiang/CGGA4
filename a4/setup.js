@@ -9,7 +9,7 @@ function setScene() {
 
     var ratio = window.innerWidth / window.innerHeight;
     camera = new THREE.PerspectiveCamera(45, ratio, 0.1, 1000);
-    camera.position.set(0, 5, 5);
+    camera.position.set(0, -40, 40);
     camera.lookAt(0, 0, 0);
 
     renderer = new THREE.WebGLRenderer();
