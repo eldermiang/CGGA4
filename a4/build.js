@@ -5,6 +5,7 @@ var sun = null;
 var ambientLight;
 var hemiLight;
 var dirLight;
+var pointLight;
 
 var boxes = [];
 let max = 49;
@@ -34,8 +35,8 @@ function createBox() {
     scene.add(box);
 }
 
-function allocateBoxes() {
-    for (let i = 0; i <= 20; i++) {
+function allocateBoxes(boxNo) {
+    for (let i = 0; i <= boxNo; i++) {
         createBox();
     }
     boxes.forEach(function(object){
@@ -62,13 +63,21 @@ function createSun() {
     sun = new THREE.Mesh(sunGeometry, sunMaterial);
     sun.position.set(sunPosition.x, sunPosition.y, sunPosition.z);
 
-    dirLight = new THREE.DirectionalLight(new THREE.Color(0xf9d71c), 1);
-    dirLight.position.set(sunPosition.x, sunPosition.y, sunPosition.z);
-    dirLight.castShadow = true;
+    pointLight = new THREE.PointLight(new THREE.Color(0xf9d71c), 1);
+    pointLight.position.set(sunPosition.x, sunPosition.y, sunPosition.z);
+    pointLight.castShadow = true;
 
-    dirLight.shadow.mapSize.width = 1024;
-    dirLight.shadow.mapSize.height = 1024;
-    dirLight.shadow.radius = 2;
+    pointLight.shadow.mapSize.width = 1024;
+    pointLight.shadow.mapSize.height = 1024;
+    pointLight.shadow.mapSize.radius = 2;
+
+    // dirLight = new THREE.DirectionalLight(new THREE.Color(0xf9d71c), 1);
+    // dirLight.position.set(sunPosition.x, sunPosition.y, sunPosition.z);
+    // dirLight.castShadow = true;
+
+    // dirLight.shadow.mapSize.width = 1024;
+    // dirLight.shadow.mapSize.height = 1024;
+    // dirLight.shadow.radius = 2;
 }
 
 function addObjects() {
@@ -78,6 +87,7 @@ function addObjects() {
     scene.add(camera);
 
     scene.add(hemiLight);
-    scene.add(dirLight);
-    //scene.add(ambientLight);
+    scene.add(pointLight);
+    // scene.add(dirLight);
+    // scene.add(ambientLight);
 }
