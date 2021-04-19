@@ -63,7 +63,7 @@ function createSun() {
     sun = new THREE.Mesh(sunGeometry, sunMaterial);
     sun.position.set(sunPosition.x, sunPosition.y, sunPosition.z);
 
-    pointLight = new THREE.PointLight(new THREE.Color(0xf9d71c), 1);
+    pointLight = new THREE.PointLight(new THREE.Color(0xf9d71c), 1, 1000, 0);
     pointLight.position.set(sunPosition.x, sunPosition.y, sunPosition.z);
     pointLight.castShadow = true;
 

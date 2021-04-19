@@ -9,6 +9,8 @@ addObjects();
 
 animate();
 
+buildGui();
+
 // console.log(hemiLight.intensity);
 // console.log(hemiLight.groundColor);
 // console.log(hemiLight.position);
