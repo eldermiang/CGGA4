@@ -19,7 +19,7 @@ function createPlane() {
 }
 
 function createBox() {
-    var boxMaterial = new THREE.MeshLambertMaterial();
+    var boxMaterial = new THREE.MeshPhongMaterial();
     boxMaterial.color = new THREE.Color(0.5, 0.5 , 0.5);
 
     var boxGeometry = new THREE.BoxGeometry(1, 1, 2);
@@ -40,17 +40,20 @@ function createLight() {
 function createSun() {
     var sunPosition = new THREE.Vector3(-5, 3, 4);
 
-    var sunMaterial = new THREE.MeshPhongMaterial();
+    var sunMaterial = new THREE.MeshBasicMaterial();
     sunMaterial.color = new THREE.Color(0xf9d71c);
 
     var sunGeometry = new THREE.SphereGeometry(1, 32, 32);
     sun = new THREE.Mesh(sunGeometry, sunMaterial);
     sun.position.set(sunPosition.x, sunPosition.y, sunPosition.z);
 
-
     dirLight = new THREE.DirectionalLight(new THREE.Color(0xf9d71c), 1);
     dirLight.position.set(sunPosition.x, sunPosition.y, sunPosition.z);
     dirLight.castShadow = true;
+
+    dirLight.shadow.mapSize.width = 1024;
+    dirLight.shadow.mapSize.height = 1024;
+    dirLight.shadow.radius = 2;
 }
 
 function addObjects() {
