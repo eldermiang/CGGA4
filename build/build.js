@@ -71,11 +71,11 @@ function createTerrain() {
             const col = data.data[n  *4]; // the red channel
             const v1 = geo.vertices[nn];
 
-            v1.z = map(col, 0, 200, -10, 10) //map from 0:255 to -10:10
+            v1.z = map(col, 0, 240, -10, 10) //map from 0:255 to -10:10
             
             //exaggerate the peaks
             if (v1.z > 2.5) {
-                v1.z *= 1.3;  
+                v1.z *= 1.6;  
             }  
             //v1.x += map(Math.random(),0,1,-0.5,0.5) //jitter x
             //v1.y += map(Math.random(),0,1,-0.5,0.5) //jitter y
@@ -91,6 +91,7 @@ var terrain1 = createTerrain();
 function calculateColour() {
     //for every face
     terrain1.geometry.faces.forEach(f=>{
+        
     //get three verts for the face
         const a = terrain1.geometry.vertices[f.a]
         const b = terrain1.geometry.vertices[f.b]
@@ -106,11 +107,13 @@ function calculateColour() {
           }
 
     //assign colors based on the highest point of the face
+    //max is the sea level
         const max = Math.max(a.z,Math.max(b.z,c.z))
-             if(max <=0)   return f.color.set(0x44ccff);
-             if(max <=1.5) return f.color.set(0x228800);
-             if(max <=3.5) return f.color.set(0xeecc44);
-             if(max <=5)   return f.color.set(0xcccccc);
+             if(max <= 0)   return f.color.set(0x44ccff);
+             if(max <= 0.8) return f.color.set(0xeecc44);
+             if(max <= 3.5) return f.color.set(0x228800);
+             if(max <= 5)   return f.color.set(0xcccccc);
+             if(max > 4)   return f.color.set(0xcc412c);
 
     //otherwise, return white
     f.color.set('white');
