@@ -1,5 +1,3 @@
-var mesh = null;
-var terrain = null;
 let simplex = new SimplexNoise(4);
 
 function map(val, smin, smax, emin, emax) {
@@ -83,7 +81,7 @@ function createTerrain() {
             //v1.y += map(Math.random(),0,1,-0.5,0.5) //jitter y
         }
     }
-        mesh = new THREE.Mesh(geo, material);
+        var mesh = new THREE.Mesh(geo, material);
 
         return mesh;
 }
