@@ -1,4 +1,5 @@
 var mesh = null;
+var terrain = null;
 let simplex = new SimplexNoise(4);
 
 function map(val, smin, smax, emin, emax) {
@@ -82,6 +83,55 @@ function generateTexture() {
 
 var terrain1 = createTerrain();
 
+function calculateColour() {
+    //for every face
+    terrain1.geometry.faces.forEach(f=>{
+    //get three verts for the face
+        const a = terrain1.geometry.vertices[f.a]
+        const b = terrain1.geometry.vertices[f.b]
+        const c = terrain1.geometry.vertices[f.c]
+
+    //if average is below water, set to 0
+    //alt: color transparent to show the underwater landscape
+        const avgz = (a.z+b.z+c.z)/3
+            if(avgz < 0) {
+                a.z = 0
+                b.z = 0
+                c.z = 0
+          }
+
+
+    //assign colors based on the highest point of the face
+        const max = Math.max(a.z,Math.max(b.z,c.z))
+             if(max <=0)   return f.color.set(0x44ccff)
+             if(max <=1.5) return f.color.set(0x228800)
+             if(max <=3.5) return f.color.set(0xeecc44)
+             if(max <=5)   return f.color.set(0xcccccc)
+
+    //otherwise, return white
+    f.color.set('white')
+})
+    terrain1.geometry.colorsNeedUpdate = true;
+    terrain1.geometry.verticesNeedUpdate = true;
+    terrain1.geometry.computeVertexNormals();
+
+     terrain = new THREE.Mesh(terrain1.geometry, new THREE.MeshLambertMaterial({
+        // wireframe:true,
+        vertexColors: THREE.VertexColors,
+        //required for flat shading
+        flatShading:true,
+    }))
+
+    terrain .position.y = -0;
+    terrain .position.z = -20;
+
+    return terrain ;
+
+}
+
+var colorTerrain = calculateColour();
+
 function addObjects() {
-    scene.add(terrain1);
+    //scene.add(terrain1);
+    scene.add(colorTerrain);
 }
