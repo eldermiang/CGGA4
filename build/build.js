@@ -1,4 +1,4 @@
-var terrain = null;
+var mesh = null;
 let simplex = new SimplexNoise(4);
 
 function map(val, smin, smax, emin, emax) {
@@ -17,7 +17,7 @@ function octave(nx, ny, octaves) {
     let max = 0;
     let amp = 1;
 
-    for(let i=0; i < octaves; i++) {
+    for(let i = 0; i < octaves; i++) {
         val += noise(nx * freq ,ny * freq) * amp;
         max += amp;
         amp /= 2;
@@ -26,37 +26,44 @@ function octave(nx, ny, octaves) {
     return val/max;
 }
 
+//generate Perlin Noise Image
 function generateTexture() {
-    const ctx = document.createElement('canvas').getContext('2d');
+    const canvas = document.createElement('canvas');
+    const c = canvas.getContext('2d')
   
-    ctx.fillStyle = 'black';
-    ctx.fillRect(0, 0 , ctx.canvas.width, ctx.canvas.height);
+    c.fillStyle = 'black';
+    c.fillRect(0, 0 , canvas.width, canvas.height);
 
-    for (let i = 0; i < ctx.canvas.width; i++) {
-        for (let j = 0; j < ctx.canvas.height; j++) {
+    for (let i = 0; i < canvas.width; i++) {
+        for (let j = 0; j < canvas.height; j++) {
 
-            let v =  octave(i / ctx.canvas.width, j / ctx.canvas.height, 16);
+            let v =  octave(i / canvas.width, j / canvas.height, 16);
             const per = (100 * v).toFixed(2) + '%';
-            ctx.fillStyle = `rgb(${per},${per},${per})`;
-            ctx.fillRect(i, j, 1, 1);
+            c.fillStyle = `rgb(${per},${per},${per})`;
+            c.fillRect(i, j, 1, 1);
             
         }
     }
-    
-    var data = ctx.getImageData(0, 0, ctx.canvas.width, ctx.canvas.height);
-    
-    var geo = new THREE.PlaneGeometry(data.width, data.height, data.width , data.height + 1);
+    return c.getImageData(0, 0, canvas.width, canvas.height);
+}
+
+    //using "data" to create Terrain
+    function createTerrain() {
+
+    var data = generateTexture();
+    var geo = new THREE.PlaneGeometry(data.width, data.height, data.width + 1 , data.height + 1);
 
     var material = new THREE.MeshBasicMaterial();
     material.color = new THREE.Color(1, 1 ,1);
     material.wireframe = true;
     
-    for (let j = 0; j < data.height; j++) {
+    for (let j = 0; j < data.height * 2; j++) {
         for (let i = 0; i < data.width; i++) {
 
             const n =  (j * (data.height) + i);
             const nn = (j * (data.height + 1) + i);
-            const col = data.data[n*4]; // the red channel
+            
+            const col = data.data[n  *4]; // the red channel
             const v1 = geo.vertices[nn];
 
             v1.z = map(col, 0, 200, -10, 10) //map from 0:255 to -10:10
@@ -69,12 +76,11 @@ function generateTexture() {
             //v1.y += map(Math.random(),0,1,-0.5,0.5) //jitter y
         }
     }
-
-    terrain = new THREE.Mesh(geo, material);
-    return terrain;
+        mesh = new THREE.Mesh(geo, material);
+        return mesh;
 }
 
-var terrain1 = generateTexture();
+var terrain1 = createTerrain();
 
 function addObjects() {
     scene.add(terrain1);
