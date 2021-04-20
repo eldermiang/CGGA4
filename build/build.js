@@ -70,7 +70,7 @@ function generateTexture() {
             
             //exaggerate the peaks
             if (v1.z > 2.5) {
-                v1.z *= 1.3;  
+                v1.z *= 2;  
             }  
             //v1.x += map(Math.random(),0,1,-0.5,0.5) //jitter x
             //v1.y += map(Math.random(),0,1,-0.5,0.5) //jitter y
