@@ -48,15 +48,21 @@ function generateTexture() {
     return c.getImageData(0, 0, canvas.width, canvas.height);
 }
 
-    //using "data" to create Terrain
-    function createTerrain() {
+//using "data" to create Terrain
+function createTerrain() {
 
     var data = generateTexture();
-    var geo = new THREE.PlaneGeometry(data.width, data.height, data.width + 1 , data.height + 1);
+
+    var geo = new THREE.PlaneGeometry(data.width, data.height, data.width + 1 , data.height);
+    geo.colorsNeedUpdate = true;
+    geo.verticesNeedUpdate = true;
+    geo.computeVertexNormals();
 
     var material = new THREE.MeshBasicMaterial();
     material.vertexColors = true;
     material.wireframe = true;
+    //material.flatShading = true;
+    
     
     for (let j = 0; j < data.height * 2; j++) {
         for (let i = 0; i < data.width; i++) {
@@ -71,13 +77,14 @@ function generateTexture() {
             
             //exaggerate the peaks
             if (v1.z > 2.5) {
-                v1.z *= 2;  
+                v1.z *= 1.3;  
             }  
             //v1.x += map(Math.random(),0,1,-0.5,0.5) //jitter x
             //v1.y += map(Math.random(),0,1,-0.5,0.5) //jitter y
         }
     }
         mesh = new THREE.Mesh(geo, material);
+
         return mesh;
 }
 
@@ -93,13 +100,12 @@ function calculateColour() {
 
     //if average is below water, set to 0
     //alt: color transparent to show the underwater landscape
-        const avgz = (a.z+b.z+c.z)/3
+        const avgz = (a.z+b.z+c.z) / 4
             if(avgz < 0) {
                 a.z = 0;
                 b.z = 0;
                 c.z = 0;
           }
-
 
     //assign colors based on the highest point of the face
         const max = Math.max(a.z,Math.max(b.z,c.z))
@@ -112,7 +118,6 @@ function calculateColour() {
     f.color.set('white');
 })  
 }
-
 
 function addObjects() {
     scene.add(terrain1);
