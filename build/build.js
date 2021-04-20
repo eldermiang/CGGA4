@@ -55,7 +55,7 @@ function generateTexture() {
     var geo = new THREE.PlaneGeometry(data.width, data.height, data.width + 1 , data.height + 1);
 
     var material = new THREE.MeshBasicMaterial();
-    material.color = new THREE.Color(1, 1 ,1);
+    material.vertexColors = true;
     material.wireframe = true;
     
     for (let j = 0; j < data.height * 2; j++) {
@@ -95,43 +95,26 @@ function calculateColour() {
     //alt: color transparent to show the underwater landscape
         const avgz = (a.z+b.z+c.z)/3
             if(avgz < 0) {
-                a.z = 0
-                b.z = 0
-                c.z = 0
+                a.z = 0;
+                b.z = 0;
+                c.z = 0;
           }
 
 
     //assign colors based on the highest point of the face
         const max = Math.max(a.z,Math.max(b.z,c.z))
-             if(max <=0)   return f.color.set(0x44ccff)
-             if(max <=1.5) return f.color.set(0x228800)
-             if(max <=3.5) return f.color.set(0xeecc44)
-             if(max <=5)   return f.color.set(0xcccccc)
+             if(max <=0)   return f.color.set(0x44ccff);
+             if(max <=1.5) return f.color.set(0x228800);
+             if(max <=3.5) return f.color.set(0xeecc44);
+             if(max <=5)   return f.color.set(0xcccccc);
 
     //otherwise, return white
-    f.color.set('white')
-})
-    terrain1.geometry.colorsNeedUpdate = true;
-    terrain1.geometry.verticesNeedUpdate = true;
-    terrain1.geometry.computeVertexNormals();
-
-     terrain = new THREE.Mesh(terrain1.geometry, new THREE.MeshLambertMaterial({
-        // wireframe:true,
-        vertexColors: THREE.VertexColors,
-        //required for flat shading
-        flatShading:true,
-    }))
-
-    terrain .position.y = -0;
-    terrain .position.z = -20;
-
-    return terrain ;
-
+    f.color.set('white');
+})  
 }
 
-var colorTerrain = calculateColour();
 
 function addObjects() {
-    //scene.add(terrain1);
-    scene.add(colorTerrain);
+    scene.add(terrain1);
+    
 }
