@@ -46,10 +46,10 @@ function generateTexture() {
     return c.getImageData(0, 0, canvas.width, canvas.height);
 }
 
+var data = generateTexture();
+
 //using "data" to create Terrain
 function createTerrain() {
-
-    var data = generateTexture();
 
     var geo = new THREE.PlaneGeometry(data.width, data.height, data.width + 1 , data.height);
     geo.colorsNeedUpdate = true;
@@ -57,12 +57,14 @@ function createTerrain() {
     geo.computeVertexNormals();
 
     //var material = new THREE.MeshBasicMaterial();
-    var material = new THREE.MeshLambertMaterial();
+    var material = new THREE.MeshStandardMaterial({  
+
+        shading: THREE.FlatShading} )
+
     material.vertexColors = true;
     //material.wireframe = true;
-    material.flatShading = true;
-    material.needsUpdate = true;
     
+
     
     for (let j = 0; j < data.height * 2; j++) {
         for (let i = 0; i < data.width; i++) {
@@ -84,7 +86,7 @@ function createTerrain() {
         }
     }
         var mesh = new THREE.Mesh(geo, material);
-
+        mesh.rotateX(-45);
         return mesh;
 }
 
@@ -121,7 +123,9 @@ function calculateColour() {
     f.color.set('white');
 })  
 }
-const light = new THREE.AmbientLight(new THREE.Color(1, 1, 1), 0.8);
+
+var light = new THREE.HemisphereLight(new THREE.Color(1, 1, 1), 1);
+
 
 function addObjects() {
     scene.add(terrain1);
