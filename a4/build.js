@@ -53,13 +53,13 @@ function createLight() {
     //hemiLight.groundColor = new THREE.Color(0, 0, 0);
 }
 
+var sunPosition;
 function createSun() {
-    var sunPosition = new THREE.Vector3(-5, 3, 10);
-
+    sunPosition = new THREE.Vector3(-5, 3, 100);
     var sunMaterial = new THREE.MeshBasicMaterial();
     sunMaterial.color = new THREE.Color(0xf9d71c);
 
-    var sunGeometry = new THREE.SphereGeometry(1, 32, 32);
+    var sunGeometry = new THREE.SphereGeometry(5, 32, 32);
     sun = new THREE.Mesh(sunGeometry, sunMaterial);
     sun.position.set(sunPosition.x, sunPosition.y, sunPosition.z);
 
@@ -70,6 +70,8 @@ function createSun() {
     pointLight.shadow.mapSize.width = 1024;
     pointLight.shadow.mapSize.height = 1024;
     pointLight.shadow.mapSize.radius = 2;
+
+    pointLight.intensity = 1;
 
     // dirLight = new THREE.DirectionalLight(new THREE.Color(0xf9d71c), 1);
     // dirLight.position.set(sunPosition.x, sunPosition.y, sunPosition.z);
@@ -83,11 +85,10 @@ function createSun() {
 function addObjects() {
     scene.add(plane);
     scene.add(sun);
-
-    scene.add(camera);
-
     scene.add(hemiLight);
     scene.add(pointLight);
+
+    // scene.add(particleSystem);
     // scene.add(dirLight);
     // scene.add(ambientLight);
 }

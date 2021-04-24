@@ -5,11 +5,11 @@ var controls
 
 function setScene() {
     scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x87ceeb);
+    //scene.background = new THREE.Color(0x87ceeb);
 
     var ratio = window.innerWidth / window.innerHeight;
     camera = new THREE.PerspectiveCamera(45, ratio, 0.1, 1000);
-    camera.position.set(0, -40, 40);
+    camera.position.set(0, -50, 100);
     camera.lookAt(0, 0, 0);
 
     renderer = new THREE.WebGLRenderer();
