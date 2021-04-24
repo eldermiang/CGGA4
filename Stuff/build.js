@@ -1,5 +1,6 @@
 /* global THREE, scene, renderer, camera */
 
+
 //Load models from local file: .ply
 var loader = new THREE.OBJLoader();
 var mesh = null;
@@ -7,8 +8,20 @@ var ambientlight;
 var cameralight;
 var floor = null;
 
-//Define a function that loads any PLY model 
 function loadModel(model) {
+
+loader.load(
+
+    model,
+
+    function ( object ) {
+        //object.mesh.scale.set(0.2, 0.2, 0.2);
+        scene.add( object );
+    });
+}
+
+//Define a function that loads any PLY model 
+/*function loadModel(model) {
     loader.load(model, function(geometry){
         geometry.computeVertexNormals();
         geometry.computeBoundingBox();
@@ -35,7 +48,7 @@ function loadModel(model) {
         mesh.name = "loaded_mesh";
         scene.add(mesh);
     });
-}
+}*/
 
 function addLight() {
     //add basic light from camera towards the scene
