@@ -33,3 +33,27 @@
 //     particles = [];
 //     const geo = new THREE.
 // }
+
+var rain, rainGeo, rainDrop, rainMaterial, rainCount = 100;
+
+function generateRain() {
+    const points = [];
+
+    for (let i=0; i<rainCount; i++) {
+    rainDrop = new THREE.Vector3(
+        Math.random() * 49,
+        Math.random() * 49,
+        Math.random() * 60
+    );
+    points.push(rainDrop);
+    }
+    rainGeo = new THREE.BufferGeometry().setFromPoints(points);
+
+    rainMaterial = new THREE.PointsMaterial({
+        color: 0xaaaaaa,
+        size: 0.1,
+        transparent: true
+    });
+    rain = new THREE.Points(rainGeo,rainMaterial);
+    scene.add(rain);
+}

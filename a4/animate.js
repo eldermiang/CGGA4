@@ -41,3 +41,9 @@ function animateCloudMovement() {
         clouds.position.x = -100;
     }
 }
+
+function animateRain() {
+    rainDrop.velocity = {};
+    rainDrop.velocity = 0;
+
+}
