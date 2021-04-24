@@ -56,10 +56,12 @@ function createTerrain() {
     geo.verticesNeedUpdate = true;
     geo.computeVertexNormals();
 
-    var material = new THREE.MeshBasicMaterial();
+    //var material = new THREE.MeshBasicMaterial();
+    var material = new THREE.MeshLambertMaterial();
     material.vertexColors = true;
-    material.wireframe = true;
-    //material.flatShading = true;
+    //material.wireframe = true;
+    material.flatShading = true;
+    material.needsUpdate = true;
     
     
     for (let j = 0; j < data.height * 2; j++) {
@@ -112,15 +114,18 @@ function calculateColour() {
              if(max <= 0)   return f.color.set(0x44ccff);
              if(max <= 0.8) return f.color.set(0xeecc44);
              if(max <= 3.5) return f.color.set(0x228800);
-             if(max <= 5)   return f.color.set(0xcccccc);
-             if(max > 4)   return f.color.set(0xcc412c);
+             if(max <= 4)   return f.color.set(0xcccccc);
+             if(max <= 10)   return f.color.set(0xc29861);
 
     //otherwise, return white
     f.color.set('white');
 })  
 }
+const light = new THREE.AmbientLight(new THREE.Color(1, 1, 1), 0.8);
 
 function addObjects() {
     scene.add(terrain1);
+    scene.add(light);
+    
     
 }
