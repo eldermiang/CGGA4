@@ -1,6 +1,7 @@
 function animate() {
     animateSunColor();
-    //animateSunMovement();
+    animateCloudMovement();
+    animateSunMovement();
     renderer.render(scene, camera);
     controls.update();
     requestAnimationFrame(animate);
@@ -29,4 +30,14 @@ function animateSunMovement() {
 
     pointLight.position.x = sunPosition.x;
     pointLight.position.z = sunPosition.z;
+}
+
+clouds.position.x = -100;
+function animateCloudMovement() {
+    clouds.position.x += 0.1
+    if (clouds.position.x > 100) {
+        clouds.clear();
+        allocateClouds(8);
+        clouds.position.x = -100;
+    }
 }

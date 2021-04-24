@@ -1,5 +1,6 @@
-var plane = null, box = null, cloud = null, boxes = [];
+var plane = null, box = null, cloud = null, boxes = [], cloudsArr = [];
 var sun = null, sunPosition;
+var clouds = new THREE.Object3D();
 var ambientLight, hemiLight, dirLight, pointLight;
 let max = 49, min = -49;
 
@@ -21,14 +22,13 @@ function createBox() {
 
     var boxGeometry = new THREE.BoxGeometry(1, 1, 2);
     box = new THREE.Mesh(boxGeometry, boxMaterial);
-    box.position.set(1, 4, 1);
     box.castShadow = true;
     boxes.push(box);
     scene.add(box);
 }
 
-function allocateBoxes(boxNo) {
-    for (let i = 0; i <= boxNo; i++) {
+function allocateBoxes(noBoxes) {
+    for (let i = 0; i <= noBoxes; i++) {
         createBox();
     }
     boxes.forEach(function(object){
@@ -73,7 +73,7 @@ function createSun() {
     // dirLight.shadow.radius = 2;
 }
 
-function createClouds() {
+function createCloud() {
     var cloudMaterial = new THREE.MeshBasicMaterial();
     cloudMaterial.color = new THREE.Color(1, 1, 1);
     cloudMaterial.transparent = true;
@@ -81,16 +81,26 @@ function createClouds() {
     var cloudGeometry = new THREE.BoxGeometry(20, 10, 2);
     cloud = new THREE.Mesh(cloudGeometry, cloudMaterial);
 
-    cloud.position.set(0, 0, 50);
-    scene.add(cloud)
+    cloudsArr.push(cloud);
+    clouds.add(cloud);
+}
+
+function allocateClouds(noClouds) {
+    for (let i = 0; i <= noClouds; i++) {
+        createCloud();
+    }
+    cloudsArr.forEach(function(object){
+        object.position.set(Math.random() * (max - min + 1) + min, Math.random() * (max - min + 1) + min , 60)
+    });
 }
 
 function createSceneObjects() {
     createPlane();
     createLight();
     createSun();
-    createClouds();
+    //createCloud();
     allocateBoxes(30);
+    allocateClouds(8);
 }
 
 function addObjects() {
@@ -98,7 +108,7 @@ function addObjects() {
     scene.add(sun);
     scene.add(hemiLight);
     scene.add(pointLight);
-
+    scene.add(clouds);
     // scene.add(particleSystem);
     // scene.add(dirLight);
     // scene.add(ambientLight);
