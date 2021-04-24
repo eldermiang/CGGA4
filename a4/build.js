@@ -37,12 +37,9 @@ function allocateBoxes(noBoxes) {
 }
 
 function createLight() {
-    //ambientLight = new THREE.AmbientLight(new THREE.Color(1, 1, 1), 0.5);
     hemiLight = new THREE.HemisphereLight(new THREE.Color(0.6, 0.6, 0.6), 0.2);
-    //hemiLight.groundColor = new THREE.Color(1, 1, 1);
     hemiLight.skyColor = new THREE.Color(1, 1, 1);
     hemiLight.position.set(0, 0, 100);
-    //hemiLight.groundColor = new THREE.Color(0, 0, 0);
 }
 
 function createSun() {
@@ -58,19 +55,16 @@ function createSun() {
     pointLight.position.set(sunPosition.x, sunPosition.y, sunPosition.z);
     pointLight.castShadow = true;
 
-    pointLight.shadow.mapSize.width = 1024;
-    pointLight.shadow.mapSize.height = 1024;
+    pointLight.shadow.mapSize.width = 2048;
+    pointLight.shadow.mapSize.height = 2048;
     pointLight.shadow.mapSize.radius = 2;
+    pointLight.shadow.camera.far = 150;
+    pointLight.shadow.bias = 0.0001;
 
     pointLight.intensity = 1;
 
-    // dirLight = new THREE.DirectionalLight(new THREE.Color(0xf9d71c), 1);
-    // dirLight.position.set(sunPosition.x, sunPosition.y, sunPosition.z);
-    // dirLight.castShadow = true;
-
-    // dirLight.shadow.mapSize.width = 1024;
-    // dirLight.shadow.mapSize.height = 1024;
-    // dirLight.shadow.radius = 2;
+    // const helper = new THREE.CameraHelper(pointLight.shadow.camera);
+    // scene.add(helper);
 }
 
 function createCloud() {
@@ -98,7 +92,6 @@ function createSceneObjects() {
     createPlane();
     createLight();
     createSun();
-    //createCloud();
     allocateBoxes(30);
     allocateClouds(8);
 }
@@ -109,7 +102,4 @@ function addObjects() {
     scene.add(hemiLight);
     scene.add(pointLight);
     scene.add(clouds);
-    // scene.add(particleSystem);
-    // scene.add(dirLight);
-    // scene.add(ambientLight);
 }
