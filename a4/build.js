@@ -1,15 +1,7 @@
-var plane = null;
-var box = null;
-var sun = null;
-
-var ambientLight;
-var hemiLight;
-var dirLight;
-var pointLight;
-
-var boxes = [];
-let max = 49;
-let min = -49;
+var plane = null, box = null, cloud = null, boxes = [];
+var sun = null, sunPosition;
+var ambientLight, hemiLight, dirLight, pointLight;
+let max = 49, min = -49;
 
 function createPlane() {
     var planeMaterial = new THREE.MeshLambertMaterial();
@@ -53,7 +45,6 @@ function createLight() {
     //hemiLight.groundColor = new THREE.Color(0, 0, 0);
 }
 
-var sunPosition;
 function createSun() {
     sunPosition = new THREE.Vector3(-5, 3, 100);
     var sunMaterial = new THREE.MeshBasicMaterial();
@@ -80,6 +71,26 @@ function createSun() {
     // dirLight.shadow.mapSize.width = 1024;
     // dirLight.shadow.mapSize.height = 1024;
     // dirLight.shadow.radius = 2;
+}
+
+function createClouds() {
+    var cloudMaterial = new THREE.MeshBasicMaterial();
+    cloudMaterial.color = new THREE.Color(1, 1, 1);
+    cloudMaterial.transparent = true;
+    cloudMaterial.opacity = 0.75;
+    var cloudGeometry = new THREE.BoxGeometry(20, 10, 2);
+    cloud = new THREE.Mesh(cloudGeometry, cloudMaterial);
+
+    cloud.position.set(0, 0, 50);
+    scene.add(cloud)
+}
+
+function createSceneObjects() {
+    createPlane();
+    createLight();
+    createSun();
+    createClouds();
+    allocateBoxes(30);
 }
 
 function addObjects() {

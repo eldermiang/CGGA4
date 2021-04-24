@@ -1,15 +1,9 @@
+//Setting up Scene
+
 setScene();
-createLight();
-createSun();
-
-createPlane();
-// createBox();
-allocateBoxes(30);
-// createParticleSystem();
+createSceneObjects();
 addObjects();
-
 animate();
-
 buildGui();
 
 //Debugging
@@ -22,5 +16,6 @@ console.log(sun.position);
 console.log(boxes);
 // console.log(plane.position);
 console.log(sun);
+console.log(cloud);
 
 window.addEventListener('resize', resize);

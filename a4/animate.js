@@ -1,6 +1,6 @@
 function animate() {
     animateSunColor();
-    animateSunMovement();
+    //animateSunMovement();
     renderer.render(scene, camera);
     controls.update();
     requestAnimationFrame(animate);
@@ -18,7 +18,7 @@ function animateSunColor() {
 }
 
 var d = 0;
-var speed = 1;
+var speed = 0.5;
 function animateSunMovement() {
     d += 0.01 * speed;
     sunPosition.x = 150 * Math.cos(d);
