@@ -1,4 +1,5 @@
-let simplex = new SimplexNoise(4);
+//Change value in SimplexNoise(--) to generate new seed
+let simplex = new SimplexNoise(23);
 
 function map(val, smin, smax, emin, emax) {
     const t =  (val - smin) / (smax - smin);
@@ -78,7 +79,8 @@ function createTerrain() {
             v1.z = map(col, 0, 240, -10, 10) //map from 0:255 to -10:10
             
             //exaggerate the peaks
-            if (v1.z > 2.5) {
+            //Change interger value in if, to adjust peak sizes. 
+            if (v1.z > 5) {
                 v1.z *= 1.6;  
             }  
             //v1.x += map(Math.random(),0,1,-0.5,0.5) //jitter x
