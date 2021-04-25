@@ -13,11 +13,13 @@ var v1;
 var gridSize = 15;
 var buildingMap;
 var buildings = [];
-var buildingCount = 1000;
+var buildingCount = 50;
 var buildingBuilt;
 var group = new THREE.Group();
 var color = new THREE.Color(0xA9A9A9);
-var positions = []
+var positionsX = []
+var positionsY = []
+var randPos;
 
 //end building map variables
 
@@ -143,7 +145,7 @@ function calculateColour() {
 }
 
 function createBuilding() {
-   
+    randPos = Math.random()* (10);
     switch (randomSize = Math.random(1,4)) {
         case 1:
             var geometry = new THREE.BoxGeometry(5, 15, 5);
@@ -178,11 +180,12 @@ function createBuildings() {
     var building = createBuilding();
     buildings.push(building);
 
-    var z
-    for (z = 0; i < positions.length; i++){
-        var positionX = positions[z];
-        var positionY = positions[z+1];
-    }
+    
+    let i = randomNumberPosition();
+        var positionX = positionsX[i];
+        var positionY = positionsY[i];
+      
+    
     var positionZ = Math.random() * (8 - 5) + 5;
         
    
@@ -203,6 +206,10 @@ function createBuildings() {
     group.add(building);
 }
 
+function randomNumberPosition() {
+    return Math.floor(Math.random() * positionsY.length);
+}
+
 function findFacePosition() {
         //check faces for position add to array if certain y level
         terrain1.geometry.faces.forEach(f=>{
@@ -221,8 +228,8 @@ function findFacePosition() {
             const max = Math.max(a.z,Math.max(b.z,c.z))
 
             if(max > 0.8 && max <= 3.5) { 
-                positions.push(position.x);
-                positions.push(position.y);
+                positionsX.push(position.x);
+                positionsY.push(position.y);
             }
 
         })  
@@ -230,7 +237,7 @@ function findFacePosition() {
 
 function addObjects() {
     scene.add(terrain1);
-    for (i = 0; i < buildingCount; i++) {
+    for (let i = 0; i < buildingCount; i++) {
         createBuildings();
     }
     
