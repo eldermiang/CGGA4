@@ -8,7 +8,7 @@ function setScene() {
     scene = new THREE.Scene();
     var ratio = window.innerWidth / window.innerHeight;
     camera = new THREE.PerspectiveCamera(90, ratio, 0.1, 1000);
-    camera.position.set(0, 0, 30);
+    camera.position.set(0, 100, 30);
     renderer = new THREE.WebGLRenderer();
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);

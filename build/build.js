@@ -21,6 +21,8 @@ function octave(nx, ny, octaves) {
         val += noise(nx * freq ,ny * freq) * amp;
         max += amp;
         amp /= 2;
+
+        //freq higher values, more mountains and rugged terrain
         freq *= 2;
     }
     return val/max;
@@ -59,7 +61,9 @@ function createTerrain() {
 
     //var material = new THREE.MeshBasicMaterial();
     var material = new THREE.MeshStandardMaterial({  
-
+        
+        //metalness: lower value, the more brighter 
+        metalness: 0.1,
         shading: THREE.FlatShading} )
 
     material.vertexColors = true;
