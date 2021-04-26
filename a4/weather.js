@@ -34,16 +34,16 @@
 //     const geo = new THREE.
 // }
 
-var rain, rainGeo, rainDrop, rainMaterial, rainCount = 100;
+var rain, rainGeo, rainDrop, rainMaterial, rainCount = 1500;
 
 function generateRain() {
     const points = [];
 
     for (let i=0; i<rainCount; i++) {
     rainDrop = new THREE.Vector3(
-        Math.random() * 49,
-        Math.random() * 49,
-        Math.random() * 60
+        Math.random() * 90 - 49,
+        Math.random() * 90 - 49,
+        Math.random() * 160
     );
     points.push(rainDrop);
     }
@@ -51,7 +51,7 @@ function generateRain() {
 
     rainMaterial = new THREE.PointsMaterial({
         color: 0xaaaaaa,
-        size: 0.1,
+        size: 0.5,
         transparent: true
     });
     rain = new THREE.Points(rainGeo,rainMaterial);

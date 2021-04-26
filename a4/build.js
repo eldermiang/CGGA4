@@ -1,7 +1,8 @@
 var plane = null, box = null, cloud = null, boxes = [], cloudsArr = [];
 var sun = null, sunPosition;
+var moon = null, moonPosition;
 var clouds = new THREE.Object3D();
-var ambientLight, hemiLight, dirLight, pointLight;
+var ambientLight, hemiLight, dirLight, sunPointLight, moonPointLight;
 let max = 49, min = -49;
 
 function createPlane() {
@@ -37,7 +38,7 @@ function allocateBoxes(noBoxes) {
 }
 
 function createLight() {
-    hemiLight = new THREE.HemisphereLight(new THREE.Color(0.6, 0.6, 0.6), 0.2);
+    hemiLight = new THREE.HemisphereLight(new THREE.Color(0.6, 0.6, 0.6), 0.1);
     hemiLight.skyColor = new THREE.Color(1, 1, 1);
     hemiLight.position.set(0, 0, 100);
 }
@@ -51,20 +52,39 @@ function createSun() {
     sun = new THREE.Mesh(sunGeometry, sunMaterial);
     sun.position.set(sunPosition.x, sunPosition.y, sunPosition.z);
 
-    pointLight = new THREE.PointLight(new THREE.Color(0xf9d71c), 1, 1000, 0);
-    pointLight.position.set(sunPosition.x, sunPosition.y, sunPosition.z);
-    pointLight.castShadow = true;
+    sunPointLight = new THREE.PointLight(new THREE.Color(0xf9d71c), 1, 1000, 0);
+    sunPointLight.position.set(sunPosition.x, sunPosition.y, sunPosition.z);
+    sunPointLight.castShadow = true;
 
-    pointLight.shadow.mapSize.width = 2048;
-    pointLight.shadow.mapSize.height = 2048;
-    pointLight.shadow.mapSize.radius = 2;
-    pointLight.shadow.camera.far = 150;
-    pointLight.shadow.bias = 0.0001;
+    sunPointLight.shadow.mapSize.width = 2048;
+    sunPointLight.shadow.mapSize.height = 2048;
+    sunPointLight.shadow.mapSize.radius = 2;
+    sunPointLight.shadow.camera.far = 150;
+    sunPointLight.shadow.bias = 0.0001;
 
-    pointLight.intensity = 1;
+    sunPointLight.intensity = 1;
+}
 
-    // const helper = new THREE.CameraHelper(pointLight.shadow.camera);
-    // scene.add(helper);
+function createMoon() {
+    moonPosition = new THREE.Vector3(-5, 3, -100);
+    var moonMaterial = new THREE.MeshBasicMaterial();
+    moonMaterial.color = new THREE.Color(0xeaf4fc);
+
+    var moonGeometry = new THREE.SphereGeometry(5, 32, 32);
+    moon = new THREE.Mesh(moonGeometry, moonMaterial);
+    moon.position.set(moonPosition.x, moonPosition.y, moonPosition.z);
+
+    moonPointLight = new THREE.PointLight(new THREE.Color(0xeaf4fc), 1, 1000, 0);
+    moonPointLight.position.set(moonPosition.x, moonPosition.y, moonPosition.z);
+    moonPointLight.castShadow = true;
+
+    moonPointLight.shadow.mapSize.width = 2048;
+    moonPointLight.shadow.mapSize.height = 2048;
+    moonPointLight.shadow.mapSize.radius = 2;
+    moonPointLight.shadow.camera.far = 150;
+    moonPointLight.shadow.bias = 0.0001;
+
+    moonPointLight.intensity = 0.4;
 }
 
 function createCloud() {
@@ -84,7 +104,7 @@ function allocateClouds(noClouds) {
         createCloud();
     }
     cloudsArr.forEach(function(object){
-        object.position.set(Math.random() * (max - min + 1) + min, Math.random() * (max - min + 1) + min , 60)
+        object.position.set(Math.random() * (max - min + 1) + min, Math.random() * (max - min + 1) + min , 80)
     });
 }
 
@@ -92,6 +112,7 @@ function createSceneObjects() {
     createPlane();
     createLight();
     createSun();
+    createMoon();
     allocateBoxes(30);
     allocateClouds(8);
 }
@@ -99,7 +120,9 @@ function createSceneObjects() {
 function addObjects() {
     scene.add(plane);
     scene.add(sun);
+    scene.add(moon);
     scene.add(hemiLight);
-    scene.add(pointLight);
+    scene.add(moonPointLight);
+    scene.add(sunPointLight);
     scene.add(clouds);
 }

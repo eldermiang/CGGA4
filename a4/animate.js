@@ -1,7 +1,8 @@
 function animate() {
-    animateSunColor();
+    //animateSunColor();
     animateCloudMovement();
-    animateSunMovement();
+    animateCelestialMovement();
+    animateRain();
     renderer.render(scene, camera);
     controls.update();
     requestAnimationFrame(animate);
@@ -20,16 +21,26 @@ function animateSunColor() {
 
 var d = 0;
 var speed = 0.5;
-function animateSunMovement() {
+var distance = 100;
+function animateCelestialMovement() {
     d += 0.01 * speed;
     sunPosition.x = 150 * Math.cos(d);
-    sunPosition.z = -100 * Math.sin(d);
+    sunPosition.z = -distance * Math.sin(d);
 
     sun.position.x = sunPosition.x;
     sun.position.z = sunPosition.z;
 
-    pointLight.position.x = sunPosition.x;
-    pointLight.position.z = sunPosition.z;
+    sunPointLight.position.x = sunPosition.x;
+    sunPointLight.position.z = sunPosition.z;
+
+    moonPosition.x = -150 * Math.cos(d);
+    moonPosition.z = distance * Math.sin(d);
+
+    moon.position.x = moonPosition.x;
+    moon.position.z = moonPosition.z;
+
+    moonPointLight.position.x = moonPosition.x;
+    moonPointLight.position.z = moonPosition.z;
 }
 
 clouds.position.x = -100;
@@ -42,8 +53,43 @@ function animateCloudMovement() {
     }
 }
 
+var size = 0.5;
+var dropSpeed = 0.1;
 function animateRain() {
-    rainDrop.velocity = {};
-    rainDrop.velocity = 0;
+    // rainDrop.velocity = {};
+    // rainDrop.velocity = 0;
 
+    // const positions = rainGeo.attributes.position.array;
+
+    // for (let i = 0; i < positions.length; i+= 3) {
+    //     console.log(positions[i + 2]);
+    //     positions[i + 2].velocity -= 0.1 + Math.random() * 0.1;
+    //     positions[i + 2] += positions[i + 2].velocity;
+
+    //     if (positions[i + 2] < -100) {
+    //         positions[i + 2] = 200;
+    //         positions[i + 2].velocity = 0;
+    //     }
+    // }
+
+    // p.velocity -= 0.1 + Math.random() * 0.1;
+    // p.y += p.velocity;
+    // if (p.y < -200) {
+    //     p.y = 200;
+    //     p.velocity = 0;
+    // }
+
+    // rainGeo.attributes.positions.array.forEach(p => {
+    //     p.velocity -= 0.1 + Math.random() * 0.1;
+    //     p.y += p.velocity;
+    // });
+
+    rainMaterial.size = size;
+
+    rainGeo.attributes.position.needsUpdate = true;
+    rain.position.z -= dropSpeed;
+    if (rain.position.z < -80) {
+        rain.position.z = 0;
+    }
+    //rain.rotation.y += 0.002;
 }
