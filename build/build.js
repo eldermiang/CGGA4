@@ -10,13 +10,10 @@ var col;
 var v1;
 
 //building map variables
-var gridSize = 15;
-var buildingMap;
 var buildings = [];
 var buildingCount = 50;
-var buildingBuilt;
 var group = new THREE.Group();
-var color = new THREE.Color(0xA9A9A9);
+var colorBuilding = new THREE.Color(0x4287f5);
 var positionsX = []
 var positionsY = []
 var randPos;
@@ -101,8 +98,8 @@ function createTerrain() {
             if (v1.z > 2.5) {
                 v1.z *= 1.6;  
             }  
-            //v1.x += map(Math.random(),0,1,-0.5,0.5) //jitter x
-            //v1.y += map(Math.random(),0,1,-0.5,0.5) //jitter y
+            // v1.x += map(Math.random(),0,1,-0.5,0.5) //jitter x
+            // v1.y += map(Math.random(),0,1,-0.5,0.5) //jitter y
         }
     }
         var mesh = new THREE.Mesh(geo, material);
@@ -137,7 +134,7 @@ function calculateColour() {
              if(max <= 0.8) return f.color.set(0xeecc44);
              if(max <= 3.5) return f.color.set(0x228800);
              if(max <= 5)   return f.color.set(0xcccccc);
-             if(max > 4)   return f.color.set(0xcc412c);
+             if(max > 4)   return f.color.set(0xccff00);
 
     //otherwise, return white
     f.color.set('white');
@@ -146,31 +143,31 @@ function calculateColour() {
 
 function createBuilding() {
     randPos = Math.random()* (10);
-    switch (randomSize = Math.random(1,4)) {
+    switch (randomSize = Math.floor(Math.random() * 4)) {
         case 1:
             var geometry = new THREE.BoxGeometry(5, 15, 5);
-            var material = new THREE.MeshBasicMaterial(color);
+            var material = new THREE.MeshBasicMaterial(colorBuilding);
             var cube = new THREE.Mesh(geometry, material);
             return cube;
         case 2:
-            var geometry = new THREE.BoxGeometry(30, 20, 30);
-            var material = new THREE.MeshBasicMaterial(color);
+            var geometry = new THREE.BoxGeometry(10, 20, 10);
+            var material = new THREE.MeshBasicMaterial(colorBuilding);
             var cube = new THREE.Mesh(geometry, material);
             return cube;
         case 3:
             var geometry = new THREE.BoxGeometry(10, 15, 10);
-            var material = new THREE.MeshBasicMaterial(color);
+            var material = new THREE.MeshBasicMaterial(colorBuilding);
             var cube = new THREE.Mesh(geometry, material);
             return cube;
 
         case 4:
             var geometry = new THREE.BoxGeometry(10, 20, 10);
-            var material = new THREE.MeshBasicMaterial(color);
+            var material = new THREE.MeshBasicMaterial(colorBuilding);
             var cube = new THREE.Mesh(geometry, material);
             return cube;
         default:
             var geometry = new THREE.BoxGeometry(8, 15, 8);
-            var material = new THREE.MeshBasicMaterial(color);
+            var material = new THREE.MeshBasicMaterial(colorBuilding);
             var cube = new THREE.Mesh(geometry, material);
             return cube;
     }
