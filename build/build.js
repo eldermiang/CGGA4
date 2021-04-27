@@ -39,7 +39,7 @@ function generateTexture() {
     for (let i = 0; i < canvas.width; i++) {
         for (let j = 0; j < canvas.height; j++) {
 
-            let v =  octave(i / canvas.width, j / canvas.height, 16);
+            let v =  octave(i / canvas.width, j / canvas.height , 16);
             const per = (100 * v).toFixed(2) + '%';
             c.fillStyle = `rgb(${per},${per},${per})`;
             c.fillRect(i, j, 1, 1);
@@ -69,9 +69,7 @@ function createTerrain() {
     material.vertexColors = true;
     //material.wireframe = true;
     
-
-    
-    for (let j = 0; j < data.height * 2; j++) {
+    for (let j = 0; j < data.height * 2 ; j++) {
         for (let i = 0; i < data.width; i++) {
 
             const n =  (j * (data.height) + i);
@@ -136,6 +134,7 @@ var light = new THREE.HemisphereLight(new THREE.Color(1, 1, 1), 1);
 function addObjects() {
     scene.add(terrain1);
     scene.add(light);
+    
     
     
 }
