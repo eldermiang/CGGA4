@@ -5,4 +5,4 @@ addObjects();
 
 calculateColour();
 
-window.addEventListener('resize', resizeWindow);
+window.addEventListener('resize', resizeScene);
