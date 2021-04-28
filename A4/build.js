@@ -1,3 +1,5 @@
+
+
 //Change value in SimplexNoise(--) to generate new seed
 let simplex = new SimplexNoise(23);
 
@@ -9,6 +11,7 @@ var colorBuilding = new THREE.Color(0x4287f5);
 var positionsX = []
 var positionsY = []
 var randPos;
+var models = [];
 
 //end building map variables
 
@@ -197,6 +200,45 @@ function createBuildings() {
 
     group.add(building);
 }
+
+
+var loader = new THREE.OBJLoader();
+
+ function loadModel(model, scale) {
+    
+     loader.load(
+
+         model,
+
+         function ( object ) {
+             if (scale == 'big') {
+             object.scale.set(0.002, 0.002, 0.002);
+             }
+             if (scale == 'small') {
+                 object.scale.set(1, 1, 1);
+             }
+             models.push(object);
+             if (models.length == 8) {
+                addObjects();
+             }
+             //return object;
+            
+         });
+    
+ }
+
+ function addModels() {
+
+     loadModel('models/40 Bank Street.obj', 'big');
+     loadModel('models/BuildingBasic.obj', 'small');
+     loadModel('models/CentralPlazaOne.obj', 'big');
+     loadModel('models/CentralPlazaTwo.obj', 'big');
+     loadModel('models/EmpireSquare.obj', 'big');
+     loadModel('models/IndusHouse.obj', 'big');
+     loadModel('models/RiverCityApartment.obj', 'big');
+     loadModel('models/SunsetResidence.obj', 'big');
+     
+ }
 
 function randomNumberPosition() {
     return Math.floor(Math.random() * positionsY.length);
