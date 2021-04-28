@@ -1,6 +1,7 @@
 setScene();
 animate();
 
+findFacePosition();
 addObjects();
 
 calculateColour();

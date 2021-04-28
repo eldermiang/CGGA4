@@ -1,6 +1,17 @@
 //Change value in SimplexNoise(--) to generate new seed
 let simplex = new SimplexNoise(23);
 
+//building map variables
+var buildings = [];
+var buildingCount = 50;
+var group = new THREE.Group();
+var colorBuilding = new THREE.Color(0x4287f5);
+var positionsX = []
+var positionsY = []
+var randPos;
+
+//end building map variables
+
 function map(val, smin, smax, emin, emax) {
     const t =  (val - smin) / (smax - smin);
     return (emax - emin) * t + emin;
@@ -90,7 +101,7 @@ function createTerrain() {
         }
     }
         var mesh = new THREE.Mesh(geo, material);
-        mesh.rotateX(-45);
+        //mesh.rotateX(-45);
         return mesh;
 }
 
@@ -130,11 +141,99 @@ function calculateColour() {
 
 var light = new THREE.HemisphereLight(new THREE.Color(1, 1, 1), 1);
 
+function createBuilding() {
+    randPos = Math.random()* (10);
+    switch (randomSize = Math.floor(Math.random() * 4)) {
+        case 1:
+            var geometry = new THREE.BoxGeometry(5, 15, 5);
+            var material = new THREE.MeshBasicMaterial(colorBuilding);
+            var cube = new THREE.Mesh(geometry, material);
+            return cube;
+        case 2:
+            var geometry = new THREE.BoxGeometry(10, 20, 10);
+            var material = new THREE.MeshBasicMaterial(colorBuilding);
+            var cube = new THREE.Mesh(geometry, material);
+            return cube;
+        case 3:
+            var geometry = new THREE.BoxGeometry(10, 15, 10);
+            var material = new THREE.MeshBasicMaterial(colorBuilding);
+            var cube = new THREE.Mesh(geometry, material);
+            return cube;
+
+        case 4:
+            var geometry = new THREE.BoxGeometry(10, 20, 10);
+            var material = new THREE.MeshBasicMaterial(colorBuilding);
+            var cube = new THREE.Mesh(geometry, material);
+            return cube;
+        default:
+            var geometry = new THREE.BoxGeometry(8, 15, 8);
+            var material = new THREE.MeshBasicMaterial(colorBuilding);
+            var cube = new THREE.Mesh(geometry, material);
+            return cube;
+    }
+}
+
+function createBuildings() {
+    var building = createBuilding();
+    buildings.push(building);
+
+    
+    let i = randomNumberPosition();
+        var positionX = positionsX[i];
+        var positionY = positionsY[i];
+      
+    
+    var positionZ = Math.random() * (8 - 5) + 5;
+        
+
+    var tra = new THREE.Matrix4();
+    tra.makeTranslation(positionX, positionY, positionZ);
+    building.applyMatrix(tra);
+
+    //rotates building to fit plane
+    building.rotation.x = 67.5;
+        
+   
+
+    group.add(building);
+}
+
+function randomNumberPosition() {
+    return Math.floor(Math.random() * positionsY.length);
+}
+
+function findFacePosition() {
+        //check faces for position add to array if certain y level
+        terrain1.geometry.faces.forEach(f=>{
+        
+            //get three verts for the face
+                const a = terrain1.geometry.vertices[f.a]
+                const b = terrain1.geometry.vertices[f.b]
+                const c = terrain1.geometry.vertices[f.c]
+        
+            //store position of each face to check later
+            var position = new THREE.Vector3();
+            position.x = (a.x + b.x + c.x) / 3;
+            position.y = (a.y + b.y + c.y) / 3;
+            position.z = (a.z + b.z + c.z) / 3;
+
+            const max = Math.max(a.z,Math.max(b.z,c.z))
+
+            if(max > 0.8 && max <= 3.5) { 
+                positionsX.push(position.x);
+                positionsY.push(position.y);
+            }
+
+        })  
+}
 
 function addObjects() {
     scene.add(terrain1);
     scene.add(light);
     
+    for (let i = 0; i < buildingCount; i++) {
+        createBuildings();
+    }
     
-    
+    scene.add(group);
 }
