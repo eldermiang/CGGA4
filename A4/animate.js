@@ -1,8 +1,8 @@
 
 function animate() {
-    animateCloudMovement();
+    //animateCloudMovement();
     animateCelestialMovement();
-    animateRain();
+    //animateRain();
     renderer.render(scene, camera);
     controls.update();
     requestAnimationFrame(animate);
@@ -53,14 +53,14 @@ function animateCloudMovement() {
     }
 }
 
-var size = 0.5;
-var dropSpeed = 0.1;
-function animateRain() {
-    rainMaterial.size = size;
+// var size = 0.5;
+// var dropSpeed = 0.1;
+// function animateRain() {
+//     rainMaterial.size = size;
 
-    rainGeo.attributes.position.needsUpdate = true;
-    rain.position.z -= dropSpeed;
-    if (rain.position.z < -80) {
-        rain.position.z = 0;
-    }
-}
+//     rainGeo.attributes.position.needsUpdate = true;
+//     rain.position.z -= dropSpeed;
+//     if (rain.position.z < -80) {
+//         rain.position.z = 0;
+//     }
+// }
