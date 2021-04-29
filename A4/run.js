@@ -1,7 +1,7 @@
 setScene();
 createSceneObjects();
-//generateRain();
-//addObjects();
+generateRain();
+addObjects();
 animate();
 buildGui();
 

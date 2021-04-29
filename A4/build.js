@@ -418,14 +418,15 @@ function addObjects() {
 
     scene.add(sun);
     scene.add(moon);
-    scene.add(hemiLight);
+    //scene.add(hemiLight);
     scene.add(moonPointLight);
     scene.add(sunPointLight);
     scene.add(clouds);
 
-    for (let i = 0; i < buildingCount; i++) {
-        createBuildings();
-    }
+    // Apply Matrix on line 212 seems to not be working - Michael
+    // for (let i = 0; i < buildingCount; i++) {
+    //     createBuildings();
+    // }
     
     scene.add(group);
 }

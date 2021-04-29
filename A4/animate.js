@@ -43,6 +43,8 @@ function animateCelestialMovement() {
     moonPointLight.position.z = moonPosition.z;
 }
 
+//.clear() doesn't seem to be a function for some reason - Michael
+
 clouds.position.x = -100;
 function animateCloudMovement() {
     clouds.position.x += 0.1
@@ -53,14 +55,14 @@ function animateCloudMovement() {
     }
 }
 
-// var size = 0.5;
-// var dropSpeed = 0.1;
-// function animateRain() {
-//     rainMaterial.size = size;
+var size = 0.5;
+var dropSpeed = 0.1;
+function animateRain() {
+    rainMaterial.size = size;
 
-//     rainGeo.attributes.position.needsUpdate = true;
-//     rain.position.z -= dropSpeed;
-//     if (rain.position.z < -80) {
-//         rain.position.z = 0;
-//     }
-// }
+    rainGeo.attributes.position.needsUpdate = true;
+    rain.position.z -= dropSpeed;
+    if (rain.position.z < -80) {
+        rain.position.z = 0;
+    }
+}
