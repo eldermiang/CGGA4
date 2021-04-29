@@ -1,5 +1,9 @@
 setScene();
+createSceneObjects();
+generateRain();
+addObjects();
 animate();
+buildGui();
 
 findFacePosition();
 addModels();

@@ -9,8 +9,13 @@ function setScene() {
     var ratio = window.innerWidth / window.innerHeight;
     camera = new THREE.PerspectiveCamera(90, ratio, 0.1, 1000);
     camera.position.set(0, 100, 30);
+
     renderer = new THREE.WebGLRenderer();
     renderer.setSize(window.innerWidth, window.innerHeight);
+
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.shadowMap.enabled = true;
+
     document.body.appendChild(renderer.domElement);
     controls = new THREE.OrbitControls(camera, renderer.domElement);
 }
@@ -20,6 +25,7 @@ var resizeScene = function() {
     var width = window.innerWidth;
     var height = window.innerHeight;
     renderer.setSize(width, height);
+    
     camera.aspect = width / height;
     camera.updateProjectionMatrix();
     renderer.render(scene, camera);
