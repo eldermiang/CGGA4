@@ -148,31 +148,49 @@ function createBuilding() {
     randPos = Math.random()* (10);
     switch (randomSize = Math.floor(Math.random() * 4)) {
         case 1:
-            var geometry = new THREE.BoxGeometry(5, 15, 5);
-            var material = new THREE.MeshBasicMaterial(colorBuilding);
-            var cube = new THREE.Mesh(geometry, material);
-            return cube;
+            //var geometry = new THREE.BoxGeometry(5, 15, 5);
+            //var material = new THREE.MeshBasicMaterial(colorBuilding);
+            //var cube = new THREE.Mesh(geometry, material);
+            var model = models[0];
+            return model;
         case 2:
-            var geometry = new THREE.BoxGeometry(10, 20, 10);
-            var material = new THREE.MeshBasicMaterial(colorBuilding);
-            var cube = new THREE.Mesh(geometry, material);
-            return cube;
+            // var geometry = new THREE.BoxGeometry(10, 20, 10);
+            // var material = new THREE.MeshBasicMaterial(colorBuilding);
+            // var cube = new THREE.Mesh(geometry, material);
+            var model =  models[1];
+            return model;
         case 3:
-            var geometry = new THREE.BoxGeometry(10, 15, 10);
-            var material = new THREE.MeshBasicMaterial(colorBuilding);
-            var cube = new THREE.Mesh(geometry, material);
-            return cube;
+            // var geometry = new THREE.BoxGeometry(10, 15, 10);
+            // var material = new THREE.MeshBasicMaterial(colorBuilding);
+            // var cube = new THREE.Mesh(geometry, material);
+            var model = models[2];
+            return model;
 
         case 4:
-            var geometry = new THREE.BoxGeometry(10, 20, 10);
-            var material = new THREE.MeshBasicMaterial(colorBuilding);
-            var cube = new THREE.Mesh(geometry, material);
-            return cube;
+            // var geometry = new THREE.BoxGeometry(10, 20, 10);
+            // var material = new THREE.MeshBasicMaterial(colorBuilding);
+            // var cube = new THREE.Mesh(geometry, material);
+            var model = models[3];
+            return model;
+        case 5:
+            var model = models[4];
+            return model;
+        case 6:
+            var model = models[5];
+            return model;   
+        case 7:
+            var model = models[6];
+            return model; 
+        case 8:
+            var model = models[7];
+            return model;   
+        
         default:
-            var geometry = new THREE.BoxGeometry(8, 15, 8);
-            var material = new THREE.MeshBasicMaterial(colorBuilding);
-            var cube = new THREE.Mesh(geometry, material);
-            return cube;
+            // var geometry = new THREE.BoxGeometry(8, 15, 8);
+            // var material = new THREE.MeshBasicMaterial(colorBuilding);
+            // var cube = new THREE.Mesh(geometry, material);
+            var model = models[3];
+            return model;
     }
 }
 
@@ -193,10 +211,12 @@ function createBuildings() {
     tra.makeTranslation(positionX, positionY, positionZ);
     building.applyMatrix(tra);
 
+    building.scale.set(0.01, 0.01, 0.01);
+    
     //rotates building to fit plane
     building.rotation.x = 67.5;
+    //building.rotation.y = 270; nothing i put here flips the model right way up
         
-   
 
     group.add(building);
 }
@@ -212,10 +232,10 @@ var loader = new THREE.OBJLoader();
 
          function ( object ) {
              if (scale == 'big') {
-             object.scale.set(0.002, 0.002, 0.002);
+             object.scale.set(0.000002, 0.000002, 0.000002);
              }
              if (scale == 'small') {
-                 object.scale.set(1, 1, 1);
+                 object.scale.set(0.0001, 0.0001, 0.0001);
              }
              models.push(object);
              if (models.length == 8) {

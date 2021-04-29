@@ -2,7 +2,7 @@ setScene();
 animate();
 
 findFacePosition();
-addObjects();
+addModels();
 
 //putting addModels() anywhere in run.js fucks up the code in some way - David
 
