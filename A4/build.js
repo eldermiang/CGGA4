@@ -401,7 +401,7 @@ function allocateClouds(noClouds) {
 }
 
 function createSceneObjects() {
-    createPlane();
+    //createPlane();
     createLight();
     createSun();
     createMoon();
