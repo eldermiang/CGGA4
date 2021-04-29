@@ -1,7 +1,7 @@
 var scene;
 var camera;
 var renderer;
-var controls
+var controls;
 
 function setScene() {
     scene = new THREE.Scene();
