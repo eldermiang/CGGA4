@@ -73,6 +73,7 @@ function createTerrain() {
     geo.verticesNeedUpdate = true;
     geo.computeVertexNormals();
 
+    console.log(geo);
     //var material = new THREE.MeshBasicMaterial();
     var material = new THREE.MeshStandardMaterial({  
         
@@ -90,7 +91,16 @@ function createTerrain() {
             const nn = (j * (data.height + 1) + i);
             
             const col = data.data[n  *4]; // the red channel
+
+            //New Code
+            // const position = geo.attributes.position;
+            // const v1 = new THREE.Vector3();
+            // v1.fromBufferAttribute(position, nn);
+
+            //Old code
             const v1 = geo.vertices[nn];
+
+            //console.log(v1);
 
             v1.z = map(col, 0, 240, -10, 10) //map from 0:255 to -10:10
             
@@ -103,14 +113,75 @@ function createTerrain() {
             //v1.y += map(Math.random(),0,1,-0.5,0.5) //jitter y
         }
     }
-        var mesh = new THREE.Mesh(geo, material);
+        var mesh = new THREE.Mesh(
+            //geo.toNonIndexed(),
+            geo, 
+            material);
         //mesh.rotateX(-45);
         return mesh;
 }
 
 var terrain1 = createTerrain();
 
+
 function calculateColour() {
+    //New Code
+    // let indexLength = (terrain1.geometry.attributes.position.array.length);
+    //     for (let i = 0; i < indexLength; i+=3) {
+    //         //Get three verts for the face
+    //         var a = new THREE.Vector3(
+    //             terrain1.geometry.attributes.position.getX(i),
+    //             terrain1.geometry.attributes.position.getY(i),
+    //             terrain1.geometry.attributes.position.getZ(i)
+    //         );
+    //         var b = new THREE.Vector3(
+    //             terrain1.geometry.attributes.position.getX(i + 1),
+    //             terrain1.geometry.attributes.position.getY(i + 1),
+    //             terrain1.geometry.attributes.position.getZ(i + 1)
+    //         );
+    //         var c = new THREE.Vector3(
+    //             terrain1.geometry.attributes.position.getX(i + 2),
+    //             terrain1.geometry.attributes.position.getY(i + 2),
+    //             terrain1.geometry.attributes.position.getZ(i + 2)
+    //         );
+
+    //         console.log(a);
+    //         //If average is below water, set to 0
+    //         //alt: color transparent to show the underwater landscape
+    //         const avgz = (a.z + b.z + c.z) / 4
+    //         if (avgz < 0) {
+    //             a.z = 0;
+    //             b.z = 0;
+    //             c.z = 0;
+    //         }
+    //         //assign colors based on the highest point of the face
+    //         //max is the sea level
+    //             const max = Math.max(a.z, Math.max(b.z, c.z))
+    //                 if(max <= 0) {
+    //                     var colors = new THREE.Color(0x44ccff);
+    //                     return terrain1.geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+    //                 }
+    //                 if (max <= 0.8) {
+    //                     var colors = new THREE.Color(0xeecc44);
+    //                     return terrain1.geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+    //                 }
+    //                 if (max <= 3.5) {
+    //                     var colors = new THREE.Color(0x228800);
+    //                     return terrain1.geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+    //                 }
+    //                 if (max <= 4) {
+    //                     var colors = new THREE.Color(0xcccccc);
+    //                     return terrain1.geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+    //                 }
+    //                 if (max <= 10) {
+    //                     var colors = new THREE.Color(0xc29861);
+    //                     return terrain1.geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+    //                 }
+    //         var colors = new THREE.Color(0xffffff);
+    //         return terrain1.geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+    //     }
+
+    //Old Code
     //for every face
     terrain1.geometry.faces.forEach(f=>{
         
@@ -266,21 +337,62 @@ function randomNumberPosition() {
 
 function findFacePosition() {
         //check faces for position add to array if certain y level
+        //console.log(terrain1);
+
+        //New Code
+        //Get three verts for each face
+        // let indexLength = (terrain1.geometry.attributes.position.array.length);
+        // for (let i = 0; i < indexLength; i+=3) {
+        //     var a = new THREE.Vector3(
+        //         terrain1.geometry.attributes.position.getX(i),
+        //         terrain1.geometry.attributes.position.getY(i),
+        //         terrain1.geometry.attributes.position.getZ(i)
+        //     );
+        //     var b = new THREE.Vector3(
+        //         terrain1.geometry.attributes.position.getX(i + 1),
+        //         terrain1.geometry.attributes.position.getY(i + 1),
+        //         terrain1.geometry.attributes.position.getZ(i + 1)
+        //     );
+        //     var c = new THREE.Vector3(
+        //         terrain1.geometry.attributes.position.getX(i + 2),
+        //         terrain1.geometry.attributes.position.getY(i + 2),
+        //         terrain1.geometry.attributes.position.getZ(i + 2)
+        //     );
+        //     //console.log(a);
+        //     //Store position of each face to check later
+        //     var position = new THREE.Vector3();
+        //     position.x = (a.x, + b.x, + c.x) / 3;
+        //     position.y = (a.y, + b.y, + c.y) / 3;
+        //     position.z = (a.z, + b.z, + c.z) / 3;
+
+        //     //console.log(position);
+        //     const max = Math.max(a.z, Math.max(b.z, c.z));
+        //     // console.log(max);
+        //     if (max > 0.8 && max <= 3.5) {
+        //         positionsX.push(position.x);
+        //         positionsY.push(position.y);
+        //     }
+        // }
+
+
+        // Old Code
+
         terrain1.geometry.faces.forEach(f=>{
-        
+            //console.log(f);
             //get three verts for the face
                 const a = terrain1.geometry.vertices[f.a]
                 const b = terrain1.geometry.vertices[f.b]
                 const c = terrain1.geometry.vertices[f.c]
         
+                //console.log(a);
             //store position of each face to check later
             var position = new THREE.Vector3();
             position.x = (a.x + b.x + c.x) / 3;
             position.y = (a.y + b.y + c.y) / 3;
             position.z = (a.z + b.z + c.z) / 3;
-
+            // console.log(position);
             const max = Math.max(a.z,Math.max(b.z,c.z))
-
+            //console.log(max);
             if(max > 0.8 && max <= 3.5) { 
                 positionsX.push(position.x);
                 positionsY.push(position.y);
