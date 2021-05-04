@@ -14,5 +14,6 @@ buildGui();
 // console.log(sun);
 // console.log(cloud);
 console.log(rainGeo);
+console.log(THREE.REVISION);
 
 window.addEventListener('resize', resize);
