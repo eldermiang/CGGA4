@@ -34,20 +34,48 @@
 //     const geo = new THREE.
 // }
 
-var rain, rainGeo, rainDrop, rainMaterial, rainCount = 1500;
+//r127 Version
+
+// var rain, rainGeo, rainDrop, rainMaterial, rainCount = 1500;
+
+// function generateRain() {
+//     const points = [];
+
+//     for (let i=0; i<rainCount; i++) {
+//     rainDrop = new THREE.Vector3(
+//         Math.random() * 90 - 49,
+//         Math.random() * 90 - 49,
+//         Math.random() * 160
+//     );
+//     points.push(rainDrop);
+//     }
+//     rainGeo = new THREE.BufferGeometry().setFromPoints(points);
+
+//     rainMaterial = new THREE.PointsMaterial({
+//         color: 0xaaaaaa,
+//         size: 0.5,
+//         transparent: true
+//     });
+//     rain = new THREE.Points(rainGeo,rainMaterial);
+//     scene.add(rain);
+// }
+
+//r79 Version
+
+var rain, rainDrop, rainMaterial, rainCount = 1500;
+rainGeo = new THREE.Geometry();
 
 function generateRain() {
-    const points = [];
+    //const points = [];
 
     for (let i=0; i<rainCount; i++) {
-    rainDrop = new THREE.Vector3(
-        Math.random() * 90 - 49,
-        Math.random() * 90 - 49,
-        Math.random() * 160
-    );
-    points.push(rainDrop);
+        rainDrop = new THREE.Vector3 (
+            Math.random() * 90 - 49,
+            Math.random() * 90 - 49,
+            Math.random() * 120
+        );
+        rainGeo.vertices.push(rainDrop);
     }
-    rainGeo = new THREE.BufferGeometry().setFromPoints(points);
 
     rainMaterial = new THREE.PointsMaterial({
         color: 0xaaaaaa,
@@ -55,5 +83,6 @@ function generateRain() {
         transparent: true
     });
     rain = new THREE.Points(rainGeo,rainMaterial);
+    console.log(rainGeo);
     scene.add(rain);
 }

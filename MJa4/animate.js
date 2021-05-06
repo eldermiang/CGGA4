@@ -47,7 +47,8 @@ clouds.position.x = -100;
 function animateCloudMovement() {
     clouds.position.x += 0.1
     if (clouds.position.x > 100) {
-        clouds.clear();
+        //clouds.clear();
+        clouds.remove(...clouds.children);
         allocateClouds(8);
         clouds.position.x = -100;
     }
@@ -56,33 +57,8 @@ function animateCloudMovement() {
 var size = 0.5;
 var dropSpeed = 0.1;
 function animateRain() {
-    // rainDrop.velocity = {};
-    // rainDrop.velocity = 0;
-
-    // const positions = rainGeo.attributes.position.array;
-
-    // for (let i = 0; i < positions.length; i+= 3) {
-    //     console.log(positions[i + 2]);
-    //     positions[i + 2].velocity -= 0.1 + Math.random() * 0.1;
-    //     positions[i + 2] += positions[i + 2].velocity;
-
-    //     if (positions[i + 2] < -100) {
-    //         positions[i + 2] = 200;
-    //         positions[i + 2].velocity = 0;
-    //     }
-    // }
-
-    // p.velocity -= 0.1 + Math.random() * 0.1;
-    // p.y += p.velocity;
-    // if (p.y < -200) {
-    //     p.y = 200;
-    //     p.velocity = 0;
-    // }
-
-    // rainGeo.attributes.positions.array.forEach(p => {
-    //     p.velocity -= 0.1 + Math.random() * 0.1;
-    //     p.y += p.velocity;
-    // });
+    /*
+    r127 Version
 
     rainMaterial.size = size;
 
@@ -91,5 +67,19 @@ function animateRain() {
     if (rain.position.z < -80) {
         rain.position.z = 0;
     }
+    */
+    //rain.rotation.y += 0.002;
+
+    //r79 version
+
+    rainMaterial.size = size;
+    rainGeo.vertices.forEach(p => {
+        p.z -= dropSpeed;
+        //p.x += dropSpeed;
+        if (p.z < 0) {
+            p.z = 120;
+        }
+    })
+    rainGeo.verticesNeedUpdate = true;
     //rain.rotation.y += 0.002;
 }
