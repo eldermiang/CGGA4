@@ -3,6 +3,7 @@ setScene();
 createSceneObjects();
 //Lighting looks very strange with addObjects function
 //addObjects();
+generateRain();
 animate();
 buildGui();
 

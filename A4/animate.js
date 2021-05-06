@@ -1,8 +1,8 @@
 
 function animate() {
-    //animateCloudMovement();
+    animateCloudMovement();
     animateCelestialMovement();
-    //animateRain();
+    animateRain();
     renderer.render(scene, camera);
     controls.update();
     requestAnimationFrame(animate);
@@ -49,7 +49,8 @@ clouds.position.x = -100;
 function animateCloudMovement() {
     clouds.position.x += 0.1
     if (clouds.position.x > 100) {
-        clouds.clear();
+        //clouds.clear();
+        clouds.remove(...clouds.children);
         allocateClouds(8);
         clouds.position.x = -100;
     }
@@ -57,6 +58,10 @@ function animateCloudMovement() {
 
 var size = 0.5;
 var dropSpeed = 0.1;
+
+/*
+//R127
+
 function animateRain() {
     rainMaterial.size = size;
 
@@ -65,4 +70,17 @@ function animateRain() {
     if (rain.position.z < -80) {
         rain.position.z = 0;
     }
+}
+*/
+
+function animateRain() {
+    rainMaterial.size = size;
+    rainGeo.vertices.forEach(p => {
+        p.z -= dropSpeed;
+        //p.x += dropSpeed;
+        if (p.z < 0) {
+            p.z = 80;
+        }
+    })
+    rainGeo.verticesNeedUpdate = true;
 }

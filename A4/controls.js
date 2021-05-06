@@ -8,8 +8,8 @@ function buildGui() {
         sun_intensity: sunPointLight.intensity ,
         moon_intensity: moonPointLight.intensity,
         speed: speed,
-        // particle_size: size,
-        // rain_speed: dropSpeed,
+        particle_size: size,
+        rain_speed: dropSpeed,
         distance: distance
     }
 
@@ -46,11 +46,11 @@ function buildGui() {
         distance = val;
     });
 
-    // gui.add(params, 'particle_size', 0.1, 2).onChange(function(val){
-    //     size = val;
-    // });
+    gui.add(params, 'particle_size', 0.1, 2).onChange(function(val){
+        size = val;
+    });
 
-    // gui.add(params, 'rain_speed', 0.05, 0.5).onChange(function(val){
-    //     dropSpeed = val;
-    // });
+    gui.add(params, 'rain_speed', 0.05, 0.5).onChange(function(val){
+        dropSpeed = val;
+    });
 }
