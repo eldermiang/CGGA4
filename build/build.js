@@ -20,6 +20,39 @@ var randPos;
 
 //end building map variables
 
+var skyboxGeo;
+var skybox;
+let skyboxImage = "afterrain";
+
+function createMaterialArray(filename) {
+    let skyboxImagepaths = createPathStrings(filename);
+    let materialArray = skyboxImagepaths.map(image => {
+        let texture = new THREE.TextureLoader().load(image);
+
+        return new THREE.MeshBasicMaterial({ map: texture, side: THREE.BackSide});
+    });
+
+    return materialArray;
+}
+
+function createPathStrings(filename) {
+    let basePath = "/textures/";
+    let baseFilename = basePath + filename;
+    let fileType = ".jpg";
+    let sides = ["ft", "bk", "up", "dn", "rt", "lf"];
+    let pathStrings = sides.map(side => {
+        return baseFilename + "_" + side + fileType;
+    })
+
+    return pathStrings;
+}
+
+function createSkybox() {
+    let materialArray = createMaterialArray(skyboxImage);
+    skyboxGeo = new THREE.BoxGeometry(10000, 10000, 10000);
+    skybox = new THREE.Mesh(skyboxGeo, materialArray);
+    scene.add(skybox);
+}
 
 function map(val, smin, smax, emin, emax) {
     const t =  (val - smin) / (smax - smin);

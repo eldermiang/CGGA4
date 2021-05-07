@@ -1,9 +1,10 @@
 setScene();
 animate();
-
+createSkybox();
 findFacePosition();
 // window.alert(positions);
 addObjects();
 calculateColour();
 
-window.addEventListener('resize', resizeWindow);
+
+window.addEventListener('resize', resizeScene);

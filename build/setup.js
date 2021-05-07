@@ -3,6 +3,7 @@ var camera;
 var renderer;
 var controls;
 
+
 //Setup the 3 main components: scene, camera, renderer
 function setScene() {
     scene = new THREE.Scene();
