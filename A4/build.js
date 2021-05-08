@@ -118,6 +118,10 @@ function createTerrain() {
             geo, 
             material);
         //mesh.rotateX(-45);
+        mesh.traverse(function(child){
+            child.castShadow = true;
+            child.receiveShadow = true;
+        })
         return mesh;
 }
 
@@ -498,6 +502,7 @@ function createCloud() {
     cloudMaterial.opacity = 0.75;
     var cloudGeometry = new THREE.BoxGeometry(20, 10, 2);
     cloud = new THREE.Mesh(cloudGeometry, cloudMaterial);
+    //console.log(cloud);
 
     cloudsArr.push(cloud);
     clouds.add(cloud);
