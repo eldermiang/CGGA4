@@ -23,7 +23,7 @@ var directions = ["afterrain_ft", "afterrain_bk", "afterrain_up", "afterrain_dn"
 var format = ".jpg";
 
 function createSkybox() {
-skyGeometry = new THREE.BoxGeometry(5000, 5000, 5000);
+skyGeometry = new THREE.BoxGeometry(2500, 2500, 2500);
 
 var materialArray = [];
 for (var i = 0; i < 6; i++) {
@@ -34,6 +34,7 @@ for (var i = 0; i < 6; i++) {
     var skyMaterial = new THREE.MeshFaceMaterial(materialArray);
     skyBox = new THREE.Mesh(skyGeometry, skyMaterial);
     scene.add(skyBox);
+    skyBox.rotation.x = 90;
 }
 }
 
@@ -176,7 +177,7 @@ function createTerrain() {
 }
 
 var terrain1 = createTerrain();
-terrain1.rotation.x = 67.5;
+
 terrain1.position.y = -50
 
 function calculateColour() {
