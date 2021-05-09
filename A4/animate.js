@@ -1,10 +1,17 @@
 
 function animate() {
-    animateCloudMovement();
+    // animateCloudMovement();
     animateCelestialMovement();
     animateRain();
-    renderer.render(scene, camera);
+    
+    // renderer.autoClear = false;
+    // renderer.clear();
+    
+   
+    //camera.lookAt(0, 100, 0);
+    
     controls.update();
+    renderer.render(scene, camera);
     requestAnimationFrame(animate);
 }
 
@@ -45,16 +52,16 @@ function animateCelestialMovement() {
 
 //.clear() doesn't seem to be a function for some reason - Michael
 
-clouds.position.x = -100;
-function animateCloudMovement() {
-    clouds.position.x += 0.1
-    if (clouds.position.x > 100) {
-        //clouds.clear();
-        clouds.remove(...clouds.children);
-        allocateClouds(8);
-        clouds.position.x = -100;
-    }
-}
+// clouds.position.x = -100;
+// function animateCloudMovement() {
+//     clouds.position.x += 0.1
+//     if (clouds.position.x > 100) {
+//         //clouds.clear();
+//         clouds.remove(...clouds.children);
+//         allocateClouds(8);
+//         clouds.position.x = -100;
+//     }
+// }
 
 var size = 0.5;
 var dropSpeed = 0.1;

@@ -15,6 +15,60 @@ var models = [];
 
 //end building map variables
 
+var skyBox = null;
+var skyGeometry = null;
+
+var path = "/textures/";
+var directions = ["afterrain_ft", "afterrain_bk", "afterrain_up", "afterrain_dn", "afterrain_rt", "afterrain_lf"];
+var format = ".jpg";
+
+function createSkybox() {
+skyGeometry = new THREE.BoxGeometry(5000, 5000, 5000);
+
+var materialArray = [];
+for (var i = 0; i < 6; i++) {
+    materialArray.push(new THREE.MeshBasicMaterial({
+        map: THREE.ImageUtils.loadTexture(path + directions[i] + format),
+        side: THREE.BackSide
+    }));
+    var skyMaterial = new THREE.MeshFaceMaterial(materialArray);
+    skyBox = new THREE.Mesh(skyGeometry, skyMaterial);
+    scene.add(skyBox);
+}
+}
+
+
+
+// var skybox = null;
+
+// let materialArray = [];
+// let texture_ft = new THREE.TextureLoader().load( '/textures/afterrain_ft.jpg');
+// let texture_bk = new THREE.TextureLoader().load( '/textures/afterrain_bk.jpg');
+// let texture_up = new THREE.TextureLoader().load( '/textures/afterrain_up.jpg');
+// let texture_dn = new THREE.TextureLoader().load( '/textures/afterrain_dn.jpg');
+// let texture_rt = new THREE.TextureLoader().load( '/textures/afterrain_rt.jpg');
+// let texture_lf = new THREE.TextureLoader().load( '/textures/afterrain_lf.jpg');
+
+// materialArray.push(new THREE.MeshBasicMaterial( { map: texture_ft }));
+// materialArray.push(new THREE.MeshBasicMaterial( { map: texture_bk }));
+// materialArray.push(new THREE.MeshBasicMaterial( { map: texture_up }));
+// materialArray.push(new THREE.MeshBasicMaterial( { map: texture_dn }));
+// materialArray.push(new THREE.MeshBasicMaterial( { map: texture_rt }));
+// materialArray.push(new THREE.MeshBasicMaterial( { map: texture_lf }));
+
+// for (let i = 0; i < 6; i++)
+//   materialArray[i].side = THREE.BackSide;
+
+
+// function createSkybox() {
+//     // let skyboxGeo = new THREE.BoxGeometry(10000, 10000, 10000);
+//     // skybox = new THREE.Mesh(skyboxGeo, materialArray);
+//     // scene.add(skybox);
+// }
+
+
+
+
 function map(val, smin, smax, emin, emax) {
     const t =  (val - smin) / (smax - smin);
     return (emax - emin) * t + emin;
@@ -122,7 +176,7 @@ function createTerrain() {
 }
 
 var terrain1 = createTerrain();
-
+terrain1.rotation.x = 67.5;
 
 function calculateColour() {
     //New Code
@@ -212,6 +266,7 @@ function calculateColour() {
     f.color.set('white');
 })  
 }
+
 
 var light = new THREE.HemisphereLight(new THREE.Color(1, 1, 1), 1);
 
@@ -492,15 +547,15 @@ function createMoon() {
 }
 
 function createCloud() {
-    var cloudMaterial = new THREE.MeshBasicMaterial();
-    cloudMaterial.color = new THREE.Color(1, 1, 1);
-    cloudMaterial.transparent = true;
-    cloudMaterial.opacity = 0.75;
-    var cloudGeometry = new THREE.BoxGeometry(20, 10, 2);
-    cloud = new THREE.Mesh(cloudGeometry, cloudMaterial);
+//     var cloudMaterial = new THREE.MeshBasicMaterial();
+//     cloudMaterial.color = new THREE.Color(1, 1, 1);
+//     cloudMaterial.transparent = true;
+//     cloudMaterial.opacity = 0.75;
+//     var cloudGeometry = new THREE.BoxGeometry(20, 10, 2);
+//     cloud = new THREE.Mesh(cloudGeometry, cloudMaterial);
 
-    cloudsArr.push(cloud);
-    clouds.add(cloud);
+//     cloudsArr.push(cloud);
+//     clouds.add(cloud);
 }
 
 function allocateClouds(noClouds) {
@@ -530,6 +585,7 @@ function addObjects() {
 
     scene.add(sun);
     scene.add(moon);
+    scene.add(camera);
     //scene.add(hemiLight);
     scene.add(moonPointLight);
     scene.add(sunPointLight);

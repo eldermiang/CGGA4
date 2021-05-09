@@ -1,6 +1,8 @@
 setScene();
+window.addEventListener('resize', resizeScene);
 //generateRain();
 createSceneObjects();
+createSkybox();
 //Lighting looks very strange with addObjects function
 //addObjects();
 generateRain();
@@ -14,4 +16,3 @@ addModels();
 
 calculateColour();
 
-window.addEventListener('resize', resizeScene);
