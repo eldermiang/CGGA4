@@ -177,6 +177,7 @@ function createTerrain() {
 
 var terrain1 = createTerrain();
 terrain1.rotation.x = 67.5;
+terrain1.position.y = -50
 
 function calculateColour() {
     //New Code
