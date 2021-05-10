@@ -1,5 +1,5 @@
 //Change value in SimplexNoise(--) to generate new seed
-let simplex = new SimplexNoise(23);
+let simplex = new SimplexNoise(1);
 
 function map(val, smin, smax, emin, emax) {
     const t =  (val - smin) / (smax - smin);
@@ -13,7 +13,10 @@ function noise(nx, ny) {
 //stack some noisefields together
 function octave(nx, ny, octaves) {
     let val = 0;
-    let freq = 1;
+    //Increasing freq value makes terrain more like "Islands"
+    //Default
+    //let freq = 1;
+    let freq = 2.5;
     let max = 0;
     let amp = 1;
 
@@ -21,8 +24,6 @@ function octave(nx, ny, octaves) {
         val += noise(nx * freq ,ny * freq) * amp;
         max += amp;
         amp /= 2;
-
-        //freq higher values, more mountains and rugged terrain
         freq *= 2;
     }
     return val/max;
@@ -35,6 +36,9 @@ function generateTexture() {
   
     c.fillStyle = 'black';
     c.fillRect(0, 0 , canvas.width, canvas.height);
+
+    canvas.height = 200;
+    canvas.width = 400;
 
     for (let i = 0; i < canvas.width; i++) {
         for (let j = 0; j < canvas.height; j++) {
@@ -85,8 +89,13 @@ function createTerrain() {
             if (v1.z > 5) {
                 v1.z *= 1.6;  
             }  
-            //v1.x += map(Math.random(),0,1,-0.5,0.5) //jitter x
-            //v1.y += map(Math.random(),0,1,-0.5,0.5) //jitter y
+
+            // v1.x += map(Math.random(), 0 , 1, -0.5, 0.5) //jitter x
+            // v1.y += map(Math.random(), 0 , 1, -0.5, 0.5) //jitter y
+
+            v1.x += map(Math.random(), -1 , 1, -0.5, 0.5) //jitter x
+            v1.y += map(Math.random(), -1 , 1, -0.5, 0.5) //jitter y
+
         }
     }
         var mesh = new THREE.Mesh(geo, material);
@@ -106,8 +115,7 @@ function calculateColour() {
         const c = terrain1.geometry.vertices[f.c]
 
     //if average is below water, set to 0
-    //alt: color transparent to show the underwater landscape
-        const avgz = (a.z+b.z+c.z) / 4
+        const avgz = (a.z + b.z + c.z) / 3
             if(avgz < 0) {
                 a.z = 0;
                 b.z = 0;
@@ -116,11 +124,17 @@ function calculateColour() {
 
     //assign colors based on the highest point of the face
     //max is the sea level
-        const max = Math.max(a.z,Math.max(b.z,c.z))
-             if(max <= 0)   return f.color.set(0x44ccff);
-             if(max <= 0.8) return f.color.set(0xeecc44);
+        const max = Math.max(a.z , Math.max(b.z, c.z))
+        
+             //Water
+             if(max <= 0)   return f.color.set(0x67E6FF);
+             //Beaches
+             if(max <= 0.8) return f.color.set(0xF4E459);
+             //Land
              if(max <= 3.5) return f.color.set(0x228800);
+             //Mountain Cliifs
              if(max <= 4)   return f.color.set(0xcccccc);
+             //Mountain Peaks
              if(max <= 10)   return f.color.set(0xc29861);
 
     //otherwise, return white
