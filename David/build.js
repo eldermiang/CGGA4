@@ -306,26 +306,26 @@ var loader = new THREE.OBJLoader();
 
  function loadModel(model, scale) {
     
-    loader.load(
+     loader.load(
 
-        model,
+         model,
 
-        function ( object ) {
-            if (scale == 'big') {
-            object.scale.set(0.000002, 0.000002, 0.000002);
-            }
-            if (scale == 'small') {
-                object.scale.set(0.0001, 0.0001, 0.0001);
-            }
-            var flip = new THREE.Matrix4().makeScale(1,-1,1);
-            object.applyMatrix(flip);
-            models.push(object);
-            if (models.length == 6) {
-               addObjects();
-            }
-            //return object;
-           
-        });
+         function ( object ) {
+             if (scale == 'big') {
+             object.scale.set(0.000002, 0.000002, 0.000002);
+             }
+             if (scale == 'small') {
+                 object.scale.set(0.0001, 0.0001, 0.0001);
+             }
+             var flip = new THREE.Matrix4().makeScale(1,-1,1);
+             object.applyMatrix(flip);
+             models.push(object);
+             if (models.length == 6) {
+                addObjects();
+             }
+             //return object;
+            
+         });
     
  }
 
@@ -349,6 +349,7 @@ function randomNumberPosition() {
 function getRandom(min, max) {
     return Math.random() * (max - min) + min;
   }
+
 
 function findFacePosition() {
         //check faces for position add to array if certain y level
@@ -513,7 +514,6 @@ function createCloud() {
     cloudMaterial.opacity = 0.75;
     var cloudGeometry = new THREE.BoxGeometry(20, 10, 2);
     cloud = new THREE.Mesh(cloudGeometry, cloudMaterial);
-    cloud.castShadow = true;
     //console.log(cloud);
 
     cloudsArr.push(cloud);
@@ -553,9 +553,9 @@ function addObjects() {
     scene.add(clouds);
 
     // Apply Matrix on line 212 seems to not be working - Michael
-    for (let i = 0; i < buildingCount; i++) {
-        createBuildings();
-    }
+     for (let i = 0; i < buildingCount; i++) {
+         createBuildings();
+     }
     
     scene.add(group);
 }
