@@ -34,7 +34,7 @@ for (var i = 0; i < 6; i++) {
     var skyMaterial = new THREE.MeshFaceMaterial(materialArray);
     skyBox = new THREE.Mesh(skyGeometry, skyMaterial);
     scene.add(skyBox);
-    skyBox.rotation.x = 90;
+    skyBox.rotation.x = 89.5;
 }
 }
 
