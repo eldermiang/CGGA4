@@ -56,8 +56,8 @@ function animateCloudMovement() {
     }
 }
 
-var size = 0.5;
-var dropSpeed = 0.1;
+var size = 0.1;
+var dropSpeed = 0.5;
 
 /*
 //R127
