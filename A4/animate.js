@@ -74,6 +74,7 @@ function animateRain() {
 */
 
 function animateRain() {
+    console.log(rain);
     rainMaterial.size = size;
     rainGeo.vertices.forEach(p => {
         p.z -= dropSpeed;

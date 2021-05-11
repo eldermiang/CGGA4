@@ -10,6 +10,7 @@ function buildGui() {
         speed: speed,
         particle_size: size,
         rain_speed: dropSpeed,
+        rain_volume: volume,
         distance: distance
     }
 
@@ -50,7 +51,11 @@ function buildGui() {
         size = val;
     });
 
-    gui.add(params, 'rain_speed', 0.05, 0.5).onChange(function(val){
+    gui.add(params, 'rain_speed', 0.05, 1).onChange(function(val){
         dropSpeed = val;
+    });
+
+    gui.add(params, 'rain_volume', 0, 10).onChange(function(val){
+        volume = val;
     });
 }

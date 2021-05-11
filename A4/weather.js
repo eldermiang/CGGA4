@@ -1,4 +1,5 @@
-var rain, rainGeo, rainDrop, rainMaterial, rainCount = 1500;
+var volume = 1;
+var rain, rainGeo, rainDrop, rainMaterial, rainCount = 1500 * volume;
 rainGeo = new THREE.Geometry();
 /*
 //R127
