@@ -318,6 +318,12 @@ var loader = new THREE.OBJLoader();
                 object.scale.set(0.0001, 0.0001, 0.0001);
             }
             var flip = new THREE.Matrix4().makeScale(1,-1,1);
+
+            object.traverse(function(child){
+                child.castShadow = true;
+                child.receiveShadow = true;
+            });
+
             object.applyMatrix(flip);
             models.push(object);
             if (models.length == 6) {
