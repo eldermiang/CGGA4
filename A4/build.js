@@ -502,6 +502,7 @@ function createCloud() {
     cloudMaterial.opacity = 0.75;
     var cloudGeometry = new THREE.BoxGeometry(20, 10, 2);
     cloud = new THREE.Mesh(cloudGeometry, cloudMaterial);
+    cloud.castShadow = true;
     //console.log(cloud);
 
     cloudsArr.push(cloud);
