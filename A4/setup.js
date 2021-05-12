@@ -1,5 +1,5 @@
 var scene;
-var camera;
+var camera = null;
 var renderer;
 var controls;
 
@@ -8,6 +8,7 @@ function setScene() {
     scene = new THREE.Scene();
     var ratio = window.innerWidth / window.innerHeight;
     camera = new THREE.PerspectiveCamera(55, ratio, 20, 30000); //changed values
+    
     camera.position.set(0, -75, 30);
     //camera.lookAt(100, 100, 100);
 

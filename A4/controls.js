@@ -1,5 +1,10 @@
+var camera_pos = 1;
+
 function buildGui() {
     gui = new dat.GUI();
+
+    var camera1 = {pos1: function(){setCamera(1)}};
+    var camera2 = {pos2: function(){setCamera(2)}};
 
     var params = {
         x: sun.position.x && sunPointLight.position.x ,
@@ -10,7 +15,8 @@ function buildGui() {
         speed: speed,
         particle_size: size,
         rain_speed: dropSpeed,
-        distance: distance
+        distance: distance,
+        camera: camera_pos
     }
 
     // gui.add(params, 'x', -50, 50).onChange(function(val){
@@ -27,6 +33,9 @@ function buildGui() {
     //     sun.position.z = val;
     //     pointLight.position.z = val;
     // });
+
+    gui.add(camera1, 'pos1').name("Camera 1");
+    gui.add(camera2, 'pos2').name("Camera 2");
 
     gui.add(params, 'sun_intensity', 0, 1).onChange(function(val){
         sunPointLight.intensity = val;

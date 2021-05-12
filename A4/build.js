@@ -19,8 +19,8 @@ var skyBox = null;
 var skyGeometry = null;
 
 var path = "/textures/";
-var directions = ["afterrain_ft", "afterrain_bk", "afterrain_up", "afterrain_dn", "afterrain_rt", "afterrain_lf"];
-var format = ".jpg";
+var directions = ["corona_ft", "corona_bk", "corona_up", "corona_dn", "corona_rt", "corona_lf"];
+var format = ".png";
 
 function createSkybox() {
 skyGeometry = new THREE.BoxGeometry(2500, 2500, 2500);

@@ -80,6 +80,19 @@ function animateRain() {
 }
 */
 
+function setCamera(pos) {
+    switch (pos){
+        case 1: 
+            camera.position.set(0, -75, 30);
+        break;       
+        case 2: 
+            camera.position.set(0, -75, 0);
+        break;
+        default:
+            renderer.render(0, -75, 30);
+    }
+}
+
 function animateRain() {
     rainMaterial.size = size;
     rainGeo.vertices.forEach(p => {
