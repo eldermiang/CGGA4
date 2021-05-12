@@ -44,8 +44,8 @@ function generateTexture() {
     c.fillStyle = 'black';
     c.fillRect(0, 0 , canvas.width, canvas.height);
 
-    canvas.height = 200;
-    canvas.width = 400;
+    canvas.height = 100;
+    canvas.width = 200;
 
     for (let i = 0; i < canvas.width; i++) {
         for (let j = 0; j < canvas.height; j++) {
@@ -60,12 +60,11 @@ function generateTexture() {
     return c.getImageData(0, 0, canvas.width, canvas.height);
 }
 
-var data = generateTexture();
+var image1 = generateTexture();
 
 //using "data" to create Terrain
-function createTerrain() {
-
-    var geo = new THREE.PlaneGeometry(data.width, data.height, data.width + 1 , data.height);
+function createTerrain(data) {
+    var geo = new THREE.PlaneGeometry(data.width, data.height * 2, data.width + 1 , data.height);
     geo.colorsNeedUpdate = true;
     geo.verticesNeedUpdate = true;
     geo.computeVertexNormals();
@@ -106,20 +105,22 @@ function createTerrain() {
         }
     }
         var mesh = new THREE.Mesh(geo, material);
-        mesh.rotateX(-45);
         return mesh;
 }
 
-var terrain1 = createTerrain();
+var terrain1 = createTerrain(image1);
 
-function calculateColour() {
+var colour1 = calculateColour(terrain1);
+
+
+function calculateColour(terrain) {
     //for every face
-    terrain1.geometry.faces.forEach(f=>{
+    terrain.geometry.faces.forEach(f=>{
         
     //get three verts for the face
-        const a = terrain1.geometry.vertices[f.a]
-        const b = terrain1.geometry.vertices[f.b]
-        const c = terrain1.geometry.vertices[f.c]
+        const a = terrain.geometry.vertices[f.a]
+        const b = terrain.geometry.vertices[f.b]
+        const c = terrain.geometry.vertices[f.c]
 
     //if average is below water, set to 0
         const avgz = (a.z + b.z + c.z) / 3
@@ -150,10 +151,27 @@ function calculateColour() {
 }
 
 var light = new THREE.HemisphereLight(new THREE.Color(1, 1, 1), 1);
-
+var group = new THREE.Group();
 
 function addObjects() {
-    scene.add(terrain1);
+    terrain1.position.x = 0;
+    terrain1.position.y = 0;
+    terrain1.position.z = 0;
+    //terrain1.rotateX(-45);
+    //scene.add(terrain1);
+
+    // terrain2.position.x = 0;
+    // terrain2.position.y = image1.height;
+    // terrain2.position.z = -4;
+    // terrain2.rotateX(135);
+    // terrain2.rotateY(135.1);
+    //scene.add(terrain2);
+
+    group.add(terrain1);
+    //group.add(terrain2);
+    group.rotateX(-45);
+    scene.add(group);
+    
     scene.add(light);
     
     
