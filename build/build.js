@@ -30,7 +30,8 @@ function octave(nx, ny, octaves) {
         max += amp;
 
         //Range between 1.5 to 2.5
-        amp /= 1.7;
+        //Higer values, more flat, lower values, more rugged
+        amp /= 2.5;
         freq *= 2;
     }
     return val/max;
