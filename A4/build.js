@@ -2,7 +2,7 @@
 //Terrain Variables
 
 //Change value in SimplexNoise(--) to generate new seed
-//let simplex = new SimplexNoise(23);
+// let simplex = new SimplexNoise(23);
 var randomSeed = getRandomIntBetween(0, 100);
 let simplex = new SimplexNoise(randomSeed);
 

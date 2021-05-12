@@ -4,6 +4,14 @@ function buildGui() {
     var f1 = gui.addFolder('Lighting');
     var f2 = gui.addFolder('Rain');
 
+    var disableRain  = {disableRain: function(){
+        rain.opacity = 0; 
+    }};
+
+    var enableRain  = {enableRain: function(){
+        rain.opacity = 1; 
+    }};
+
     var params = {
         // x: sun.position.x && sunPointLight.position.x ,
         // y: sun.position.y && sunPointLight.position.y ,
@@ -12,7 +20,7 @@ function buildGui() {
         moon_intensity: moonPointLight.intensity,
         speed: speed,
         distance: distance,
-        rain_enabled: rain_enabled,
+        //rain_enabled: rain_enabled,
         particle_size: size,
         rain_speed: dropSpeed,
         rain_volume: volume
@@ -51,7 +59,10 @@ function buildGui() {
         distance = val;
     });
 
-    f2.add(params, 'rain_enabled').name("Rain Enabled");
+    //f2.add(params, 'rain_enabled').name("Rain Enabled");
+    f2.add(disableRain, 'disableRain').name("Disable Rain");
+    f2.add(enableRain, 'enableRain').name("Enable Rain");
+
     f2.add(params, 'particle_size', 0.1, 2).onChange(function(val){
         size = val;
     });
