@@ -1,7 +1,9 @@
 
 
 //Change value in SimplexNoise(--) to generate new seed
-let simplex = new SimplexNoise(23);
+//let simplex = new SimplexNoise(23);
+var randomSeed = getRandomIntBetween(0, 100);
+let simplex = new SimplexNoise(randomSeed);
 
 //building map variables
 var buildings = [];
@@ -91,16 +93,7 @@ function createTerrain() {
             const nn = (j * (data.height + 1) + i);
             
             const col = data.data[n  *4]; // the red channel
-
-            //New Code
-            // const position = geo.attributes.position;
-            // const v1 = new THREE.Vector3();
-            // v1.fromBufferAttribute(position, nn);
-
-            //Old code
             const v1 = geo.vertices[nn];
-
-            //console.log(v1);
 
             v1.z = map(col, 0, 240, -10, 10) //map from 0:255 to -10:10
             
@@ -129,63 +122,6 @@ var terrain1 = createTerrain();
 
 
 function calculateColour() {
-    //New Code
-    // let indexLength = (terrain1.geometry.attributes.position.array.length);
-    //     for (let i = 0; i < indexLength; i+=3) {
-    //         //Get three verts for the face
-    //         var a = new THREE.Vector3(
-    //             terrain1.geometry.attributes.position.getX(i),
-    //             terrain1.geometry.attributes.position.getY(i),
-    //             terrain1.geometry.attributes.position.getZ(i)
-    //         );
-    //         var b = new THREE.Vector3(
-    //             terrain1.geometry.attributes.position.getX(i + 1),
-    //             terrain1.geometry.attributes.position.getY(i + 1),
-    //             terrain1.geometry.attributes.position.getZ(i + 1)
-    //         );
-    //         var c = new THREE.Vector3(
-    //             terrain1.geometry.attributes.position.getX(i + 2),
-    //             terrain1.geometry.attributes.position.getY(i + 2),
-    //             terrain1.geometry.attributes.position.getZ(i + 2)
-    //         );
-
-    //         console.log(a);
-    //         //If average is below water, set to 0
-    //         //alt: color transparent to show the underwater landscape
-    //         const avgz = (a.z + b.z + c.z) / 4
-    //         if (avgz < 0) {
-    //             a.z = 0;
-    //             b.z = 0;
-    //             c.z = 0;
-    //         }
-    //         //assign colors based on the highest point of the face
-    //         //max is the sea level
-    //             const max = Math.max(a.z, Math.max(b.z, c.z))
-    //                 if(max <= 0) {
-    //                     var colors = new THREE.Color(0x44ccff);
-    //                     return terrain1.geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-    //                 }
-    //                 if (max <= 0.8) {
-    //                     var colors = new THREE.Color(0xeecc44);
-    //                     return terrain1.geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-    //                 }
-    //                 if (max <= 3.5) {
-    //                     var colors = new THREE.Color(0x228800);
-    //                     return terrain1.geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-    //                 }
-    //                 if (max <= 4) {
-    //                     var colors = new THREE.Color(0xcccccc);
-    //                     return terrain1.geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-    //                 }
-    //                 if (max <= 10) {
-    //                     var colors = new THREE.Color(0xc29861);
-    //                     return terrain1.geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-    //                 }
-    //         var colors = new THREE.Color(0xffffff);
-    //         return terrain1.geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-    //     }
-
-    //Old Code
     //for every face
     terrain1.geometry.faces.forEach(f=>{
         
@@ -221,30 +157,21 @@ var light = new THREE.HemisphereLight(new THREE.Color(1, 1, 1), 1);
 
 function createBuilding() {
     randPos = Math.random()* (10);
-    switch (randomSize = Math.floor(Math.random() * 6)) {
+    switch (randomSize = Math.floor(Math.random() * 7)) {
+
+        //get a random model from the array and 
+        //return a clone of it
         case 1:
-            //var geometry = new THREE.BoxGeometry(5, 15, 5);
-            //var material = new THREE.MeshBasicMaterial(colorBuilding);
-            //var cube = new THREE.Mesh(geometry, material);
             var model = models[0].clone();
             return model;
         case 2:
-            // var geometry = new THREE.BoxGeometry(10, 20, 10);
-            // var material = new THREE.MeshBasicMaterial(colorBuilding);
-            // var cube = new THREE.Mesh(geometry, material);
             var model =  models[1].clone();
             return model;
         case 3:
-            // var geometry = new THREE.BoxGeometry(10, 15, 10);
-            // var material = new THREE.MeshBasicMaterial(colorBuilding);
-            // var cube = new THREE.Mesh(geometry, material);
             var model = models[2].clone();
             return model;
 
         case 4:
-            // var geometry = new THREE.BoxGeometry(10, 20, 10);
-            // var material = new THREE.MeshBasicMaterial(colorBuilding);
-            // var cube = new THREE.Mesh(geometry, material);
             var model = models[3].clone();
             return model;
         case 5:
@@ -261,42 +188,35 @@ function createBuilding() {
             return model;   
         
         default:
-            // var geometry = new THREE.BoxGeometry(8, 15, 8);
-            // var material = new THREE.MeshBasicMaterial(colorBuilding);
-            // var cube = new THREE.Mesh(geometry, material);
             var model = models[3];
             return model;
     }
 }
 
 function createBuildings() {
+
+    //get a random model and add it to the buildings array
     var building = createBuilding();
     buildings.push(building);
 
-    
-    // let i = randomNumberPosition();
-    //     var positionX = positionsX[i];
-    //     var positionY = positionsY[i];
-      
-    var i = getRandom(-1, 1) * 140;
-    var j = getRandom(-1, 1) * 70;
-    
-    // var positionZ = Math.random() * (8 - 5) + 5;
-        
+    var index = getRandomIntBetween(0, positionsY.length);
 
-
-
+    //translate building
     var tra = new THREE.Matrix4();
-    tra.makeTranslation(i, j, 0);
+    tra.makeTranslation(positionsX[index], positionsY[index], 0);
     building.applyMatrix(tra);
 
+    //scale building
     building.scale.set(0.0025, 0.0025, 0.0025);
     
-    //rotates building to fit plane
+    //rotate building to fit plane
     building.rotation.x = 67.5;
-    console.log(building.position);
-    //building.rotation.y = 270; nothing i put here flips the model right way up
-        
+    
+    //allow buildings to receive and cast shadows
+    building.traverse(function(child){
+        child.castShadow = true;
+        child.receiveShadow = true;
+    });
 
     group.add(building);
 }
@@ -310,6 +230,7 @@ var loader = new THREE.OBJLoader();
 
         model,
 
+        //scale the model accordingly
         function ( object ) {
             if (scale == 'big') {
             object.scale.set(0.000002, 0.000002, 0.000002);
@@ -317,19 +238,16 @@ var loader = new THREE.OBJLoader();
             if (scale == 'small') {
                 object.scale.set(0.0001, 0.0001, 0.0001);
             }
+
+            //flip the model upside down
             var flip = new THREE.Matrix4().makeScale(1,-1,1);
-
-            object.traverse(function(child){
-                child.castShadow = true;
-                child.receiveShadow = true;
-            });
-
             object.applyMatrix(flip);
+
+            //add it to the models array
             models.push(object);
-            if (models.length == 6) {
+            if (models.length == 7) {
                addObjects();
             }
-            //return object;
            
         });
     
@@ -337,67 +255,38 @@ var loader = new THREE.OBJLoader();
 
  function addModels() {
 
+    //calls the load model function on each model.obj
+
      loadModel('models/40 Bank Street.obj', 'big');
      loadModel('models/BuildingBasic.obj', 'small');
      loadModel('models/CentralPlazaOne.obj', 'big');
      //loadModel('models/CentralPlazaTwo.obj', 'big');
      loadModel('models/EmpireSquare.obj', 'big');
      loadModel('models/IndusHouse.obj', 'big');
-     //loadModel('models/RiverCityApartment.obj', 'big');
+     loadModel('models/RiverCityApartment.obj', 'big');
      loadModel('models/SunsetResidence.obj', 'big');
      
  }
 
-function randomNumberPosition() {
-    return Math.floor(Math.random() * positionsY.length);
-}
-
 function getRandom(min, max) {
+
+    //return a random number (with 
+    //decimals) between min and max
     return Math.random() * (max - min) + min;
   }
 
+  function getRandomIntBetween(min, max) {
+
+    //return a random integer between min and max
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+//checks the terrain for green faces and 
+//adds it to the positions array
 function findFacePosition() {
         //check faces for position add to array if certain y level
-        //console.log(terrain1);
-
-        //New Code
-        //Get three verts for each face
-        // let indexLength = (terrain1.geometry.attributes.position.array.length);
-        // for (let i = 0; i < indexLength; i+=3) {
-        //     var a = new THREE.Vector3(
-        //         terrain1.geometry.attributes.position.getX(i),
-        //         terrain1.geometry.attributes.position.getY(i),
-        //         terrain1.geometry.attributes.position.getZ(i)
-        //     );
-        //     var b = new THREE.Vector3(
-        //         terrain1.geometry.attributes.position.getX(i + 1),
-        //         terrain1.geometry.attributes.position.getY(i + 1),
-        //         terrain1.geometry.attributes.position.getZ(i + 1)
-        //     );
-        //     var c = new THREE.Vector3(
-        //         terrain1.geometry.attributes.position.getX(i + 2),
-        //         terrain1.geometry.attributes.position.getY(i + 2),
-        //         terrain1.geometry.attributes.position.getZ(i + 2)
-        //     );
-        //     //console.log(a);
-        //     //Store position of each face to check later
-        //     var position = new THREE.Vector3();
-        //     position.x = (a.x, + b.x, + c.x) / 3;
-        //     position.y = (a.y, + b.y, + c.y) / 3;
-        //     position.z = (a.z, + b.z, + c.z) / 3;
-
-        //     //console.log(position);
-        //     const max = Math.max(a.z, Math.max(b.z, c.z));
-        //     // console.log(max);
-        //     if (max > 0.8 && max <= 3.5) {
-        //         positionsX.push(position.x);
-        //         positionsY.push(position.y);
-        //     }
-        // }
-
-
-        // Old Code
-
         terrain1.geometry.faces.forEach(f=>{
             //console.log(f);
             //get three verts for the face
@@ -413,7 +302,7 @@ function findFacePosition() {
             position.z = (a.z + b.z + c.z) / 3;
             // console.log(position);
             const max = Math.max(a.z,Math.max(b.z,c.z))
-            //console.log(max);
+            //add green positions to the positions array
             if(max > 0.8 && max <= 3.5) { 
                 positionsX.push(position.x);
                 positionsY.push(position.y);
@@ -422,7 +311,7 @@ function findFacePosition() {
         })  
 }
 
-//Michael's Stuff
+//Weather variables & functions
 var plane = null, box = null, cloud = null, boxes = [], cloudsArr = [];
 var sun = null, sunPosition;
 var moon = null, moonPosition;
@@ -430,44 +319,14 @@ var clouds = new THREE.Object3D();
 var ambientLight, hemiLight, dirLight, sunPointLight, moonPointLight;
 let max = 49, min = -49;
 
-function createPlane() {
-    var planeMaterial = new THREE.MeshLambertMaterial();
-    planeMaterial.color = new THREE.Color(0.7, 0.7, 0.7);
-    //planeMaterial.color = new THREE.Color(0xf9d71c);
-    planeMaterial.side = THREE.DoubleSide;
-
-    var planeGeometry = new THREE.PlaneGeometry(100, 100, 10, 10);
-    plane = new THREE.Mesh(planeGeometry, planeMaterial);
-    plane.castShadow = false; 
-    plane.receiveShadow = true;
-}
-
-function createBox() {
-    var boxMaterial = new THREE.MeshPhongMaterial();
-    boxMaterial.color = new THREE.Color(0.5, 0.5 , 0.5);
-
-    var boxGeometry = new THREE.BoxGeometry(1, 1, 2);
-    box = new THREE.Mesh(boxGeometry, boxMaterial);
-    box.castShadow = true;
-    boxes.push(box);
-    scene.add(box);
-}
-
-function allocateBoxes(noBoxes) {
-    for (let i = 0; i <= noBoxes; i++) {
-        createBox();
-    }
-    boxes.forEach(function(object){
-        object.position.set(Math.random() * (max - min + 1) + min, Math.random() * (max - min + 1) + min , 1)
-    });
-}
-
+//Create a generic lighting environment
 function createLight() {
     hemiLight = new THREE.HemisphereLight(new THREE.Color(0.6, 0.6, 0.6), 0.1);
     hemiLight.skyColor = new THREE.Color(1, 1, 1);
     hemiLight.position.set(0, 0, 100);
 }
 
+//create the sun
 function createSun() {
     sunPosition = new THREE.Vector3(-5, 3, 100);
     var sunMaterial = new THREE.MeshBasicMaterial();
@@ -490,6 +349,7 @@ function createSun() {
     sunPointLight.intensity = 1;
 }
 
+//create the moon
 function createMoon() {
     moonPosition = new THREE.Vector3(-5, 3, -100);
     var moonMaterial = new THREE.MeshBasicMaterial();
@@ -512,6 +372,7 @@ function createMoon() {
     moonPointLight.intensity = 0.4;
 }
 
+//create a cloud
 function createCloud() {
     var cloudMaterial = new THREE.MeshBasicMaterial();
     cloudMaterial.color = new THREE.Color(1, 1, 1);
@@ -526,6 +387,7 @@ function createCloud() {
     clouds.add(cloud);
 }
 
+//creates as many clouds as specified in noClouds
 function allocateClouds(noClouds) {
     for (let i = 0; i <= noClouds; i++) {
         createCloud();
@@ -535,30 +397,25 @@ function allocateClouds(noClouds) {
     });
 }
 
+//calls the weather creation functions
 function createSceneObjects() {
-    //createPlane();
     createLight();
     createSun();
     createMoon();
-    //allocateBoxes(30);
     allocateClouds(8);
 }
 
-
-
-
+//add all the elements to the scene
 function addObjects() {
     scene.add(terrain1);
     scene.add(light);
 
     scene.add(sun);
     scene.add(moon);
-    //scene.add(hemiLight);
     scene.add(moonPointLight);
     scene.add(sunPointLight);
     scene.add(clouds);
 
-    // Apply Matrix on line 212 seems to not be working - Michael
     for (let i = 0; i < buildingCount; i++) {
         createBuildings();
     }
