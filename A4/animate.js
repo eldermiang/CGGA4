@@ -8,6 +8,19 @@ function animate() {
     requestAnimationFrame(animate);
 }
 
+function setCamera(pos) {
+    switch (pos){
+        case 1:
+            camera.position.set(0, -75, 30);
+            break;
+        case 2:
+            camera.position.set(0, -75, 0);
+            break;
+        default:
+            renderer.render(0, -75, 30);
+    }
+}
+
 var alpha = 1;
 function animateSunColor() {
     var dayColor = new THREE.Color(0xf9d71c);

@@ -44,6 +44,30 @@ var models = [];
 
 //end building map variables
 
+var skyBox = null;
+var skyGeometry = null;
+
+var path = "/textures/";
+var directions = ["corona_ft", "corona_bk", "corona_up", "corona_dn", "corona_rt", "corona_lf"];
+var format = ".png";
+
+function createSkybox() {
+skyGeometry = new THREE.BoxGeometry(2000, 2000, 2000);
+
+var materialArray = [];
+for (var i = 0; i < 6; i++) {
+    materialArray.push(new THREE.MeshBasicMaterial({
+        map: THREE.ImageUtils.loadTexture(path + directions[i] + format),
+        side: THREE.BackSide
+    }));
+    var skyMaterial = new THREE.MeshFaceMaterial(materialArray);
+    skyBox = new THREE.Mesh(skyGeometry, skyMaterial);
+    scene.add(skyBox);
+    skyBox.rotation.x = 89.5;
+}
+}
+
+
 function map(val, smin, smax, emin, emax) {
     const t =  (val - smin) / (smax - smin);
     return (emax - emin) * t + emin;

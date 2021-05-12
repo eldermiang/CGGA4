@@ -3,6 +3,10 @@ function buildGui() {
 
     var f1 = gui.addFolder('Lighting');
     var f2 = gui.addFolder('Rain');
+    var f3 = gui.addFolder('Camera');
+
+    var camera1 = {pos1: function(){setCamera(1)}};
+    var camera2 = {pos2: function(){setCamera(2)}};
 
     var disableRain  = {disableRain: function(){
         rain.opacity = 0; 
@@ -74,4 +78,7 @@ function buildGui() {
     f2.add(params, 'rain_volume', 0, 10).onChange(function(val){
         volume = val;
     });
+
+    f3.add(camera1, 'pos1').name("Camera 1");
+    f3.add(camera2, 'pos2').name("Camera 2");
 }
