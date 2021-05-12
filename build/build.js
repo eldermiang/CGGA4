@@ -1,8 +1,27 @@
-//Change value in SimplexNoise(--) to generate new seed
-let simplex = new SimplexNoise(1);
+//Change value to generate new seed
+var seed = 1;
 
 //Number of noise fields stacks
-var octaves = 5;
+var octaves = 2;
+
+var frequency = 4;
+
+//Max = "Elevation". Lower Values, more Mountrains. Higer values, higher water level.
+//Range between -0.5 to 1
+var elevation = 0;
+
+//Range between 1 to 2.5
+//Higer values, more flat, lower values, more rugged
+var amplitude = 2.5;
+
+//Width has to be 2 times more than height
+var height = 100;
+var width = 200;
+
+//1 to 6
+var peakHeight = 1.8;
+
+let simplex = new SimplexNoise(seed);
 
 function map(val, smin, smax, emin, emax) {
     const t =  (val - smin) / (smax - smin);
@@ -16,22 +35,15 @@ function noise(nx, ny) {
 //stack some noisefields together
 function octave(nx, ny, octaves) {
     let val = 0;
-    //Default
-    //let freq = 1;
-    let freq = 4;
-    //Max = "Elevation". Lower Values, more Mountrains. Higer values, higher water level.
-    //Range between -0.5 to 1
-    let max = 0;
+    let freq = frequency;
+    let max = elevation;
     let amp = 1;
     
-    
+
     for(let i = 0; i < octaves; i++) {
         val += noise(nx * freq ,ny * freq) * amp;
         max += amp;
-
-        //Range between 1.5 to 2.5
-        //Higer values, more flat, lower values, more rugged
-        amp /= 2.5;
+        amp /= amplitude;
         freq *= 2;
     }
     return val/max;
@@ -45,8 +57,8 @@ function generateTexture() {
     c.fillStyle = 'black';
     c.fillRect(0, 0 , canvas.width, canvas.height);
 
-    canvas.height = 100;
-    canvas.width = 200;
+    canvas.height = height;
+    canvas.width = width;
 
     for (let i = 0; i < canvas.width; i++) {
         for (let j = 0; j < canvas.height; j++) {
@@ -94,14 +106,14 @@ function createTerrain(data) {
             //exaggerate the peaks
             //Change interger value in if, to adjust peak sizes. 
             if (v1.z > 5) {
-                v1.z *= 1.6;  
+                v1.z *= peakHeight;  
             }  
 
             // v1.x += map(Math.random(), 0 , 1, -0.5, 0.5) //jitter x
             // v1.y += map(Math.random(), 0 , 1, -0.5, 0.5) //jitter y
 
-            // v1.x += map(Math.random(), -1 , 1, -0.5, 0.5) //jitter x
-            // v1.y += map(Math.random(), -1 , 1, -0.5, 0.5) //jitter y
+            v1.x += map(Math.random(), -1 , 1, -0.5, 0.5) //jitter x
+            v1.y += map(Math.random(), -1 , 1, -0.5, 0.5) //jitter y
 
         }
     }
@@ -140,14 +152,14 @@ function calculateColour(terrain) {
              //Beaches
              if(max <= 0.8) return f.color.set(0xF4E459);
              //Land
-             if(max <= 3.5) return f.color.set(0x228800);
+             if(max <= 5) return f.color.set(0x228800);
              //Mountain Cliifs
-             if(max <= 4)   return f.color.set(0xcccccc);
+             if(max <= 18)   return f.color.set(0xc29861);
              //Mountain Peaks
-             if(max <= 10)   return f.color.set(0xc29861);
-
+             if(max > 20)   return f.color.set(0xcccccc);
+            
     //otherwise, return white
-    f.color.set('white');
+    f.color.set(0xFFFFFF);
 })  
 }
 
