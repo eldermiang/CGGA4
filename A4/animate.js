@@ -58,6 +58,7 @@ function animateCloudMovement() {
 
 var size = 0.3;
 var dropSpeed = 0.5;
+var rain_enabled = true;
 
 /*
 //R127
@@ -74,6 +75,26 @@ function animateRain() {
 */
 
 function animateRain() {
+    if (rain_enabled) {
+        //rain.visible = true;
+        // rain.traverse(function(child){
+        //     child.visible = true;
+        // });
+        if (!rain.visible) {
+            //rain.visible = true;
+            rain.opacity = 1;
+        }
+    }
+    else {
+        //rain.visible = false;
+        // rain.traverse(function(child){
+        //     child.visible = false;
+        // });
+        if (rain.visible) {
+            rain.opacity = 0;
+        }
+    }
+
     rainMaterial.size = size;
     rainGeo.vertices.forEach(p => {
         p.z -= dropSpeed;

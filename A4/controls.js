@@ -11,10 +11,11 @@ function buildGui() {
         sun_intensity: sunPointLight.intensity ,
         moon_intensity: moonPointLight.intensity,
         speed: speed,
+        distance: distance,
+        rain_enabled: rain_enabled,
         particle_size: size,
         rain_speed: dropSpeed,
-        rain_volume: volume,
-        distance: distance
+        rain_volume: volume
     }
 
     // gui.add(params, 'x', -50, 50).onChange(function(val){
@@ -50,6 +51,7 @@ function buildGui() {
         distance = val;
     });
 
+    f2.add(params, 'rain_enabled').name("Rain Enabled");
     f2.add(params, 'particle_size', 0.1, 2).onChange(function(val){
         size = val;
     });
