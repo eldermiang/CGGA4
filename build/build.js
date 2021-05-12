@@ -1,29 +1,36 @@
 //Change value in SimplexNoise(--) to generate new seed
 let simplex = new SimplexNoise(1);
 
+//Number of noise fields stacks
+var octaves = 5;
+
 function map(val, smin, smax, emin, emax) {
     const t =  (val - smin) / (smax - smin);
     return (emax - emin) * t + emin;
 }
 
 function noise(nx, ny) {
-    return map(simplex.noise2D(nx, ny), -1, 1, 0, 1);
+    return simplex.noise2D(nx, ny)/2 + 0.5;
 }
 
 //stack some noisefields together
 function octave(nx, ny, octaves) {
     let val = 0;
-    //Increasing freq value makes terrain more like "Islands"
     //Default
     //let freq = 1;
-    let freq = 2.5;
+    let freq = 4;
+    //Max = "Elevation". Lower Values, more Mountrains. Higer values, higher water level.
+    //Range between -0.5 to 1
     let max = 0;
     let amp = 1;
-
+    
+    
     for(let i = 0; i < octaves; i++) {
         val += noise(nx * freq ,ny * freq) * amp;
         max += amp;
-        amp /= 2;
+
+        //Range between 1.5 to 2.5
+        amp /= 1.7;
         freq *= 2;
     }
     return val/max;
@@ -42,8 +49,8 @@ function generateTexture() {
 
     for (let i = 0; i < canvas.width; i++) {
         for (let j = 0; j < canvas.height; j++) {
-
-            let v =  octave(i / canvas.width, j / canvas.height , 16);
+            
+            let v =  octave(i / canvas.width, j / canvas.height, octaves);
             const per = (100 * v).toFixed(2) + '%';
             c.fillStyle = `rgb(${per},${per},${per})`;
             c.fillRect(i, j, 1, 1);
@@ -93,8 +100,8 @@ function createTerrain() {
             // v1.x += map(Math.random(), 0 , 1, -0.5, 0.5) //jitter x
             // v1.y += map(Math.random(), 0 , 1, -0.5, 0.5) //jitter y
 
-            v1.x += map(Math.random(), -1 , 1, -0.5, 0.5) //jitter x
-            v1.y += map(Math.random(), -1 , 1, -0.5, 0.5) //jitter y
+            // v1.x += map(Math.random(), -1 , 1, -0.5, 0.5) //jitter x
+            // v1.y += map(Math.random(), -1 , 1, -0.5, 0.5) //jitter y
 
         }
     }
