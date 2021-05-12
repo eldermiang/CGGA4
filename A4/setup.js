@@ -17,7 +17,7 @@ function setScene() {
     renderer.shadowMap.enabled = true;
     document.body.appendChild(renderer.domElement);
 
-    controls = new THREE.OrbitControls(camera);
+    controls = new THREE.OrbitControls(camera, renderer.domElement);
     controls.minDistance = 50; //controls min distance of the camera zoom
     controls.minDistance = 105; //controls max distance of the camera zoom
 
