@@ -1,10 +1,13 @@
 function buildGui() {
     gui = new dat.GUI();
 
+    var f1 = gui.addFolder('Lighting');
+    var f2 = gui.addFolder('Rain');
+
     var params = {
-        x: sun.position.x && sunPointLight.position.x ,
-        y: sun.position.y && sunPointLight.position.y ,
-        z: sun.position.z && sunPointLight.position.z ,
+        // x: sun.position.x && sunPointLight.position.x ,
+        // y: sun.position.y && sunPointLight.position.y ,
+        // z: sun.position.z && sunPointLight.position.z ,
         sun_intensity: sunPointLight.intensity ,
         moon_intensity: moonPointLight.intensity,
         speed: speed,
@@ -29,33 +32,33 @@ function buildGui() {
     //     pointLight.position.z = val;
     // });
 
-    gui.add(params, 'sun_intensity', 0, 1).onChange(function(val){
+    f1.add(params, 'sun_intensity', 0, 1).onChange(function(val){
         sunPointLight.intensity = val;
         //alpha = val;
     });
 
-    gui.add(params, 'moon_intensity', 0, 1).onChange(function(val){
+    f1.add(params, 'moon_intensity', 0, 1).onChange(function(val){
         moonPointLight.intensity = val;
         //alpha = val;
     });
 
-    gui.add(params, 'speed', 0, 1).onChange(function(val){
+    f1.add(params, 'speed', 0, 1).onChange(function(val){
         speed = val;
     });
 
-    gui.add(params, 'distance', 25, 250).onChange(function(val){
+    f1.add(params, 'distance', 25, 250).onChange(function(val){
         distance = val;
     });
 
-    gui.add(params, 'particle_size', 0.1, 2).onChange(function(val){
+    f2.add(params, 'particle_size', 0.1, 2).onChange(function(val){
         size = val;
     });
 
-    gui.add(params, 'rain_speed', 0.05, 1).onChange(function(val){
+    f2.add(params, 'rain_speed', 0.05, 1).onChange(function(val){
         dropSpeed = val;
     });
 
-    gui.add(params, 'rain_volume', 0, 10).onChange(function(val){
+    f2.add(params, 'rain_volume', 0, 10).onChange(function(val){
         volume = val;
     });
 }

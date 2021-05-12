@@ -20,7 +20,7 @@ function animateSunColor() {
 }
 
 var d = 0;
-var speed = 0.5;
+var speed = 0.1;
 var distance = 100;
 function animateCelestialMovement() {
     d += 0.01 * speed;
@@ -56,7 +56,7 @@ function animateCloudMovement() {
     }
 }
 
-var size = 0.1;
+var size = 0.3;
 var dropSpeed = 0.5;
 
 /*
@@ -74,7 +74,6 @@ function animateRain() {
 */
 
 function animateRain() {
-    console.log(rain);
     rainMaterial.size = size;
     rainGeo.vertices.forEach(p => {
         p.z -= dropSpeed;
