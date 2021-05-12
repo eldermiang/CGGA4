@@ -1,9 +1,36 @@
 
+//Terrain Variables
 
 //Change value in SimplexNoise(--) to generate new seed
 //let simplex = new SimplexNoise(23);
 var randomSeed = getRandomIntBetween(0, 100);
 let simplex = new SimplexNoise(randomSeed);
+
+//Number of noise fields being stacked
+//Default: 16
+var octaves = 16;
+
+//Frequency of the Noise (wavelength)
+//Default: 1
+var frequency = 4;
+
+//Max = "Elevation". Lower Values, more Mountrains. Higer values, higher water level.
+//Range between -0.5 to 1
+//Default: 0
+var elevation = 0;
+
+//Range between 1 to 2.5
+//Higer values, more flat, lower values, more rugged
+//Default: 2
+var amplitude = 2.5;
+
+//1 to 6
+//Default: 1.6
+var peakHeight = 1.6;
+
+//Canvas/Image variables: Width has to be 2 times more than height
+var height = 100;
+var width = 200;
 
 //building map variables
 var buildings = [];
@@ -26,25 +53,23 @@ function noise(nx, ny) {
     return map(simplex.noise2D(nx, ny), -1, 1, 0, 1);
 }
 
-//stack some noisefields together
+//Stack noisefields together
 function octave(nx, ny, octaves) {
     let val = 0;
-    let freq = 1;
-    let max = 0;
+    let freq = frequency;
+    let max = elevation;
     let amp = 1;
 
     for(let i = 0; i < octaves; i++) {
         val += noise(nx * freq ,ny * freq) * amp;
         max += amp;
-        amp /= 2;
-
-        //freq higher values, more mountains and rugged terrain
+        amp /= amplitude;
         freq *= 2;
     }
     return val/max;
 }
 
-//generate Perlin Noise Image
+//Generate Perlin Noise Image
 function generateTexture() {
     const canvas = document.createElement('canvas');
     const c = canvas.getContext('2d')
@@ -52,10 +77,13 @@ function generateTexture() {
     c.fillStyle = 'black';
     c.fillRect(0, 0 , canvas.width, canvas.height);
 
+    canvas.height = height;
+    canvas.width = width;
+
     for (let i = 0; i < canvas.width; i++) {
         for (let j = 0; j < canvas.height; j++) {
 
-            let v =  octave(i / canvas.width, j / canvas.height , 16);
+            let v =  octave(i / canvas.width, j / canvas.height , octaves);
             const per = (100 * v).toFixed(2) + '%';
             c.fillStyle = `rgb(${per},${per},${per})`;
             c.fillRect(i, j, 1, 1);
@@ -67,10 +95,10 @@ function generateTexture() {
 
 var data = generateTexture();
 
-//using "data" to create Terrain
+//Using "data" to create Terrain
 function createTerrain() {
 
-    var geo = new THREE.PlaneGeometry(data.width, data.height, data.width + 1 , data.height);
+    var geo = new THREE.PlaneGeometry(data.width, data.height * 2, data.width + 1 , data.height);
     geo.colorsNeedUpdate = true;
     geo.verticesNeedUpdate = true;
     geo.computeVertexNormals();
@@ -79,12 +107,11 @@ function createTerrain() {
     //var material = new THREE.MeshBasicMaterial();
     var material = new THREE.MeshStandardMaterial({  
         
-        //metalness: lower value, the more brighter 
         metalness: 0.1,
         shading: THREE.FlatShading} )
 
     material.vertexColors = true;
-    //material.wireframe = true;
+    
     
     for (let j = 0; j < data.height * 2 ; j++) {
         for (let i = 0; i < data.width; i++) {
@@ -100,7 +127,7 @@ function createTerrain() {
             //exaggerate the peaks
             //Change interger value in if, to adjust peak sizes. 
             if (v1.z > 5) {
-                v1.z *= 1.6;  
+                v1.z *= peakHeight;  
             }  
             //v1.x += map(Math.random(),0,1,-0.5,0.5) //jitter x
             //v1.y += map(Math.random(),0,1,-0.5,0.5) //jitter y
@@ -140,16 +167,23 @@ function calculateColour() {
           }
 
     //assign colors based on the highest point of the face
-    //max is the sea level
+    //max is the sea level/elevation
         const max = Math.max(a.z,Math.max(b.z,c.z))
-             if(max <= 0)   return f.color.set(0x44ccff);
-             if(max <= 0.8) return f.color.set(0xeecc44);
-             if(max <= 3.5) return f.color.set(0x228800);
-             if(max <= 4)   return f.color.set(0xcccccc);
+        
+             //Water
+             if(max <= 0)   return f.color.set(0x67E6FF);
+             //Beaches
+             if(max <= 0.8) return f.color.set(0xF4E459);
+             //Land
+             if(max <= 5) return f.color.set(0x228800);
+             //Mountain Cliifs
              if(max <= 10)   return f.color.set(0xc29861);
-
+             //Mountain Peaks
+             if(max > 15)   return f.color.set(0xcccccc);
+            
     //otherwise, return white
-    f.color.set('white');
+    f.color.set(0xFFFFFF);
+
 })  
 }
 
