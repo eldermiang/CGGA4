@@ -370,10 +370,14 @@ function findFacePosition() {
 }
 
 //Weather variables & functions
-var plane = null, box = null, cloud = null, boxes = [], cloudsArr = [];
+var plane = null, box = null, cloud = null, boxes = [], cloudsArr = [], cloudsArr2 = [];
+
 var sun = null, sunPosition;
 var moon = null, moonPosition;
+
 var clouds = new THREE.Object3D();
+var clouds2 = new THREE.Object3D();
+
 var ambientLight, hemiLight, dirLight, sunPointLight, moonPointLight;
 let max = 49, min = -49;
 
@@ -428,7 +432,7 @@ function createMoon() {
     moonPointLight.intensity = 0.4;
 }
 
-//create a cloud
+//create a cloud in the primary group / array
 function createCloud() {
     var cloudMaterial = new THREE.MeshBasicMaterial();
     cloudMaterial.color = new THREE.Color(1, 1, 1);
@@ -443,13 +447,37 @@ function createCloud() {
     clouds.add(cloud);
 }
 
+//create a cloud in the secondary group / array
+function createCloudSecondary() {
+    var cloudMaterial = new THREE.MeshBasicMaterial();
+    cloudMaterial.color = new THREE.Color(1, 1, 1);
+    cloudMaterial.transparent = true;
+    cloudMaterial.opacity = 0.75;
+    var cloudGeometry = new THREE.BoxGeometry(20, 10, 2);
+    cloud = new THREE.Mesh(cloudGeometry, cloudMaterial);
+    cloud.castShadow = true;
+    //console.log(cloud);
+
+    cloudsArr2.push(cloud);
+    clouds2.add(cloud);
+}
+
 //creates as many clouds as specified in noClouds
 function allocateClouds(noClouds) {
     for (let i = 0; i <= noClouds; i++) {
         createCloud();
     }
     cloudsArr.forEach(function(object){
-        object.position.set(Math.random() * (max - min + 1) + min, Math.random() * (max - min + 1) + min , 80)
+        object.position.set(Math.random() * (max - min + 1) + min, Math.random() * (max - min + 1) + min , 80);
+    });
+}
+
+function allocateCloudsSecondary(noClouds) {
+    for (let i = 0; i <= noClouds; i++) {
+        createCloudSecondary();
+    }
+    cloudsArr2.forEach(function(object){
+        object.position.set(Math.random() * (max - min + 1) + min, Math.random() * (max - min + 1) + min , 80);
     });
 }
 
@@ -467,6 +495,7 @@ function createSceneObjects() {
     createSun();
     createMoon();
     allocateClouds(8);
+    allocateCloudsSecondary(8);
 }
 
 //add all the elements to the scene
@@ -479,6 +508,7 @@ function addObjects() {
     scene.add(moonPointLight);
     scene.add(sunPointLight);
     scene.add(clouds);
+    scene.add(clouds2);
 
     for (let i = 0; i < buildingCount; i++) {
         createBuildings();

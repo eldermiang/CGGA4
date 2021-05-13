@@ -100,13 +100,20 @@ function animateCelestialMovement() {
     moonPointLight.position.z = moonPosition.z;
 }
 
-clouds.position.x = -100;
+clouds.position.x = -150;
+clouds2.position.x = 0;
 function animateCloudMovement() {
-    clouds.position.x += 0.1
-    if (clouds.position.x > 100) {
+    clouds.position.x += 0.1;
+    if (clouds.position.x > 150) {
         clouds.remove(...clouds.children);
         allocateClouds(8);
-        clouds.position.x = -100;
+        clouds.position.x = -150;
+    }
+    clouds2.position.x += 0.1;
+    if (clouds2.position.x > 150) {
+        clouds2.remove(...clouds2.children);
+        allocateCloudsSecondary(8);
+        clouds2.position.x = -150;
     }
 }
 
