@@ -4,6 +4,7 @@ function buildGui() {
     var f1 = gui.addFolder('Lighting');
     var f2 = gui.addFolder('Rain');
     var f3 = gui.addFolder('Camera');
+    var f4 = gui.addFolder('Terrain');
 
     var camera1 = {pos1: function(){setCamera(1)}};
     var camera2 = {pos2: function(){setCamera(2)}};
@@ -23,7 +24,14 @@ function buildGui() {
         rain_enabled: rain_enabled,
         particle_size: size,
         rain_speed: dropSpeed,
-        rain_volume: volume
+        rain_volume: volume,
+
+        terrain_octaves: octaves,
+        terrain_frequency: frequency,
+        terrain_elevation: elevation,
+        terrain_amplitude: amplitude,
+        terrain_peakHeight: peakHeight,
+        terrain_size: terrainSize
     }
 
     // gui.add(params, 'x', -50, 50).onChange(function(val){
@@ -80,4 +88,28 @@ function buildGui() {
 
     f3.add(camera1, 'pos1').name("Camera 1");
     f3.add(camera2, 'pos2').name("Camera 2");
+
+    f4.add(params, 'terrain_octaves', 1, 16).onChange(function(val){
+        octaves = val;
+    });
+
+    f4.add(params, 'terrain_frequency', 1, 8).onChange(function(val){
+        frequency = val;
+    });
+
+    f4.add(params, 'terrain_elevation', -0.5, 1).onChange(function(val){
+        elevation = val;
+    });
+
+    f4.add(params, 'terrain_amplitude', 1, 2.5).onChange(function(val){
+        amplitude = val;
+    });
+
+    f4.add(params, 'terrain_peakHeight', 1, 4).onChange(function(val){
+        peakHeight = val;
+    });
+
+    f4.add(params, 'terrain_size', 50, 300).onChange(function(val){
+        terrainSize = val;
+    });
 }

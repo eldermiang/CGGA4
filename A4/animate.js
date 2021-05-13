@@ -2,9 +2,39 @@ function animate() {
     animateCloudMovement();
     animateCelestialMovement();
     animateRain();
+    updateTerrain();
     renderer.render(scene, camera);
     controls.update();
     requestAnimationFrame(animate);
+}
+var tempOctaves = octaves;
+var tempFrequency = frequency;
+var tempElevation = elevation;
+var tempAmplitude = amplitude;
+var tempPeakHeight = peakHeight;
+var tempTerrainSize = terrainSize;
+
+function updateTerrain() {
+    if ((tempOctaves != octaves) || (tempFrequency != frequency) || (tempElevation != elevation) 
+        || (tempAmplitude != amplitude) || (tempPeakHeight != peakHeight) || (tempTerrainSize != terrainSize)) {
+        
+        scene.remove(terrain1);
+        terrain1.geometry.dispose();
+        terrain1.material.dispose()
+
+        data = generateTexture();
+        terrain1 = createTerrain();
+        calculateColour();
+
+        tempOctaves = octaves;
+        tempFrequency = frequency;
+        tempElevation = elevation;
+        tempAmplitude = amplitude;
+        tempPeakHeight = peakHeight;
+        tempTerrainSize = terrainSize;
+
+        scene.add(terrain1);
+    }
 }
 
 function setCamera(pos) {

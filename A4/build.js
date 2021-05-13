@@ -29,8 +29,7 @@ var amplitude = 2.5;
 var peakHeight = 1.6;
 
 //Canvas/Image variables: Width has to be 2 times more than height
-var height = 100;
-var width = 200;
+var terrainSize = 100;
 
 //building map variables
 var buildings = [];
@@ -101,8 +100,8 @@ function generateTexture() {
     c.fillStyle = 'black';
     c.fillRect(0, 0 , canvas.width, canvas.height);
 
-    canvas.height = height;
-    canvas.width = width;
+    canvas.height = terrainSize;
+    canvas.width = terrainSize * 2;
 
     for (let i = 0; i < canvas.width; i++) {
         for (let j = 0; j < canvas.height; j++) {
