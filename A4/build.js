@@ -31,6 +31,8 @@ var peakHeight = 1.6;
 //Canvas/Image variables: Width has to be 2 times more than height
 var terrainSize = 100;
 
+var tGeo;
+
 //building map variables
 var buildings = [];
 var buildingCount = 100;
@@ -121,12 +123,11 @@ var data = generateTexture();
 //Using "data" to create Terrain
 function createTerrain() {
 
-    var geo = new THREE.PlaneGeometry(data.width, data.height * 2, data.width + 1 , data.height);
-    geo.colorsNeedUpdate = true;
-    geo.verticesNeedUpdate = true;
-    geo.computeVertexNormals();
+    tGeo = new THREE.PlaneGeometry(data.width, data.height * 2, data.width + 1 , data.height);
+    tGeo.colorsNeedUpdate = true;
+    tGeo.verticesNeedUpdate = true;
+    tGeo.computeVertexNormals();
 
-    console.log(geo);
     //var material = new THREE.MeshBasicMaterial();
     var material = new THREE.MeshStandardMaterial({  
         
@@ -143,7 +144,7 @@ function createTerrain() {
             const nn = (j * (data.height + 1) + i);
             
             const col = data.data[n  *4]; // the red channel
-            const v1 = geo.vertices[nn];
+            const v1 = tGeo.vertices[nn];
 
             v1.z = map(col, 0, 240, -10, 10) //map from 0:255 to -10:10
             
@@ -158,7 +159,7 @@ function createTerrain() {
     }
         var mesh = new THREE.Mesh(
             //geo.toNonIndexed(),
-            geo, 
+            tGeo, 
             material);
         //mesh.rotateX(-45);
         mesh.traverse(function(child){

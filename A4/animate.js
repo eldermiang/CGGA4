@@ -19,6 +19,7 @@ function updateTerrain() {
         || (tempAmplitude != amplitude) || (tempPeakHeight != peakHeight) || (tempTerrainSize != terrainSize)) {
         
         scene.remove(terrain1);
+        tGeo.dispose();
         terrain1.geometry.dispose();
         terrain1.material.dispose()
 
