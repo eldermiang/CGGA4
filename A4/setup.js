@@ -7,7 +7,7 @@ var controls;
 function setScene() {
     scene = new THREE.Scene();
     var ratio = window.innerWidth / window.innerHeight;
-    camera = new THREE.PerspectiveCamera(55, ratio, 20, 30000);
+    camera = new THREE.PerspectiveCamera(60, ratio, 20, 30000);
     camera.position.set(0, -75, 30);
     //camera.lookAt(0, 0, 0);
 
@@ -19,7 +19,11 @@ function setScene() {
 
     controls = new THREE.OrbitControls(camera, renderer.domElement);
     controls.minDistance = 50; //controls min distance of the camera zoom
-    controls.minDistance = 105; //controls max distance of the camera zoom
+    controls.maxDistance = 150; //controls max distance of the camera zoom
+    controls.minPolarAngle = 0;
+    controls.maxPolarAngle = Math.PI/1.2;
+    controls.minAzimuthAngle = 0;
+    controls.maxAzimuthAngle = 0;
 
     //need to fix camera still able to zoom past min and max
 }

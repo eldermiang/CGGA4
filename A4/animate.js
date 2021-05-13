@@ -12,9 +12,20 @@ function setCamera(pos) {
     switch (pos){
         case 1:
             camera.position.set(0, -75, 30);
+            camera.fov = 60;
+            controls.minDistance = 50; //controls min distance of the camera zoom
+            controls.maxDistance = 150; //controls max distance of the camera zoom
+            controls.minPolarAngle = 0;
+            controls.maxPolarAngle = Math.PI/1.2;
             break;
         case 2:
-            camera.position.set(0, -75, 0);
+            camera.position.set(0, -90, 15);
+            camera.fov = 10;
+            camera.lookAt(new THREE.Vector3(0,50,200));
+            controls.minDistance = 90;
+            controls.maxDistance = 105;
+            controls.minPolarAngle = Math.PI/1.07;
+            controls.maxPolarAngle = Math.PI/1.07;
             break;
         default:
             renderer.render(0, -75, 30);
