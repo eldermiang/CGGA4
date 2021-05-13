@@ -18,15 +18,18 @@ function updateTerrain() {
     if ((tempOctaves != octaves) || (tempFrequency != frequency) || (tempElevation != elevation) 
         || (tempAmplitude != amplitude) || (tempPeakHeight != peakHeight) || (tempTerrainSize != terrainSize)) {
         
+        //Dispose of Terrain from memory
         scene.remove(terrain1);
         tGeo.dispose();
         terrain1.geometry.dispose();
         terrain1.material.dispose()
 
+        //Update/Recreate noise image and terrain object
         data = generateTexture();
         terrain1 = createTerrain();
         calculateColour();
 
+        //Updating terrain variables with slider values
         tempOctaves = octaves;
         tempFrequency = frequency;
         tempElevation = elevation;
