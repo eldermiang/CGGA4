@@ -1,4 +1,3 @@
-
 function animate() {
     animateCloudMovement();
     animateCelestialMovement();
@@ -67,13 +66,10 @@ function animateCelestialMovement() {
     moonPointLight.position.z = moonPosition.z;
 }
 
-//.clear() doesn't seem to be a function for some reason - Michael
-
 clouds.position.x = -100;
 function animateCloudMovement() {
     clouds.position.x += 0.1
     if (clouds.position.x > 100) {
-        //clouds.clear();
         clouds.remove(...clouds.children);
         allocateClouds(8);
         clouds.position.x = -100;
@@ -84,21 +80,19 @@ var size = 0.3;
 var dropSpeed = 0.5;
 var rain_enabled = true;
 
-/*
-//R127
-
 function animateRain() {
-    rainMaterial.size = size;
-
-    rainGeo.attributes.position.needsUpdate = true;
-    rain.position.z -= dropSpeed;
-    if (rain.position.z < -80) {
-        rain.position.z = 0;
+    updateRainVolume();
+    if (rain_enabled) {
+        if (!rain.visible) {
+            rain.visible = true;
+        }
     }
-}
-*/
+    else {
+        if (rain.visible) {
+            rain.visible = false;
+        }
+    }
 
-function animateRain() {
     rainMaterial.size = size;
     rainGeo.vertices.forEach(p => {
         p.z -= dropSpeed;
@@ -108,4 +102,19 @@ function animateRain() {
         }
     })
     rainGeo.verticesNeedUpdate = true;
+}
+
+var tempVolume = volume;
+function updateRainVolume() {
+    if (tempVolume != volume) {
+        //Dispose of rain objects from memory
+        scene.remove(rain);
+        rainGeo.dispose();
+        rain.geometry.dispose();
+        rain.material.dispose();
+        //Recreate rain objects
+        generateRain();
+        //Update temp volume
+        tempVolume = volume;
+    }
 }

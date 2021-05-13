@@ -455,6 +455,14 @@ function allocateClouds(noClouds) {
     });
 }
 
+function disableRain() {
+    console.log(rain);
+    rain.traverse(function(child){
+        child.visible = false;
+    });
+    console.log(rain);
+}
+
 //calls the weather creation functions
 function createSceneObjects() {
     createLight();

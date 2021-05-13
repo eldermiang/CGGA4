@@ -8,14 +8,10 @@ function buildGui() {
     var camera1 = {pos1: function(){setCamera(1)}};
     var camera2 = {pos2: function(){setCamera(2)}};
 
-    var disableRain  = {disableRain: function(){
-        rain.opacity = 0; 
-    }};
-
-    var enableRain  = {enableRain: function(){
-        rain.opacity = 1; 
-    }};
-
+    // var disableRain  = {disableRain: function(){
+    //     rain_enabled
+    // }};
+        
     var params = {
         // x: sun.position.x && sunPointLight.position.x ,
         // y: sun.position.y && sunPointLight.position.y ,
@@ -24,7 +20,7 @@ function buildGui() {
         moon_intensity: moonPointLight.intensity,
         speed: speed,
         distance: distance,
-        //rain_enabled: rain_enabled,
+        rain_enabled: rain_enabled,
         particle_size: size,
         rain_speed: dropSpeed,
         rain_volume: volume
@@ -63,9 +59,12 @@ function buildGui() {
         distance = val;
     });
 
-    //f2.add(params, 'rain_enabled').name("Rain Enabled");
-    f2.add(disableRain, 'disableRain').name("Disable Rain");
-    f2.add(enableRain, 'enableRain').name("Enable Rain");
+    f2.add(params, 'rain_enabled').name("Toggle Rain").onChange(function(val){
+        rain_enabled = val;
+    });
+
+    // f2.add(disableRain, 'disableRain').name("Disable Rain");
+    // f2.add(enableRain, 'enableRain').name("Enable Rain");
 
     f2.add(params, 'particle_size', 0.1, 2).onChange(function(val){
         size = val;
