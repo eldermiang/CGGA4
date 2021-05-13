@@ -78,10 +78,10 @@ function animateSunColor() {
 
 var d = 0;
 var speed = 0.1;
-var distance = 100;
+var distance = 300;
 function animateCelestialMovement() {
     d += 0.01 * speed;
-    sunPosition.x = 150 * Math.cos(d);
+    sunPosition.x = 300 * Math.cos(d);
     sunPosition.z = -distance * Math.sin(d);
 
     sun.position.x = sunPosition.x;
@@ -90,7 +90,7 @@ function animateCelestialMovement() {
     sunPointLight.position.x = sunPosition.x;
     sunPointLight.position.z = sunPosition.z;
 
-    moonPosition.x = -150 * Math.cos(d);
+    moonPosition.x = -300 * Math.cos(d);
     moonPosition.z = distance * Math.sin(d);
 
     moon.position.x = moonPosition.x;

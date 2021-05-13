@@ -386,7 +386,7 @@ function createLight() {
 
 //create the sun
 function createSun() {
-    sunPosition = new THREE.Vector3(-5, 3, 100);
+    sunPosition = new THREE.Vector3(-5, 3, 300);
     var sunMaterial = new THREE.MeshBasicMaterial();
     sunMaterial.color = new THREE.Color(0xf9d71c);
 
@@ -401,7 +401,6 @@ function createSun() {
     sunPointLight.shadow.mapSize.width = 2048;
     sunPointLight.shadow.mapSize.height = 2048;
     sunPointLight.shadow.mapSize.radius = 2;
-    sunPointLight.shadow.camera.far = 150;
     sunPointLight.shadow.bias = 0.0001;
 
     sunPointLight.intensity = 1;
@@ -409,7 +408,7 @@ function createSun() {
 
 //create the moon
 function createMoon() {
-    moonPosition = new THREE.Vector3(-5, 3, -100);
+    moonPosition = new THREE.Vector3(-5, 3, -300);
     var moonMaterial = new THREE.MeshBasicMaterial();
     moonMaterial.color = new THREE.Color(0xeaf4fc);
 
@@ -424,7 +423,6 @@ function createMoon() {
     moonPointLight.shadow.mapSize.width = 2048;
     moonPointLight.shadow.mapSize.height = 2048;
     moonPointLight.shadow.mapSize.radius = 2;
-    moonPointLight.shadow.camera.far = 150;
     moonPointLight.shadow.bias = 0.0001;
 
     moonPointLight.intensity = 0.4;
