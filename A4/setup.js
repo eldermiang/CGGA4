@@ -18,12 +18,12 @@ function setScene() {
     document.body.appendChild(renderer.domElement);
 
     controls = new THREE.OrbitControls(camera, renderer.domElement);
-    // controls.minDistance = 50; //controls min distance of the camera zoom
-    // controls.maxDistance = 150; //controls max distance of the camera zoom
-    // controls.minPolarAngle = 0;
-    // controls.maxPolarAngle = Math.PI/1.2;
-    // controls.minAzimuthAngle = 0;
-    // controls.maxAzimuthAngle = 0;
+    controls.minDistance = 50; //controls min distance of the camera zoom
+    controls.maxDistance = 150; //controls max distance of the camera zoom
+    controls.minPolarAngle = 0;
+    controls.maxPolarAngle = Math.PI/1.2;
+    controls.minAzimuthAngle = 0;
+    controls.maxAzimuthAngle = 0;
 
     //need to fix camera still able to zoom past min and max
 }
