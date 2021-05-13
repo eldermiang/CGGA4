@@ -119,7 +119,7 @@ function animateCloudMovement() {
 
 var size = 0.3;
 var dropSpeed = 0.5;
-var rain_enabled = true;
+var rain_enabled = false;
 
 function animateRain() {
     updateRainVolume();
