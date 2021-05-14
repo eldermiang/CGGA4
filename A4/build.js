@@ -370,10 +370,14 @@ function findFacePosition() {
 }
 
 //Weather variables & functions
-var plane = null, box = null, cloud = null, boxes = [], cloudsArr = [];
+var plane = null, box = null, cloud = null, boxes = [], cloudsArr = [], cloudsArr2 = [];
+
 var sun = null, sunPosition;
 var moon = null, moonPosition;
+
 var clouds = new THREE.Object3D();
+var clouds2 = new THREE.Object3D();
+
 var ambientLight, hemiLight, dirLight, sunPointLight, moonPointLight;
 let max = 49, min = -49;
 
@@ -386,7 +390,7 @@ function createLight() {
 
 //create the sun
 function createSun() {
-    sunPosition = new THREE.Vector3(-5, 3, 100);
+    sunPosition = new THREE.Vector3(-5, 3, 300);
     var sunMaterial = new THREE.MeshBasicMaterial();
     sunMaterial.color = new THREE.Color(0xf9d71c);
 
@@ -401,7 +405,6 @@ function createSun() {
     sunPointLight.shadow.mapSize.width = 2048;
     sunPointLight.shadow.mapSize.height = 2048;
     sunPointLight.shadow.mapSize.radius = 2;
-    sunPointLight.shadow.camera.far = 150;
     sunPointLight.shadow.bias = 0.0001;
 
     sunPointLight.intensity = 1;
@@ -409,7 +412,7 @@ function createSun() {
 
 //create the moon
 function createMoon() {
-    moonPosition = new THREE.Vector3(-5, 3, -100);
+    moonPosition = new THREE.Vector3(-5, 3, -300);
     var moonMaterial = new THREE.MeshBasicMaterial();
     moonMaterial.color = new THREE.Color(0xeaf4fc);
 
@@ -424,13 +427,12 @@ function createMoon() {
     moonPointLight.shadow.mapSize.width = 2048;
     moonPointLight.shadow.mapSize.height = 2048;
     moonPointLight.shadow.mapSize.radius = 2;
-    moonPointLight.shadow.camera.far = 150;
     moonPointLight.shadow.bias = 0.0001;
 
     moonPointLight.intensity = 0.4;
 }
 
-//create a cloud
+//create a cloud in the primary group / array
 function createCloud() {
     var cloudMaterial = new THREE.MeshBasicMaterial();
     cloudMaterial.color = new THREE.Color(1, 1, 1);
@@ -445,13 +447,37 @@ function createCloud() {
     clouds.add(cloud);
 }
 
+//create a cloud in the secondary group / array
+function createCloudSecondary() {
+    var cloudMaterial = new THREE.MeshBasicMaterial();
+    cloudMaterial.color = new THREE.Color(1, 1, 1);
+    cloudMaterial.transparent = true;
+    cloudMaterial.opacity = 0.75;
+    var cloudGeometry = new THREE.BoxGeometry(20, 10, 2);
+    cloud = new THREE.Mesh(cloudGeometry, cloudMaterial);
+    cloud.castShadow = true;
+    //console.log(cloud);
+
+    cloudsArr2.push(cloud);
+    clouds2.add(cloud);
+}
+
 //creates as many clouds as specified in noClouds
 function allocateClouds(noClouds) {
     for (let i = 0; i <= noClouds; i++) {
         createCloud();
     }
     cloudsArr.forEach(function(object){
-        object.position.set(Math.random() * (max - min + 1) + min, Math.random() * (max - min + 1) + min , 80)
+        object.position.set(Math.random() * (max - min + 1) + min, Math.random() * (max - min + 1) + min , 80);
+    });
+}
+
+function allocateCloudsSecondary(noClouds) {
+    for (let i = 0; i <= noClouds; i++) {
+        createCloudSecondary();
+    }
+    cloudsArr2.forEach(function(object){
+        object.position.set(Math.random() * (max - min + 1) + min, Math.random() * (max - min + 1) + min , 80);
     });
 }
 
@@ -469,6 +495,7 @@ function createSceneObjects() {
     createSun();
     createMoon();
     allocateClouds(8);
+    allocateCloudsSecondary(8);
 }
 
 //add all the elements to the scene
@@ -481,6 +508,7 @@ function addObjects() {
     scene.add(moonPointLight);
     scene.add(sunPointLight);
     scene.add(clouds);
+    scene.add(clouds2);
 
     for (let i = 0; i < buildingCount; i++) {
         createBuildings();

@@ -18,15 +18,18 @@ function updateTerrain() {
     if ((tempOctaves != octaves) || (tempFrequency != frequency) || (tempElevation != elevation) 
         || (tempAmplitude != amplitude) || (tempPeakHeight != peakHeight) || (tempTerrainSize != terrainSize)) {
         
+        //Dispose of Terrain from memory
         scene.remove(terrain1);
         tGeo.dispose();
         terrain1.geometry.dispose();
         terrain1.material.dispose()
 
+        //Update/Recreate noise image and terrain object
         data = generateTexture();
         terrain1 = createTerrain();
         calculateColour();
 
+        //Updating terrain variables with slider values
         tempOctaves = octaves;
         tempFrequency = frequency;
         tempElevation = elevation;
@@ -91,10 +94,10 @@ function animateSunColor() {
 
 var d = 0;
 var speed = 0.1;
-var distance = 100;
+var distance = 300;
 function animateCelestialMovement() {
     d += 0.01 * speed;
-    sunPosition.x = 150 * Math.cos(d);
+    sunPosition.x = 300 * Math.cos(d);
     sunPosition.z = -distance * Math.sin(d);
 
     sun.position.x = sunPosition.x;
@@ -103,7 +106,7 @@ function animateCelestialMovement() {
     sunPointLight.position.x = sunPosition.x;
     sunPointLight.position.z = sunPosition.z;
 
-    moonPosition.x = -150 * Math.cos(d);
+    moonPosition.x = -300 * Math.cos(d);
     moonPosition.z = distance * Math.sin(d);
 
     moon.position.x = moonPosition.x;
@@ -113,19 +116,26 @@ function animateCelestialMovement() {
     moonPointLight.position.z = moonPosition.z;
 }
 
-clouds.position.x = -100;
+clouds.position.x = -150;
+clouds2.position.x = 0;
 function animateCloudMovement() {
-    clouds.position.x += 0.1
-    if (clouds.position.x > 100) {
+    clouds.position.x += 0.1;
+    if (clouds.position.x > 150) {
         clouds.remove(...clouds.children);
         allocateClouds(8);
-        clouds.position.x = -100;
+        clouds.position.x = -150;
+    }
+    clouds2.position.x += 0.1;
+    if (clouds2.position.x > 150) {
+        clouds2.remove(...clouds2.children);
+        allocateCloudsSecondary(8);
+        clouds2.position.x = -150;
     }
 }
 
 var size = 0.3;
 var dropSpeed = 0.5;
-var rain_enabled = true;
+var rain_enabled = false;
 
 function animateRain() {
     updateRainVolume();
