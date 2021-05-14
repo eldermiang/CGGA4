@@ -8,6 +8,7 @@ function buildGui() {
 
     var camera1 = {pos1: function(){setCamera(1)}};
     var camera2 = {pos2: function(){setCamera(2)}};
+    var pan = {pan: function(){panCamera()}};
 
     // var disableRain  = {disableRain: function(){
     //     rain_enabled
@@ -88,6 +89,8 @@ function buildGui() {
 
     f3.add(camera1, 'pos1').name("Camera 1");
     f3.add(camera2, 'pos2').name("Camera 2");
+
+    f3.add(pan, 'pan').name("Pan Camera");
 
     f4.add(params, 'terrain_octaves', 1, 16).onChange(function(val){
         octaves = val;

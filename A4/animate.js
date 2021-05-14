@@ -62,6 +62,22 @@ function setCamera(pos) {
     }
 }
 
+var cameraSpeed = 0.1;
+var rotationCount = 0;
+
+function panCamera() {
+    while (rotationCount <= 360) {
+        var x = camera.position.x;
+        var y = camera.position.y;
+        var z = camera.position.z;
+        
+        var cameraY = y * Math.cos(cameraSpeed) + z * Math * sin(cameraSpeed);
+        var cameraZ = z * Math.cos(cameraSpeed) + x * Math * sin(cameraSpeed);
+
+        camera.position.set(x, cameraY, cameraZ)
+    }
+}
+
 var alpha = 1;
 function animateSunColor() {
     var dayColor = new THREE.Color(0xf9d71c);
