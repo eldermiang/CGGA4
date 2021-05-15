@@ -8,6 +8,7 @@ function animate() {
     controls.update();
     requestAnimationFrame(animate);
 }
+
 var tempOctaves = octaves;
 var tempFrequency = frequency;
 var tempElevation = elevation;
@@ -89,6 +90,7 @@ function disablePan() {
     controls.maxPolarAngle = Math.PI/1.2;
 }
 
+//Not Used
 var alpha = 1;
 function animateSunColor() {
     var dayColor = new THREE.Color(0xf9d71c);
@@ -100,6 +102,10 @@ function animateSunColor() {
     //sun.material.color = new THREE.Color(0xeaf4fc);
 }
 
+//Sun and Moon Orbit / Movement
+//Circular loop
+//Cosine for horizontal movement (x-axis)
+//Sine for vertical movement (z-axis)
 var d = 0;
 var speed = 0.1;
 var distance = 300;
@@ -124,6 +130,9 @@ function animateCelestialMovement() {
     moonPointLight.position.z = moonPosition.z;
 }
 
+//Cloud movement
+//Cloud x positions reset to -150 after exceeding 150
+//Clouds are removed and reallocated to randomize position of each cloud
 clouds.position.x = -150;
 clouds2.position.x = 0;
 function animateCloudMovement() {
@@ -141,6 +150,8 @@ function animateCloudMovement() {
     }
 }
 
+//Animates rainfall
+//Position of each vertice resets to 80 after dropping below 0
 var size = 0.3;
 var dropSpeed = 0.5;
 var rain_enabled = false;
@@ -161,7 +172,6 @@ function animateRain() {
     rainMaterial.size = size;
     rainGeo.vertices.forEach(p => {
         p.z -= dropSpeed;
-        //p.x += dropSpeed;
         if (p.z < 0) {
             p.z = 80;
         }
@@ -169,6 +179,7 @@ function animateRain() {
     rainGeo.verticesNeedUpdate = true;
 }
 
+//Updates the volume of the rain in realtime
 var tempVolume = volume;
 function updateRainVolume() {
     if (tempVolume != volume) {

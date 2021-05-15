@@ -382,6 +382,7 @@ var ambientLight, hemiLight, dirLight, sunPointLight, moonPointLight;
 let max = 49, min = -49;
 
 //Create a generic lighting environment
+//Not used
 function createLight() {
     hemiLight = new THREE.HemisphereLight(new THREE.Color(0.6, 0.6, 0.6), 0.1);
     hemiLight.skyColor = new THREE.Color(1, 1, 1);
@@ -398,6 +399,7 @@ function createSun() {
     sun = new THREE.Mesh(sunGeometry, sunMaterial);
     sun.position.set(sunPosition.x, sunPosition.y, sunPosition.z);
 
+    //Create a pointlight at sun position
     sunPointLight = new THREE.PointLight(new THREE.Color(0xf9d71c), 1, 1000, 0);
     sunPointLight.position.set(sunPosition.x, sunPosition.y, sunPosition.z);
     sunPointLight.castShadow = true;
@@ -420,6 +422,7 @@ function createMoon() {
     moon = new THREE.Mesh(moonGeometry, moonMaterial);
     moon.position.set(moonPosition.x, moonPosition.y, moonPosition.z);
 
+    //Create a pointlight at moon position
     moonPointLight = new THREE.PointLight(new THREE.Color(0xeaf4fc), 1, 1000, 0);
     moonPointLight.position.set(moonPosition.x, moonPosition.y, moonPosition.z);
     moonPointLight.castShadow = true;
@@ -441,7 +444,6 @@ function createCloud() {
     var cloudGeometry = new THREE.BoxGeometry(20, 10, 2);
     cloud = new THREE.Mesh(cloudGeometry, cloudMaterial);
     cloud.castShadow = true;
-    //console.log(cloud);
 
     cloudsArr.push(cloud);
     clouds.add(cloud);
@@ -456,7 +458,6 @@ function createCloudSecondary() {
     var cloudGeometry = new THREE.BoxGeometry(20, 10, 2);
     cloud = new THREE.Mesh(cloudGeometry, cloudMaterial);
     cloud.castShadow = true;
-    //console.log(cloud);
 
     cloudsArr2.push(cloud);
     clouds2.add(cloud);
@@ -467,6 +468,7 @@ function allocateClouds(noClouds) {
     for (let i = 0; i <= noClouds; i++) {
         createCloud();
     }
+    //Randomise x and y coordinates of each cloud within a range
     cloudsArr.forEach(function(object){
         object.position.set(Math.random() * (max - min + 1) + min, Math.random() * (max - min + 1) + min , 80);
     });
@@ -476,17 +478,10 @@ function allocateCloudsSecondary(noClouds) {
     for (let i = 0; i <= noClouds; i++) {
         createCloudSecondary();
     }
+    //Randomise x and y coordinates of each cloud within a range
     cloudsArr2.forEach(function(object){
         object.position.set(Math.random() * (max - min + 1) + min, Math.random() * (max - min + 1) + min , 80);
     });
-}
-
-function disableRain() {
-    console.log(rain);
-    rain.traverse(function(child){
-        child.visible = false;
-    });
-    console.log(rain);
 }
 
 //calls the weather creation functions
