@@ -4,11 +4,13 @@ function buildGui() {
     var f1 = gui.addFolder('Lighting');
     var f2 = gui.addFolder('Rain');
     var f3 = gui.addFolder('Camera');
+    var f3a = f3.addFolder('Pan');
     var f4 = gui.addFolder('Terrain');
 
     var camera1 = {pos1: function(){setCamera(1)}};
     var camera2 = {pos2: function(){setCamera(2)}};
-    var pan = {pan: function(){panCamera()}};
+    var cameraPan = {pan: function(){ panCamera()}};
+    var cameraPanOff = {panOff: function(){ disablePan()}};
 
     // var disableRain  = {disableRain: function(){
     //     rain_enabled
@@ -90,7 +92,8 @@ function buildGui() {
     f3.add(camera1, 'pos1').name("Camera 1");
     f3.add(camera2, 'pos2').name("Camera 2");
 
-    f3.add(pan, 'pan').name("Pan Camera");
+    f3a.add(cameraPan, 'pan').name("On");
+    f3a.add(cameraPanOff, 'panOff').name("Off");
 
     f4.add(params, 'terrain_octaves', 1, 16).onChange(function(val){
         octaves = val;

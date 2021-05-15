@@ -1,3 +1,4 @@
+
 function animate() {
     animateCloudMovement();
     animateCelestialMovement();
@@ -65,20 +66,27 @@ function setCamera(pos) {
     }
 }
 
-var cameraSpeed = 0.1;
-var rotationCount = 0;
 
 function panCamera() {
-    while (rotationCount <= 360) {
-        var x = camera.position.x;
-        var y = camera.position.y;
-        var z = camera.position.z;
-        
-        var cameraY = y * Math.cos(cameraSpeed) + z * Math * sin(cameraSpeed);
-        var cameraZ = z * Math.cos(cameraSpeed) + x * Math * sin(cameraSpeed);
+        camera.position.set(0, -200, 400)
+        camera.up.set(0.5,0, 1);
+        camera.fov = 90;
+        controls.minAzimuthAngle = -Math.PI/2.5;
+        controls.maxAzimuthAngle = Math.PI;
+        controls.minAzimuthAngle = -Math.PI/2.5;
+        controls.maxAzimuthAngle = Math.PI;
+        controls.target = new THREE.Vector3(1,1,1);
+        controls.autoRotateSpeed = 4;
+        controls.autoRotate = true;        
+}
 
-        camera.position.set(x, cameraY, cameraZ)
-    }
+function disablePan() {
+    controls.autoRotate = false;
+    camera.up.set(0,1,0);
+    controls.minAzimuthAngle = 0;
+    controls.maxAzimuthAngle = 0;
+    controls.minPolarAngle = 0;
+    controls.maxPolarAngle = Math.PI/1.2;
 }
 
 var alpha = 1;
