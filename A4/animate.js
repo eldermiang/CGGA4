@@ -52,6 +52,8 @@ function setCamera(pos) {
             controls.maxDistance = 150; //controls max distance of the camera zoom
             controls.minPolarAngle = 0;
             controls.maxPolarAngle = Math.PI/1.2;
+            controls.minAzimuthAngle = 0;
+            controls.maxAzimuthAngle = 0;
             break;
         case 2:
             camera.position.set(0, -90, 15);
@@ -61,6 +63,8 @@ function setCamera(pos) {
             controls.maxDistance = 105;
             controls.minPolarAngle = Math.PI/1.07;
             controls.maxPolarAngle = Math.PI/1.07;
+            controls.minAzimuthAngle = 0;
+            controls.maxAzimuthAngle = 0;
             break;
         default:
             renderer.render(0, -75, 30);
@@ -88,6 +92,15 @@ function disablePan() {
     controls.maxAzimuthAngle = 0;
     controls.minPolarAngle = 0;
     controls.maxPolarAngle = Math.PI/1.2;
+}
+
+function unlockCamera() {
+    controls.minDistance = 10;
+    controls.maxDistance = 500;
+    controls.minPolarAngle = -Math.PI;
+    controls.maxPolarAngle = Math.PI;
+    controls.minAzimuthAngle = -Math.PI;
+    controls.maxAzimuthAngle = Math.PI;
 }
 
 //Not Used

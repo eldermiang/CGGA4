@@ -9,6 +9,7 @@ function buildGui() {
 
     var camera1 = {pos1: function(){setCamera(1)}};
     var camera2 = {pos2: function(){setCamera(2)}};
+    var cameraUnlock = {unlock: function(){unlockCamera()}};
     var cameraPan = {pan: function(){ panCamera()}};
     var cameraPanOff = {panOff: function(){ disablePan()}};
 
@@ -96,6 +97,7 @@ function buildGui() {
     //F3 Camera
     f3.add(camera1, 'pos1').name("Camera 1");
     f3.add(camera2, 'pos2').name("Camera 2");
+    f3.add(cameraUnlock, 'unlock').name("Unlock Camera");
 
     f3a.add(cameraPan, 'pan').name("On");
     f3a.add(cameraPanOff, 'panOff').name("Off");
