@@ -14,14 +14,37 @@
     <title>CG Assignment 4</title>
 </head>
 <body>
-    <div>
-        <h1></h1>
-    </div>
-        <script src="A4/setup.js"></script>
-        <script src="A4/weather.js"></script>
-        <script src="A4/build.js"></script>
-        <script src="A4/animate.js"></script>
-        <script src="A4/controls.js"></script>
-        <script src="A4/run.js"></script>
+    <!-- Shader Scripts - Sun / Moon glow -->
+    <script id="vertexShader" type="x-shader/x-vertex">
+        uniform vec3 viewVector;
+        uniform float c;
+        uniform float p;
+        varying float intensity
+
+        void main() {
+            vec3 vNormal = normalize(normalMatrix * normal);
+            vec3 vNormel = normalize(normalMatrix * viewVector);
+            intensity = pow(abs(c - dot(vNormal, vNormel)), p);
+
+            vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+            gl_Position = projectionMatrix * mvPosition
+        }
+    </script>
+    <script id="fragmentShader" type="x-shader/x-fragment">
+        uniform vec3 glowColor;
+        varying float intensity;
+
+        void main() {
+            vec3 glow = glowColor * intensity;
+            gl_FragColor = vec4(glow, 1.0);
+        }
+    </script>
+
+    <script src="A4/setup.js"></script>
+    <script src="A4/weather.js"></script>
+    <script src="A4/build.js"></script>
+    <script src="A4/animate.js"></script>
+    <script src="A4/controls.js"></script>
+    <script src="A4/run.js"></script>
 </body>
 </html>
