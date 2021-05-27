@@ -19,7 +19,7 @@ function createGlow(color, position) {
     var shaderMaterial = new THREE.ShaderMaterial({
         uniforms:
         {
-            c : {type: "float", value: 0.6},
+            c : {type: "float", value: 1},
             p : {type: "float", value: 4},
             glowColor: {type: "vec3", value: color},
             viewVector: {type: "vec3", value: camera.position}
@@ -57,7 +57,6 @@ function createSun() {
     sun.position.set(sunPosition.x, sunPosition.y, sunPosition.z);
 
     sunGlow = createGlow(sunMaterial.color, sunPosition);
-    console.log(sunGlow);
 
     //Create a pointlight at sun position
     sunPointLight = new THREE.PointLight(new THREE.Color(0xf9d71c), 1, 1000, 0);
@@ -159,6 +158,9 @@ function createSceneObjects() {
     scene.add(moon);
     scene.add(moonPointLight);
     scene.add(sunPointLight);
+    scene.add(sunGlow);
+    scene.add(moonGlow);
+
     scene.add(clouds);
     scene.add(clouds2);
 }

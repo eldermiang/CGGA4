@@ -78,6 +78,7 @@ function buildGui() {
     //Speed of orbit cycle
     f1.add(params, 'speed', 0, 1).onChange(function(val){
         speed = val;
+        console.log(sunGlow);
     });
     //Vertical distance of each body to the plane
     f1.add(params, 'distance', 25, 300).onChange(function(val){

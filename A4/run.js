@@ -13,4 +13,7 @@ console.log(rain);
 
 calculateColour();
 
+console.log(sunGlow);
+console.log(moonGlow);
+
 window.addEventListener('resize', resizeScene);

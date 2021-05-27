@@ -127,20 +127,29 @@ function animateCelestialMovement() {
     sunPosition.x = 300 * Math.cos(d);
     sunPosition.z = -distance * Math.sin(d);
 
-    sun.position.x = sunPosition.x;
-    sun.position.z = sunPosition.z;
-
-    sunPointLight.position.x = sunPosition.x;
-    sunPointLight.position.z = sunPosition.z;
-
     moonPosition.x = -300 * Math.cos(d);
     moonPosition.z = distance * Math.sin(d);
+
+    //Sun/Moon position
+    sun.position.x = sunPosition.x;
+    sun.position.z = sunPosition.z;
 
     moon.position.x = moonPosition.x;
     moon.position.z = moonPosition.z;
 
+    //Sun/Moon Pointlight position
+    sunPointLight.position.x = sunPosition.x;
+    sunPointLight.position.z = sunPosition.z;
+
     moonPointLight.position.x = moonPosition.x;
     moonPointLight.position.z = moonPosition.z;
+
+    //Sun/Moon Glow position
+    sunGlow.position.x = sunPosition.x;
+    sunGlow.position.z = sunPosition.z;
+
+    moonGlow.position.x = moonPosition.x;
+    moonGlow.position.z = moonPosition.z;
 }
 
 //Cloud movement
