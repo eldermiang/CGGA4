@@ -1,6 +1,6 @@
 setScene();
 createSceneObjects();
-createSkybox();
+createSkybox(skybox1);
 generateRain();
 animate();
 buildGui();

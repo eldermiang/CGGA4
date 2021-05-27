@@ -49,10 +49,11 @@ var skyBox = null;
 var skyGeometry = null;
 
 var path = "/textures/";
-var directions = ["corona_ft", "corona_bk", "corona_up", "corona_dn", "corona_rt", "corona_lf"];
+var skybox1 = ["corona_ft", "corona_bk", "corona_up", "corona_dn", "corona_rt", "corona_lf"];
+var skybox2 = ["zpos", "zneg", "ypos", "yneg", "xneg", "xpos"];
 var format = ".png";
 
-function createSkybox() {
+function createSkybox(skybox = []) {
 skyGeometry = new THREE.BoxGeometry(2000, 2000, 2000);
 
 var materialArray = [];

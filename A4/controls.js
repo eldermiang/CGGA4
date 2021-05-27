@@ -6,12 +6,17 @@ function buildGui() {
     var f3 = gui.addFolder('Camera');
     var f3a = f3.addFolder('Pan');
     var f4 = gui.addFolder('Terrain');
+    var f5 = gui.addFolder('Skyboxes');
 
     var camera1 = {pos1: function(){setCamera(1)}};
     var camera2 = {pos2: function(){setCamera(2)}};
     var cameraUnlock = {unlock: function(){unlockCamera()}};
     var cameraPan = {pan: function(){ panCamera()}};
     var cameraPanOff = {panOff: function(){ disablePan()}};
+
+    var skyBox1 = {skybox1: function() {createSkybox(skybox1)}};
+    var skyBox2 = {skybox2: function() {createSkybox(skybox2)}};
+    
 
     var params = {
         /*
@@ -126,4 +131,7 @@ function buildGui() {
     f4.add(params, 'terrain_size', 50, 300).onChange(function(val){
         terrainSize = val;
     });
+
+    f5.add(skyBox1, 'skybox1').name("Space");
+    f5.add(skyBox2, 'skybox2').name("Cloudy");
 }
