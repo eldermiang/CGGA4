@@ -51,15 +51,17 @@ var skyGeometry = null;
 var path = "/textures/";
 var skybox1 = ["corona_ft", "corona_bk", "corona_up", "corona_dn", "corona_rt", "corona_lf"];
 var skybox2 = ["zpos", "zneg", "ypos", "yneg", "xneg", "xpos"];
+var skybox3 = ["posz", "negz", "posy", "negy", "negx", "posx"];
+var skybox4 = ["cityposz", "citynegz", "cityposy", "citynegy", "citynegx", "cityposx"];
 var format = ".png";
 
-function createSkybox(skybox = []) {
+function createSkybox() {
 skyGeometry = new THREE.BoxGeometry(2000, 2000, 2000);
 
 var materialArray = [];
 for (var i = 0; i < 6; i++) {
     materialArray.push(new THREE.MeshBasicMaterial({
-        map: THREE.ImageUtils.loadTexture(path + skybox[i] + format),
+        map: THREE.ImageUtils.loadTexture(path + skybox1[i] + format),
         side: THREE.BackSide
     }));
     var skyMaterial = new THREE.MeshFaceMaterial(materialArray);
@@ -67,6 +69,17 @@ for (var i = 0; i < 6; i++) {
     scene.add(skyBox);
     skyBox.rotation.x = 89.5;
 }
+}
+
+function changeSkybox(skybox = []) {
+    var materialArray = [];
+    for (var i = 0; i < 6; i++) {
+        materialArray.push(new THREE.MeshBasicMaterial({
+            map: THREE.ImageUtils.loadTexture(path + skybox[i] + format),
+            side: THREE.BackSide
+        }));
+    }
+    skyBox.material = new THREE.MeshFaceMaterial(materialArray);
 }
 
 

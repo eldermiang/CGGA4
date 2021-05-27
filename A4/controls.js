@@ -14,9 +14,11 @@ function buildGui() {
     var cameraPan = {pan: function(){ panCamera()}};
     var cameraPanOff = {panOff: function(){ disablePan()}};
 
-    var skyBox1 = {skybox1: function() {createSkybox(skybox1)}};
-    var skyBox2 = {skybox2: function() {createSkybox(skybox2)}};
-    //doesn't work yet need to replace old skybox when button pressed
+    var skyBox1 = {skybox1: function() {changeSkybox(skybox1)}};
+    var skyBox2 = {skybox2: function() {changeSkybox(skybox2)}};
+    var skyBox3 = {skybox3: function() {changeSkybox(skybox3)}};
+    var skyBox4 = {skybox4: function() {changeSkybox(skybox4)}};
+
     
 
     var params = {
@@ -135,4 +137,6 @@ function buildGui() {
 
     f5.add(skyBox1, 'skybox1').name("Space");
     f5.add(skyBox2, 'skybox2').name("Cloudy");
+    f5.add(skyBox3, 'skybox3').name("Winter");
+    f5.add(skyBox4, 'skybox4').name("Cityscape");
 }
