@@ -16,6 +16,7 @@ function buildGui() {
 
     var skyBox1 = {skybox1: function() {createSkybox(skybox1)}};
     var skyBox2 = {skybox2: function() {createSkybox(skybox2)}};
+    //doesn't work yet need to replace old skybox when button pressed
     
 
     var params = {
