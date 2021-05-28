@@ -235,7 +235,7 @@ function createUnderground() {
     var groundMat = new THREE.MeshStandardMaterial( {color: 0xc29861} );
     var ground = new THREE.Mesh(groundGeo, groundMat);
 
-    groundGeo.translate(0, 0, -0.51);
+    groundGeo.translate(0, 0, -0.6);
     ground.scale.set(terrainSize * 2, terrainSize * 2, undergroundDepth)
     ground.receiveShadow = false;
     ground.castShadow = false;
