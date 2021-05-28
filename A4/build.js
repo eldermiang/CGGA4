@@ -33,6 +33,8 @@ var terrainSize = 100;
 
 var tGeo;
 
+var undergroundDepth = 10;
+
 //building map variables
 var buildings = [];
 var buildingCount = 100;
@@ -225,6 +227,23 @@ function calculateColour() {
 })  
 }
 
+var underground = createUnderground();
+
+function createUnderground() {
+
+    var groundGeo = new THREE.BoxGeometry(1, 1, 1);
+    var groundMat = new THREE.MeshStandardMaterial( {color: 0xc29861} );
+    var ground = new THREE.Mesh(groundGeo, groundMat);
+
+    groundGeo.translate(0, 0, -0.51);
+    ground.scale.set(terrainSize * 2, terrainSize * 2, undergroundDepth)
+    ground.receiveShadow = false;
+    ground.castShadow = false;
+
+    return ground;
+
+}
+
 var light = new THREE.HemisphereLight(new THREE.Color(1, 1, 1), new THREE.Color(1, 1, 1), 0.4);
 
 function createBuilding() {
@@ -387,6 +406,7 @@ function findFacePosition() {
 function addObjects() {
     scene.add(terrain1);
     scene.add(light);
+    scene.add(underground);
 
     for (let i = 0; i < buildingCount; i++) {
         createBuildings();
