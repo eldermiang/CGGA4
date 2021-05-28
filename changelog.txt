@@ -1,0 +1,4 @@
+#Changelog for final submission
+
+### Added
+- Custom shaders for Sun and Moon objects

@@ -393,6 +393,4 @@ function addObjects() {
     }
     
     scene.add(group);
-
-
 }

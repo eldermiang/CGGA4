@@ -6,6 +6,8 @@ function animate() {
     updateTerrain();
     renderer.render(scene, camera);
     controls.update();
+    sunGlow.material.uniforms.viewVector.value = new THREE.Vector3().subVectors(camera.position, sunGlow.position);
+    moonGlow.material.uniforms.viewVector.value = new THREE.Vector3().subVectors(camera.position, moonGlow.position);
     requestAnimationFrame(animate);
 }
 
@@ -112,7 +114,6 @@ function animateSunColor() {
     var sunColor = new THREE.Color(0xeaf4fc);
     sunColor.lerpColors(nightColor, dayColor, alpha);
     sun.material.color = sunColor;
-    //sun.material.color = new THREE.Color(0xeaf4fc);
 }
 
 //Sun and Moon Orbit / Movement

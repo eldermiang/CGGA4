@@ -12,32 +12,6 @@ let max = 49, min = -49;
 
 var sunGlow, moonGlow;
 
-//Create custom Shader - Sun / Moon Glow
-function createGlow(color, position) {
-    var geometry = new THREE.SphereBufferGeometry(5, 64, 64);
-
-    var shaderMaterial = new THREE.ShaderMaterial({
-        uniforms:
-        {
-            c : {type: "float", value: 1},
-            p : {type: "float", value: 4},
-            glowColor: {type: "vec3", value: color},
-            viewVector: {type: "vec3", value: camera.position}
-        },
-        vertexShader: document.getElementById("vertexShader").textContent,
-        fragmentShader: document.getElementById("fragmentShader").textContent,
-        blending: THREE.AdditiveBlending,
-        side: THREE.BackSide,
-        transparent: true
-    });
-
-    var starGlow = new THREE.Mesh(geometry, shaderMaterial);
-    starGlow.scale.multiplyScalar(1.5);
-    starGlow.position.set(position)
-    
-    return starGlow;
-}
-
 //Create a generic lighting environment
 //Not used
 function createLight() {
@@ -49,7 +23,8 @@ function createLight() {
 //create the sun
 function createSun() {
     sunPosition = new THREE.Vector3(-5, 3, 300);
-    var sunMaterial = new THREE.MeshBasicMaterial();
+    var sunMaterial = new THREE.MeshLambertMaterial();
+    sunMaterial.emissive = new THREE.Color(0xf9d71c);
     sunMaterial.color = new THREE.Color(0xf9d71c);
 
     var sunGeometry = new THREE.SphereGeometry(5, 32, 32);
@@ -74,8 +49,10 @@ function createSun() {
 //create the moon
 function createMoon() {
     moonPosition = new THREE.Vector3(-5, 3, -300);
-    var moonMaterial = new THREE.MeshBasicMaterial();
+    var moonMaterial = new THREE.MeshLambertMaterial();
+    moonMaterial.emissive = new THREE.Color(0xeaf4fc);
     moonMaterial.color = new THREE.Color(0xeaf4fc);
+    moonMaterial.side = THREE.BackSide;
 
     var moonGeometry = new THREE.SphereGeometry(5, 32, 32);
     moon = new THREE.Mesh(moonGeometry, moonMaterial);
@@ -94,6 +71,33 @@ function createMoon() {
     moonPointLight.shadow.bias = 0.0001;
 
     moonPointLight.intensity = 0.4;
+}
+
+//Create custom Shader object - Sun / Moon Glow
+function createGlow(color, position) {
+
+    var geometry = new THREE.SphereBufferGeometry(5, 64, 64);
+
+    var shaderMaterial = new THREE.ShaderMaterial({
+        uniforms:
+        {
+            c : {type: "float", value: 0.6},
+            p : {type: "float", value: 4},
+            glowColor: {type: "vec3", value: color},
+            viewVector: {type: "vec3", value: camera.position}
+        },
+        vertexShader: document.getElementById("vertexShader").textContent,
+        fragmentShader: document.getElementById("fragmentShader").textContent,
+        blending: THREE.AdditiveBlending,
+        side: THREE.BackSide,
+        transparent: true
+    });
+
+    var starGlow = new THREE.Mesh(geometry, shaderMaterial);
+    starGlow.scale.multiplyScalar(1.5);
+    starGlow.position.set(position.x, position.y, position.z);
+    console.log(starGlow);
+    return starGlow;
 }
 
 //create a cloud in the primary group / array
@@ -153,6 +157,7 @@ function createSceneObjects() {
     createMoon();
     allocateClouds(8);
     allocateCloudsSecondary(8);
+
     //Adds the created objects to the scene
     scene.add(sun);
     scene.add(moon);
