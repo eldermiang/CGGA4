@@ -17,10 +17,12 @@ var tempElevation = elevation;
 var tempAmplitude = amplitude;
 var tempPeakHeight = peakHeight;
 var tempTerrainSize = terrainSize;
+var tempUndergroundDepth = undergroundDepth;
 
 function updateTerrain() {
     if ((tempOctaves != octaves) || (tempFrequency != frequency) || (tempElevation != elevation) 
-        || (tempAmplitude != amplitude) || (tempPeakHeight != peakHeight) || (tempTerrainSize != terrainSize)) {
+        || (tempAmplitude != amplitude) || (tempPeakHeight != peakHeight) || (tempTerrainSize != terrainSize)
+        || (tempUndergroundDepth != undergroundDepth)) {
         
         //Dispose of Terrain from memory
         scene.remove(terrain1);
@@ -28,9 +30,15 @@ function updateTerrain() {
         terrain1.geometry.dispose();
         terrain1.material.dispose()
 
+        //Dispose of underground from memory
+        scene.remove(underground);
+        underground.geometry.dispose();
+        underground.material.dispose()
+
         //Update/Recreate noise image and terrain object
         data = generateTexture();
         terrain1 = createTerrain();
+        underground = createUnderground();
         calculateColour();
 
         //Updating terrain variables with slider values
@@ -40,8 +48,10 @@ function updateTerrain() {
         tempAmplitude = amplitude;
         tempPeakHeight = peakHeight;
         tempTerrainSize = terrainSize;
+        tempUndergroundDepth = undergroundDepth;
 
         scene.add(terrain1);
+        scene.add(underground);
     }
 }
 

@@ -45,7 +45,8 @@ function buildGui() {
         terrain_elevation: elevation,
         terrain_amplitude: amplitude,
         terrain_peakHeight: peakHeight,
-        terrain_size: terrainSize
+        terrain_size: terrainSize,
+        underground_depth: undergroundDepth
     }
 
     /*
@@ -133,6 +134,10 @@ function buildGui() {
 
     f4.add(params, 'terrain_size', 50, 300).onChange(function(val){
         terrainSize = val;
+    });
+
+    f4.add(params, 'underground_depth', 10, 50).onChange(function(val){
+        undergroundDepth = val;
     });
 
     f5.add(skyBox1, 'skybox1').name("Space");
