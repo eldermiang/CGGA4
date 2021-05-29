@@ -322,10 +322,14 @@ function createBuildings() {
         child.castShadow = true;
         child.receiveShadow = true;
     });
-
+    building.name = "building";
     group.add(building);
 }
 
+function removeBuildings() {
+    var groupToRemove = scene.getObjectByName("buildings");
+    scene.remove(groupToRemove);   
+}
 
 var loader = new THREE.OBJLoader();
 
@@ -391,6 +395,9 @@ function getRandom(min, max) {
 //checks the terrain for green faces and 
 //adds it to the positions array
 function findFacePosition() {
+        //clear the array
+        positionsX = [];
+        positionsY = [];
         //check faces for position add to array if certain y level
         terrain1.geometry.faces.forEach(f=>{
             //console.log(f);
@@ -418,6 +425,7 @@ function findFacePosition() {
 
 //add all the elements to the scene
 function addObjects() {
+    group = new THREE.Group();
     scene.add(terrain1);
     scene.add(light);
     scene.add(underground);
@@ -425,6 +433,6 @@ function addObjects() {
     for (let i = 0; i < buildingCount; i++) {
         createBuildings();
     }
-    
+    group.name = "buildings";
     scene.add(group);
 }
