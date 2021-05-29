@@ -1,5 +1,5 @@
 //Weather variables & functions
-var plane = null, box = null, cloud = null, boxes = [], cloudsArr = [], cloudsArr2 = [];
+var cloud = null, boxes = [], cloudsArr = [], cloudsArr2 = [];
 
 var sun = null, sunPosition;
 var moon = null, moonPosition;
@@ -100,33 +100,89 @@ function createGlow(color, position) {
     return starGlow;
 }
 
-//create a cloud in the primary group / array
+// //create a cloud in the primary group / array
 function createCloud() {
-    var cloudMaterial = new THREE.MeshBasicMaterial();
+    var geo = new THREE.Geometry();
+
+    var bodyRadius = 2;
+
+    // var cloudBigBody = new THREE.SphereGeometry(bodyRadius * 1.2, 8, 8);
+    // cloudBigBody.scale(1, 1.2, 0.7);
+    // geo.merge(cloudBigBody);
+
+    var cloudBody = new THREE.SphereGeometry(bodyRadius, 7, 8);
+    geo.merge(cloudBody);
+
+    var cloudSideLeft = new THREE.SphereGeometry(bodyRadius * 0.75, 7, 8);
+    cloudSideLeft.translate(-bodyRadius, 0, 0);
+    geo.merge(cloudSideLeft);
+
+    var cloudSideRight = new THREE.SphereGeometry(bodyRadius * 0.75, 7, 8);
+    cloudSideRight.translate(bodyRadius, 0, 0);
+    geo.merge(cloudSideRight);
+
+
+    var cloudMaterial = new THREE.MeshLambertMaterial();
     cloudMaterial.color = new THREE.Color(1, 1, 1);
     cloudMaterial.transparent = true;
-    cloudMaterial.opacity = 0.75;
-    var cloudGeometry = new THREE.BoxGeometry(20, 10, 2);
-    cloud = new THREE.Mesh(cloudGeometry, cloudMaterial);
+    cloudMaterial.opacity = 0.9;
+    cloudMaterial.flatShading = true;
+
+    //geo.com
+    cloudJitter(geo, 0.2);
+    geo.computeFlatVertexNormals();
+
+    cloud = new THREE.Mesh(geo, cloudMaterial);
     cloud.castShadow = true;
 
     cloudsArr.push(cloud);
     clouds.add(cloud);
+
+    //Debugging
+    clouds.translateX(150);
+    clouds.translateZ(50)
 }
 
-//create a cloud in the secondary group / array
-function createCloudSecondary() {
-    var cloudMaterial = new THREE.MeshBasicMaterial();
-    cloudMaterial.color = new THREE.Color(1, 1, 1);
-    cloudMaterial.transparent = true;
-    cloudMaterial.opacity = 0.75;
-    var cloudGeometry = new THREE.BoxGeometry(20, 10, 2);
-    cloud = new THREE.Mesh(cloudGeometry, cloudMaterial);
-    cloud.castShadow = true;
+function cloudJitter(geo, magnitude) {
 
-    cloudsArr2.push(cloud);
-    clouds2.add(cloud);
+    geo.vertices.forEach(v => {
+        v.x += map(Math.random(), 0, 1, -magnitude, magnitude);
+        v.y += map(Math.random(), 0, 1, -magnitude, magnitude);
+        v.z += map(Math.random(), 0, 1, -magnitude, magnitude);
+    })
+
+    function map(val, smin, smax, emin, emax) {
+        return (emax - emin) * (val - emin) / (smax - smin) + emin;
+    }
 }
+
+
+// function createCloud() {
+//     var cloudMaterial = new THREE.MeshBasicMaterial();
+//     cloudMaterial.color = new THREE.Color(1, 1, 1);
+//     cloudMaterial.transparent = true;
+//     cloudMaterial.opacity = 0.75;
+//     var cloudGeometry = new THREE.BoxGeometry(20, 10, 2);
+//     cloud = new THREE.Mesh(cloudGeometry, cloudMaterial);
+//     cloud.castShadow = true;
+
+//     cloudsArr.push(cloud);
+//     clouds.add(cloud);
+// }
+
+// //create a cloud in the secondary group / array
+// function createCloudSecondary() {
+//     var cloudMaterial = new THREE.MeshBasicMaterial();
+//     cloudMaterial.color = new THREE.Color(1, 1, 1);
+//     cloudMaterial.transparent = true;
+//     cloudMaterial.opacity = 0.75;
+//     var cloudGeometry = new THREE.BoxGeometry(20, 10, 2);
+//     cloud = new THREE.Mesh(cloudGeometry, cloudMaterial);
+//     cloud.castShadow = true;
+
+//     cloudsArr2.push(cloud);
+//     clouds2.add(cloud);
+// }
 
 //creates as many clouds as specified in noClouds
 function allocateClouds(noClouds) {
@@ -139,15 +195,15 @@ function allocateClouds(noClouds) {
     });
 }
 
-function allocateCloudsSecondary(noClouds) {
-    for (let i = 0; i <= noClouds; i++) {
-        createCloudSecondary();
-    }
-    //Randomise x and y coordinates of each cloud within a range
-    cloudsArr2.forEach(function(object){
-        object.position.set(Math.random() * (max - min + 1) + min, Math.random() * (max - min + 1) + min , 80);
-    });
-}
+// function allocateCloudsSecondary(noClouds) {
+//     for (let i = 0; i <= noClouds; i++) {
+//         createCloudSecondary();
+//     }
+//     //Randomise x and y coordinates of each cloud within a range
+//     cloudsArr2.forEach(function(object){
+//         object.position.set(Math.random() * (max - min + 1) + min, Math.random() * (max - min + 1) + min , 80);
+//     });
+// }
 
 //calls the weather creation functions
 function createSceneObjects() {
@@ -155,8 +211,9 @@ function createSceneObjects() {
     createLight();
     createSun();
     createMoon();
-    allocateClouds(8);
-    allocateCloudsSecondary(8);
+    createCloud();
+    // allocateClouds(8);
+    // allocateCloudsSecondary(8);
 
     //Adds the created objects to the scene
     scene.add(sun);
@@ -167,7 +224,7 @@ function createSceneObjects() {
     scene.add(moonGlow);
 
     scene.add(clouds);
-    scene.add(clouds2);
+    //scene.add(clouds2);
 }
 
 //Rain Particle System

@@ -57,31 +57,42 @@ var skybox3 = ["posz", "negz", "posy", "negy", "negx", "posx"];
 var skybox4 = ["cityposz", "citynegz", "cityposy", "citynegy", "citynegx", "cityposx"];
 var format = ".png";
 
+//r79 > r96 changes
+//MeshFaceMaterial deprecated 
+//THREE.MeshFaceMaterial(materialArray) replaced with materialArray
+//ImageUtil.loadTexture deprecated
+//Shifted to TextureLoader instead
+
 function createSkybox() {
-skyGeometry = new THREE.BoxGeometry(2000, 2000, 2000);
+    const loader = new THREE.TextureLoader();
+    skyGeometry = new THREE.BoxGeometry(2000, 2000, 2000);
 
-var materialArray = [];
-for (var i = 0; i < 6; i++) {
-    materialArray.push(new THREE.MeshBasicMaterial({
-        map: THREE.ImageUtils.loadTexture(path + skybox1[i] + format),
-        side: THREE.BackSide
-    }));
-    var skyMaterial = new THREE.MeshFaceMaterial(materialArray);
-    skyBox = new THREE.Mesh(skyGeometry, skyMaterial);
-    scene.add(skyBox);
-    skyBox.rotation.x = 89.5;
-}
-}
-
-function changeSkybox(skybox = []) {
     var materialArray = [];
     for (var i = 0; i < 6; i++) {
         materialArray.push(new THREE.MeshBasicMaterial({
-            map: THREE.ImageUtils.loadTexture(path + skybox[i] + format),
+            //map: THREE.ImageUtils.loadTexture(path + skybox1[i] + format),
+            map: loader.load(path + skybox1[i] + format),
+            side: THREE.BackSide
+        }));
+        var skyMaterial = materialArray;
+
+        skyBox = new THREE.Mesh(skyGeometry, skyMaterial);
+        scene.add(skyBox);
+        skyBox.rotation.x = 89.5;
+    }
+}
+
+function changeSkybox(skybox = []) {
+    const loader = new THREE.TextureLoader();
+    var materialArray = [];
+    for (var i = 0; i < 6; i++) {
+        materialArray.push(new THREE.MeshBasicMaterial({
+            //map: THREE.ImageUtils.loadTexture(path + skybox[i] + format),
+            map: loader.load(path + skybox[i] + format),
             side: THREE.BackSide
         }));
     }
-    skyBox.material = new THREE.MeshFaceMaterial(materialArray);
+    skyBox.material = materialArray;
 }
 
 
@@ -148,7 +159,9 @@ function createTerrain() {
     var material = new THREE.MeshStandardMaterial({  
         
         metalness: 0.1,
-        shading: THREE.FlatShading} )
+        //shading: THREE.FlatShading
+        flatShading: true
+    } )
 
     material.vertexColors = true;
     
@@ -233,12 +246,13 @@ function createUnderground() {
 
     var groundGeo = new THREE.BoxGeometry(1, 1, 1);
     var groundMat = new THREE.MeshStandardMaterial( {color: 0xc29861} );
+    groundMat.roughness = 1;
     var ground = new THREE.Mesh(groundGeo, groundMat);
 
     groundGeo.translate(0, 0, -0.6);
     ground.scale.set(terrainSize * 2, terrainSize * 2, undergroundDepth)
     ground.receiveShadow = false;
-    ground.castShadow = false;
+    ground.castShadow = true;
 
     return ground;
 

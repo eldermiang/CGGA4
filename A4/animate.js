@@ -1,6 +1,6 @@
 
 function animate() {
-    animateCloudMovement();
+    //animateCloudMovement();
     animateCelestialMovement();
     animateRain();
     updateTerrain();
