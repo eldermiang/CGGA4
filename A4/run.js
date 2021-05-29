@@ -8,9 +8,8 @@ buildGui();
 findFacePosition();
 addModels();
 
-//putting addModels() anywhere in run.js fucks up the code in some way - David
-console.log(rain);
-
 calculateColour();
+console.log(clouds.position);
+console.log(data.width);
 
 window.addEventListener('resize', resizeScene);

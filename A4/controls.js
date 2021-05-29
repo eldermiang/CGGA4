@@ -71,10 +71,12 @@ function buildGui() {
     //Intensity of the sun point light
     f1.add(params, 'sun_intensity', 0, 1).onChange(function(val){
         sunPointLight.intensity = val;
+        sunGlow.material.uniforms.c.value = val * 0.6;
     });
     //Intensity of the moon point light
     f1.add(params, 'moon_intensity', 0, 1).onChange(function(val){
         moonPointLight.intensity = val;
+        moonGlow.material.uniforms.c.value = val * 0.6;
     });
     //Speed of orbit cycle
     f1.add(params, 'speed', 0, 1).onChange(function(val){

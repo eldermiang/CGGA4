@@ -1,6 +1,5 @@
-
 function animate() {
-    //animateCloudMovement();
+    animateCloudMovement();
     animateCelestialMovement();
     animateRain();
     updateTerrain();
@@ -135,10 +134,10 @@ var speed = 0.1;
 var distance = 300;
 function animateCelestialMovement() {
     d += 0.01 * speed;
-    sunPosition.x = 300 * Math.cos(d);
+    sunPosition.x = data.width * Math.cos(d);
     sunPosition.z = -distance * Math.sin(d);
 
-    moonPosition.x = -300 * Math.cos(d);
+    moonPosition.x = -data.width * Math.cos(d);
     moonPosition.z = distance * Math.sin(d);
 
     //Sun/Moon position
@@ -166,21 +165,15 @@ function animateCelestialMovement() {
 //Cloud movement
 //Cloud x positions reset to -150 after exceeding 150
 //Clouds are removed and reallocated to randomize position of each cloud
-clouds.position.x = -150;
-clouds2.position.x = 0;
+clouds.position.x = -data.width;
 function animateCloudMovement() {
-    clouds.position.x += 0.1;
-    if (clouds.position.x > 150) {
-        clouds.remove(...clouds.children);
-        allocateClouds(8);
-        clouds.position.x = -150;
-    }
-    clouds2.position.x += 0.1;
-    if (clouds2.position.x > 150) {
-        clouds2.remove(...clouds2.children);
-        allocateCloudsSecondary(8);
-        clouds2.position.x = -150;
-    }
+    clouds.children.forEach(cloud => {
+        cloud.position.x += 0.1;
+        if (cloud.position.x > Math.abs(clouds.position.x) + data.width * 0.75) {
+            cloud.position.x = Math.abs(clouds.position.x) + -data.width * 0.75;
+            cloud.position.y = Math.random() * ((data.width/2) - (-data.width/2) + 1) + (-data.width/2);
+        }
+    });
 }
 
 //Animates rainfall

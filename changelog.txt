@@ -2,3 +2,9 @@
 
 ### Added
 - Custom shaders for Sun and Moon objects
+- Linked glow intensity(c) to sun/moon intensity controls
+
+## Changed
+- Updated clouds from a BoxGeometry to a Geometry that consists of multiple SphereGeometry
+- Updated cloud animations to reset the positions of each cloud individually instead of as group
+- Updated variables (cloud spawning positions, sun/moon positions) to account for changes to terrain scale
