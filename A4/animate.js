@@ -25,6 +25,8 @@ function updateTerrain() {
         
         //Dispose of Terrain from memory
         scene.remove(terrain1);
+        removeBuildings();
+
         tGeo.dispose();
         terrain1.geometry.dispose();
         terrain1.material.dispose()
@@ -51,6 +53,8 @@ function updateTerrain() {
 
         scene.add(terrain1);
         scene.add(underground);
+        findFacePosition();
+        addObjects();
     }
 }
 
