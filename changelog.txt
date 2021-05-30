@@ -4,6 +4,8 @@
 - Custom shaders for Sun and Moon objects
 - Linked glow intensity(c) to sun/moon intensity controls
 - Cloud controls
+- New skyboxes
+- GUI controls for choosing skyboxes
 
 ## Changed
 - Updated clouds from a BoxGeometry to a Geometry that consists of multiple SphereGeometry
