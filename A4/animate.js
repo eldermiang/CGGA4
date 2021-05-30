@@ -1,11 +1,13 @@
-
 function animate() {
     animateCloudMovement();
     animateCelestialMovement();
     animateRain();
     updateTerrain();
+    panCamera();
     renderer.render(scene, camera);
     controls.update();
+    sunGlow.material.uniforms.viewVector.value = new THREE.Vector3().subVectors(camera.position, sunGlow.position);
+    moonGlow.material.uniforms.viewVector.value = new THREE.Vector3().subVectors(camera.position, moonGlow.position);
     requestAnimationFrame(animate);
 }
 
@@ -15,21 +17,31 @@ var tempElevation = elevation;
 var tempAmplitude = amplitude;
 var tempPeakHeight = peakHeight;
 var tempTerrainSize = terrainSize;
+var tempUndergroundDepth = undergroundDepth;
 
 function updateTerrain() {
     if ((tempOctaves != octaves) || (tempFrequency != frequency) || (tempElevation != elevation) 
-        || (tempAmplitude != amplitude) || (tempPeakHeight != peakHeight) || (tempTerrainSize != terrainSize)) {
+        || (tempAmplitude != amplitude) || (tempPeakHeight != peakHeight) || (tempTerrainSize != terrainSize)
+        || (tempUndergroundDepth != undergroundDepth)) {
         
         //Dispose of Terrain from memory
         scene.remove(terrain1);
+        removeBuildings();
+
         tGeo.dispose();
         terrain1.geometry.dispose();
         terrain1.material.dispose()
 
+        //Dispose of underground from memory
+        scene.remove(underground);
+        underground.geometry.dispose();
+        underground.material.dispose()
+
         //Update/Recreate noise image and terrain object
         data = generateTexture();
         terrain1 = createTerrain();
-        calculateColour();
+        underground = createUnderground(theme1);
+        calculateColour(theme1);
 
         //Updating terrain variables with slider values
         tempOctaves = octaves;
@@ -38,8 +50,12 @@ function updateTerrain() {
         tempAmplitude = amplitude;
         tempPeakHeight = peakHeight;
         tempTerrainSize = terrainSize;
+        tempUndergroundDepth = undergroundDepth;
 
         scene.add(terrain1);
+        scene.add(underground);
+        findFacePosition();
+        addObjects();
     }
 }
 
@@ -71,27 +87,11 @@ function setCamera(pos) {
     }
 }
 
-
+var panOn = false;
 function panCamera() {
-        camera.position.set(0, -200, 400)
-        camera.up.set(0.5,0, 1);
-        camera.fov = 90;
-        controls.minAzimuthAngle = -Math.PI/2.5;
-        controls.maxAzimuthAngle = Math.PI;
-        controls.minAzimuthAngle = -Math.PI/2.5;
-        controls.maxAzimuthAngle = Math.PI;
-        controls.target = new THREE.Vector3(1,1,1);
-        controls.autoRotateSpeed = 4;
-        controls.autoRotate = true;        
-}
-
-function disablePan() {
-    controls.autoRotate = false;
-    camera.up.set(0,1,0);
-    controls.minAzimuthAngle = 0;
-    controls.maxAzimuthAngle = 0;
-    controls.minPolarAngle = 0;
-    controls.maxPolarAngle = Math.PI/1.2;
+    if (panOn) {
+        scene.rotation.z += 0.005;
+    }
 }
 
 function unlockCamera() {
@@ -103,64 +103,72 @@ function unlockCamera() {
     controls.maxAzimuthAngle = Math.PI;
 }
 
-//Not Used
-var alpha = 1;
-function animateSunColor() {
-    var dayColor = new THREE.Color(0xf9d71c);
-    var nightColor = new THREE.Color(0xeaf4fc);
-
-    var sunColor = new THREE.Color(0xeaf4fc);
-    sunColor.lerpColors(nightColor, dayColor, alpha);
-    sun.material.color = sunColor;
-    //sun.material.color = new THREE.Color(0xeaf4fc);
-}
-
 //Sun and Moon Orbit / Movement
 //Circular loop
 //Cosine for horizontal movement (x-axis)
 //Sine for vertical movement (z-axis)
 var d = 0;
-var speed = 0.1;
+var starSpeed = 0.1;
 var distance = 300;
 function animateCelestialMovement() {
-    d += 0.01 * speed;
-    sunPosition.x = 300 * Math.cos(d);
+    d += 0.01 * starSpeed;
+    sunPosition.x = data.width * Math.cos(d);
     sunPosition.z = -distance * Math.sin(d);
 
+    moonPosition.x = -data.width * Math.cos(d);
+    moonPosition.z = distance * Math.sin(d);
+
+    //Sun/Moon position
     sun.position.x = sunPosition.x;
     sun.position.z = sunPosition.z;
-
-    sunPointLight.position.x = sunPosition.x;
-    sunPointLight.position.z = sunPosition.z;
-
-    moonPosition.x = -300 * Math.cos(d);
-    moonPosition.z = distance * Math.sin(d);
 
     moon.position.x = moonPosition.x;
     moon.position.z = moonPosition.z;
 
+    //Sun/Moon Pointlight position
+    sunPointLight.position.x = sunPosition.x;
+    sunPointLight.position.z = sunPosition.z;
+
     moonPointLight.position.x = moonPosition.x;
     moonPointLight.position.z = moonPosition.z;
+
+    //Sun/Moon Glow position
+    sunGlow.position.x = sunPosition.x;
+    sunGlow.position.z = sunPosition.z;
+
+    moonGlow.position.x = moonPosition.x;
+    moonGlow.position.z = moonPosition.z;
 }
 
 //Cloud movement
-//Cloud x positions reset to -150 after exceeding 150
-//Clouds are removed and reallocated to randomize position of each cloud
-clouds.position.x = -150;
-clouds2.position.x = 0;
+//Cloud x positions reset to starting point after exceeding end point
+//Cloud y positions randomised at the start of every x reset
+var cloudSpeed = 0.1;
+var cloudScale = 1;
+clouds.position.x = -data.width;
 function animateCloudMovement() {
-    clouds.position.x += 0.1;
-    if (clouds.position.x > 150) {
+    updateCloudNo();
+
+    clouds.children.forEach(cloud => {
+        cloud.scale.set(cloudScale, cloudScale, cloudScale);
+        cloud.position.x += cloudSpeed;
+
+        if (cloud.position.x > Math.abs(clouds.position.x) + data.width * 0.75) {
+            cloud.position.x = Math.abs(clouds.position.x) + -data.width * 0.75;
+            cloud.position.y = Math.random() * ((data.width/2) - (-data.width/2) + 1) + (-data.width/2);
+        }
+    });
+}
+
+//Listener for changes to cloudNo
+//Updates cloud number
+var tempCloudNo = cloudNo;
+function updateCloudNo() {
+    if (tempCloudNo != cloudNo) {
         clouds.remove(...clouds.children);
-        allocateClouds(8);
-        clouds.position.x = -150;
+        allocateClouds(cloudNo);
     }
-    clouds2.position.x += 0.1;
-    if (clouds2.position.x > 150) {
-        clouds2.remove(...clouds2.children);
-        allocateCloudsSecondary(8);
-        clouds2.position.x = -150;
-    }
+    tempCloudNo = cloudNo;
 }
 
 //Animates rainfall
@@ -168,7 +176,6 @@ function animateCloudMovement() {
 var size = 0.3;
 var dropSpeed = 0.5;
 var rain_enabled = false;
-
 function animateRain() {
     updateRainVolume();
     if (rain_enabled) {
@@ -192,7 +199,8 @@ function animateRain() {
     rainGeo.verticesNeedUpdate = true;
 }
 
-//Updates the volume of the rain in realtime
+//Listener for changes to volume
+//Updates rain volume
 var tempVolume = volume;
 function updateRainVolume() {
     if (tempVolume != volume) {

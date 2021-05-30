@@ -33,6 +33,11 @@ var terrainSize = 100;
 
 var tGeo;
 
+var undergroundDepth = 10;
+
+//Terrain colour theme
+var theme1 = [0x67E6FF, 0xF4E459, 0x228800, 0xc29861, 0xcccccc];
+
 //building map variables
 var buildings = [];
 var buildingCount = 100;
@@ -49,25 +54,41 @@ var skyBox = null;
 var skyGeometry = null;
 
 var path = "/textures/";
-var directions = ["corona_ft", "corona_bk", "corona_up", "corona_dn", "corona_rt", "corona_lf"];
+var skybox1 = ["corona_ft", "corona_bk", "corona_up", "corona_dn", "corona_rt", "corona_lf"];
+var skybox2 = ["zpos", "zneg", "ypos", "yneg", "xneg", "xpos"];
+var skybox3 = ["posz", "negz", "posy", "negy", "negx", "posx"];
+var skybox4 = ["cityposz", "citynegz", "cityposy", "citynegy", "citynegx", "cityposx"];
 var format = ".png";
 
 function createSkybox() {
-skyGeometry = new THREE.BoxGeometry(2000, 2000, 2000);
+    const loader = new THREE.TextureLoader();
+    skyGeometry = new THREE.BoxGeometry(2000, 2000, 2000);
 
-var materialArray = [];
-for (var i = 0; i < 6; i++) {
-    materialArray.push(new THREE.MeshBasicMaterial({
-        map: THREE.ImageUtils.loadTexture(path + directions[i] + format),
-        side: THREE.BackSide
-    }));
-    var skyMaterial = new THREE.MeshFaceMaterial(materialArray);
-    skyBox = new THREE.Mesh(skyGeometry, skyMaterial);
-    scene.add(skyBox);
-    skyBox.rotation.x = 89.5;
-}
+    var materialArray = [];
+    for (var i = 0; i < 6; i++) {
+        materialArray.push(new THREE.MeshBasicMaterial({
+            map: loader.load(path + skybox1[i] + format),
+            side: THREE.BackSide
+        }));
+        var skyMaterial = materialArray;
+
+        skyBox = new THREE.Mesh(skyGeometry, skyMaterial);
+        scene.add(skyBox);
+        skyBox.rotation.x = 89.5;
+    }
 }
 
+function changeSkybox(skybox = []) {
+    const loader = new THREE.TextureLoader();
+    var materialArray = [];
+    for (var i = 0; i < 6; i++) {
+        materialArray.push(new THREE.MeshBasicMaterial({
+            map: loader.load(path + skybox[i] + format),
+            side: THREE.BackSide
+        }));
+    }
+    skyBox.material = materialArray;
+}
 
 function map(val, smin, smax, emin, emax) {
     const t =  (val - smin) / (smax - smin);
@@ -132,7 +153,9 @@ function createTerrain() {
     var material = new THREE.MeshStandardMaterial({  
         
         metalness: 0.1,
-        shading: THREE.FlatShading} )
+        //shading: THREE.FlatShading
+        flatShading: true
+    } )
 
     material.vertexColors = true;
     
@@ -149,19 +172,15 @@ function createTerrain() {
             v1.z = map(col, 0, 240, -10, 10) //map from 0:255 to -10:10
             
             //exaggerate the peaks
-            //Change interger value in if, to adjust peak sizes. 
+            //Change integer value in if, to adjust peak sizes. 
             if (v1.z > 5) {
                 v1.z *= peakHeight;  
             }  
-            //v1.x += map(Math.random(),0,1,-0.5,0.5) //jitter x
-            //v1.y += map(Math.random(),0,1,-0.5,0.5) //jitter y
         }
     }
         var mesh = new THREE.Mesh(
-            //geo.toNonIndexed(),
             tGeo, 
             material);
-        //mesh.rotateX(-45);
         mesh.traverse(function(child){
             child.castShadow = true;
             child.receiveShadow = true;
@@ -172,7 +191,7 @@ function createTerrain() {
 var terrain1 = createTerrain();
 
 
-function calculateColour() {
+function calculateColour(theme = []) {
     //for every face
     terrain1.geometry.faces.forEach(f=>{
         
@@ -195,15 +214,15 @@ function calculateColour() {
         const max = Math.max(a.z,Math.max(b.z,c.z))
         
              //Water
-             if(max <= 0)   return f.color.set(0x67E6FF);
+             if(max <= 0)   return f.color.set(theme[0]);
              //Beaches
-             if(max <= 0.8) return f.color.set(0xF4E459);
+             if(max <= 0.8) return f.color.set(theme[1]);
              //Land
-             if(max <= 5) return f.color.set(0x228800);
+             if(max <= 5) return f.color.set(theme[2]);
              //Mountain Cliifs
-             if(max <= 10)   return f.color.set(0xc29861);
+             if(max <= 10)   return f.color.set(theme[3]);
              //Mountain Peaks
-             if(max > 15)   return f.color.set(0xcccccc);
+             if(max > 15)   return f.color.set(theme[4]);
             
     //otherwise, return white
     f.color.set(0xFFFFFF);
@@ -211,7 +230,25 @@ function calculateColour() {
 })  
 }
 
-var light = new THREE.HemisphereLight(new THREE.Color(1, 1, 1), 1);
+var underground = createUnderground(theme1);
+
+function createUnderground(theme = []) {
+
+    var groundGeo = new THREE.BoxGeometry(1, 1, 1);
+    var groundMat = new THREE.MeshStandardMaterial( {color: theme[3]} );
+    groundMat.roughness = 1;
+    var ground = new THREE.Mesh(groundGeo, groundMat);
+
+    groundGeo.translate(0, 0, -0.55);
+    ground.scale.set(terrainSize * 2, terrainSize * 2, undergroundDepth)
+    ground.receiveShadow = false;
+    ground.castShadow = true;
+
+    return ground;
+
+}
+
+var light = new THREE.HemisphereLight(new THREE.Color(1, 1, 1), new THREE.Color(1, 1, 1), 0.4);
 
 function createBuilding() {
     randPos = Math.random()* (10);
@@ -275,10 +312,14 @@ function createBuildings() {
         child.castShadow = true;
         child.receiveShadow = true;
     });
-
+    building.name = "building";
     group.add(building);
 }
 
+function removeBuildings() {
+    var groupToRemove = scene.getObjectByName("buildings");
+    scene.remove(groupToRemove);   
+}
 
 var loader = new THREE.OBJLoader();
 
@@ -318,7 +359,6 @@ var loader = new THREE.OBJLoader();
      loadModel('models/40 Bank Street.obj', 'big');
      loadModel('models/BuildingBasic.obj', 'small');
      loadModel('models/CentralPlazaOne.obj', 'big');
-     //loadModel('models/CentralPlazaTwo.obj', 'big');
      loadModel('models/EmpireSquare.obj', 'big');
      loadModel('models/IndusHouse.obj', 'big');
      loadModel('models/RiverCityApartment.obj', 'big');
@@ -344,21 +384,23 @@ function getRandom(min, max) {
 //checks the terrain for green faces and 
 //adds it to the positions array
 function findFacePosition() {
+        //clear the array
+        positionsX = [];
+        positionsY = [];
         //check faces for position add to array if certain y level
         terrain1.geometry.faces.forEach(f=>{
-            //console.log(f);
+
             //get three verts for the face
                 const a = terrain1.geometry.vertices[f.a]
                 const b = terrain1.geometry.vertices[f.b]
                 const c = terrain1.geometry.vertices[f.c]
         
-                //console.log(a);
             //store position of each face to check later
             var position = new THREE.Vector3();
             position.x = (a.x + b.x + c.x) / 3;
             position.y = (a.y + b.y + c.y) / 3;
             position.z = (a.z + b.z + c.z) / 3;
-            // console.log(position);
+
             const max = Math.max(a.z,Math.max(b.z,c.z))
             //add green positions to the positions array
             if(max > 0.8 && max <= 3.5) { 
@@ -369,147 +411,16 @@ function findFacePosition() {
         })  
 }
 
-//Weather variables & functions
-var plane = null, box = null, cloud = null, boxes = [], cloudsArr = [], cloudsArr2 = [];
-
-var sun = null, sunPosition;
-var moon = null, moonPosition;
-
-var clouds = new THREE.Object3D();
-var clouds2 = new THREE.Object3D();
-
-var ambientLight, hemiLight, dirLight, sunPointLight, moonPointLight;
-let max = 49, min = -49;
-
-//Create a generic lighting environment
-//Not used
-function createLight() {
-    hemiLight = new THREE.HemisphereLight(new THREE.Color(0.6, 0.6, 0.6), 0.1);
-    hemiLight.skyColor = new THREE.Color(1, 1, 1);
-    hemiLight.position.set(0, 0, 100);
-}
-
-//create the sun
-function createSun() {
-    sunPosition = new THREE.Vector3(-5, 3, 300);
-    var sunMaterial = new THREE.MeshBasicMaterial();
-    sunMaterial.color = new THREE.Color(0xf9d71c);
-
-    var sunGeometry = new THREE.SphereGeometry(5, 32, 32);
-    sun = new THREE.Mesh(sunGeometry, sunMaterial);
-    sun.position.set(sunPosition.x, sunPosition.y, sunPosition.z);
-
-    //Create a pointlight at sun position
-    sunPointLight = new THREE.PointLight(new THREE.Color(0xf9d71c), 1, 1000, 0);
-    sunPointLight.position.set(sunPosition.x, sunPosition.y, sunPosition.z);
-    sunPointLight.castShadow = true;
-
-    sunPointLight.shadow.mapSize.width = 2048;
-    sunPointLight.shadow.mapSize.height = 2048;
-    sunPointLight.shadow.mapSize.radius = 2;
-    sunPointLight.shadow.bias = 0.0001;
-
-    sunPointLight.intensity = 1;
-}
-
-//create the moon
-function createMoon() {
-    moonPosition = new THREE.Vector3(-5, 3, -300);
-    var moonMaterial = new THREE.MeshBasicMaterial();
-    moonMaterial.color = new THREE.Color(0xeaf4fc);
-
-    var moonGeometry = new THREE.SphereGeometry(5, 32, 32);
-    moon = new THREE.Mesh(moonGeometry, moonMaterial);
-    moon.position.set(moonPosition.x, moonPosition.y, moonPosition.z);
-
-    //Create a pointlight at moon position
-    moonPointLight = new THREE.PointLight(new THREE.Color(0xeaf4fc), 1, 1000, 0);
-    moonPointLight.position.set(moonPosition.x, moonPosition.y, moonPosition.z);
-    moonPointLight.castShadow = true;
-
-    moonPointLight.shadow.mapSize.width = 2048;
-    moonPointLight.shadow.mapSize.height = 2048;
-    moonPointLight.shadow.mapSize.radius = 2;
-    moonPointLight.shadow.bias = 0.0001;
-
-    moonPointLight.intensity = 0.4;
-}
-
-//create a cloud in the primary group / array
-function createCloud() {
-    var cloudMaterial = new THREE.MeshBasicMaterial();
-    cloudMaterial.color = new THREE.Color(1, 1, 1);
-    cloudMaterial.transparent = true;
-    cloudMaterial.opacity = 0.75;
-    var cloudGeometry = new THREE.BoxGeometry(20, 10, 2);
-    cloud = new THREE.Mesh(cloudGeometry, cloudMaterial);
-    cloud.castShadow = true;
-
-    cloudsArr.push(cloud);
-    clouds.add(cloud);
-}
-
-//create a cloud in the secondary group / array
-function createCloudSecondary() {
-    var cloudMaterial = new THREE.MeshBasicMaterial();
-    cloudMaterial.color = new THREE.Color(1, 1, 1);
-    cloudMaterial.transparent = true;
-    cloudMaterial.opacity = 0.75;
-    var cloudGeometry = new THREE.BoxGeometry(20, 10, 2);
-    cloud = new THREE.Mesh(cloudGeometry, cloudMaterial);
-    cloud.castShadow = true;
-
-    cloudsArr2.push(cloud);
-    clouds2.add(cloud);
-}
-
-//creates as many clouds as specified in noClouds
-function allocateClouds(noClouds) {
-    for (let i = 0; i <= noClouds; i++) {
-        createCloud();
-    }
-    //Randomise x and y coordinates of each cloud within a range
-    cloudsArr.forEach(function(object){
-        object.position.set(Math.random() * (max - min + 1) + min, Math.random() * (max - min + 1) + min , 80);
-    });
-}
-
-function allocateCloudsSecondary(noClouds) {
-    for (let i = 0; i <= noClouds; i++) {
-        createCloudSecondary();
-    }
-    //Randomise x and y coordinates of each cloud within a range
-    cloudsArr2.forEach(function(object){
-        object.position.set(Math.random() * (max - min + 1) + min, Math.random() * (max - min + 1) + min , 80);
-    });
-}
-
-//calls the weather creation functions
-function createSceneObjects() {
-    createLight();
-    createSun();
-    createMoon();
-    allocateClouds(8);
-    allocateCloudsSecondary(8);
-}
-
 //add all the elements to the scene
 function addObjects() {
+    group = new THREE.Group();
     scene.add(terrain1);
     scene.add(light);
-
-    scene.add(sun);
-    scene.add(moon);
-    scene.add(moonPointLight);
-    scene.add(sunPointLight);
-    scene.add(clouds);
-    scene.add(clouds2);
+    scene.add(underground);
 
     for (let i = 0; i < buildingCount; i++) {
         createBuildings();
     }
-    
+    group.name = "buildings";
     scene.add(group);
-
-
 }

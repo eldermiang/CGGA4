@@ -1,6 +1,6 @@
 setScene();
 createSceneObjects();
-createSkybox();
+createSkybox(skybox1);
 generateRain();
 animate();
 buildGui();
@@ -8,9 +8,6 @@ buildGui();
 findFacePosition();
 addModels();
 
-//putting addModels() anywhere in run.js fucks up the code in some way - David
-console.log(rain);
-
-calculateColour();
+calculateColour(theme1);
 
 window.addEventListener('resize', resizeScene);
