@@ -134,10 +134,10 @@ function animateSunColor() {
 //Cosine for horizontal movement (x-axis)
 //Sine for vertical movement (z-axis)
 var d = 0;
-var speed = 0.1;
+var starSpeed = 0.1;
 var distance = 300;
 function animateCelestialMovement() {
-    d += 0.01 * speed;
+    d += 0.01 * starSpeed;
     sunPosition.x = data.width * Math.cos(d);
     sunPosition.z = -distance * Math.sin(d);
 
@@ -167,12 +167,18 @@ function animateCelestialMovement() {
 }
 
 //Cloud movement
-//Cloud x positions reset to -150 after exceeding 150
-//Clouds are removed and reallocated to randomize position of each cloud
+//Cloud x positions reset to starting point after exceeding end point
+//Cloud y positions randomised at the start of every x reset
+var cloudSpeed = 0.1;
+var cloudScale = 1;
 clouds.position.x = -data.width;
 function animateCloudMovement() {
+    updateCloudNo();
+
     clouds.children.forEach(cloud => {
-        cloud.position.x += 0.1;
+        cloud.scale.set(cloudScale, cloudScale, cloudScale);
+
+        cloud.position.x += cloudSpeed;
         if (cloud.position.x > Math.abs(clouds.position.x) + data.width * 0.75) {
             cloud.position.x = Math.abs(clouds.position.x) + -data.width * 0.75;
             cloud.position.y = Math.random() * ((data.width/2) - (-data.width/2) + 1) + (-data.width/2);
@@ -180,12 +186,20 @@ function animateCloudMovement() {
     });
 }
 
+var tempCloudNo = cloudNo;
+function updateCloudNo() {
+    if (tempCloudNo != cloudNo) {
+        clouds.remove(...clouds.children);
+        allocateClouds(cloudNo);
+    }
+    tempCloudNo = cloudNo;
+}
+
 //Animates rainfall
 //Position of each vertice resets to 80 after dropping below 0
 var size = 0.3;
 var dropSpeed = 0.5;
 var rain_enabled = false;
-
 function animateRain() {
     updateRainVolume();
     if (rain_enabled) {

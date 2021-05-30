@@ -5,7 +5,7 @@ var sun = null, sunPosition;
 var moon = null, moonPosition;
 
 var clouds = new THREE.Object3D();
-clouds.position = new THREE.Vector3(0, 0, 0);
+var cloudNo = 8;
 
 var ambientLight, hemiLight, dirLight, sunPointLight, moonPointLight;
 let max = (data.width / 2), min = (-data.width / 2);
@@ -148,7 +148,7 @@ function cloudJitter(geo, magnitude) {
 
 //creates as many clouds as specified in noClouds
 function allocateClouds(noClouds) {
-    for (let i = 0; i <= noClouds; i++) {
+    for (let i = 0; i < noClouds; i++) {
         createCloud();
     }
     //Randomise x and y coordinates of each cloud within a range
@@ -163,7 +163,7 @@ function createSceneObjects() {
     createLight();
     createSun();
     createMoon();
-    allocateClouds(8);
+    allocateClouds(cloudNo);
 
     //Adds the created objects to the scene
     scene.add(sun);
