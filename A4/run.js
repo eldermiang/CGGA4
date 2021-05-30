@@ -8,6 +8,6 @@ buildGui();
 findFacePosition();
 addModels();
 
-calculateColour(theme);
+calculateColour(theme1);
 
 window.addEventListener('resize', resizeScene);
