@@ -12,3 +12,4 @@
 - Updated clouds from a BoxGeometry to a Geometry that consists of multiple SphereGeometry
 - Updated cloud animations to reset the positions of each cloud individually instead of as group
 - Updated variables (cloud spawning positions, sun/moon positions) to account for changes to terrain scale
+- Updated buildings to regenerate when updating the terrain
