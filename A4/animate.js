@@ -3,6 +3,7 @@ function animate() {
     animateCelestialMovement();
     animateRain();
     updateTerrain();
+    panCamera();
     renderer.render(scene, camera);
     controls.update();
     sunGlow.material.uniforms.viewVector.value = new THREE.Vector3().subVectors(camera.position, sunGlow.position);
@@ -86,28 +87,36 @@ function setCamera(pos) {
     }
 }
 
-
+var panOn = false;
 function panCamera() {
-        camera.position.set(0, -200, 400)
-        camera.up.set(0.5,0, 1);
-        camera.fov = 90;
-        controls.minAzimuthAngle = -Math.PI/2.5;
-        controls.maxAzimuthAngle = Math.PI;
-        controls.minAzimuthAngle = -Math.PI/2.5;
-        controls.maxAzimuthAngle = Math.PI;
-        controls.target = new THREE.Vector3(1,1,1);
-        controls.autoRotateSpeed = 4;
-        controls.autoRotate = true;        
+    if (panOn) {
+        //scene.rotation.x += 0.01;
+        //scene.rotation.y += 0.01;
+        scene.rotation.z += 0.005;
+    }
 }
 
-function disablePan() {
-    controls.autoRotate = false;
-    camera.up.set(0,1,0);
-    controls.minAzimuthAngle = 0;
-    controls.maxAzimuthAngle = 0;
-    controls.minPolarAngle = 0;
-    controls.maxPolarAngle = Math.PI/1.2;
-}
+// function panCamera() {
+//     camera.position.set(0, -200, 400)
+//     camera.up.set(0.5,0, 1);
+//     camera.fov = 90;
+//     controls.minAzimuthAngle = -Math.PI/2.5;
+//     controls.maxAzimuthAngle = Math.PI;
+//     controls.minAzimuthAngle = -Math.PI/2.5;
+//     controls.maxAzimuthAngle = Math.PI;
+//     controls.target = new THREE.Vector3(1,1,1);
+//     controls.autoRotateSpeed = 4;
+//     controls.autoRotate = true;        
+// }
+
+// function disablePan() {
+//     controls.autoRotate = false;
+//     camera.up.set(0,1,0);
+//     controls.minAzimuthAngle = 0;
+//     controls.maxAzimuthAngle = 0;
+//     controls.minPolarAngle = 0;
+//     controls.maxPolarAngle = Math.PI/1.2;
+// }
 
 function unlockCamera() {
     controls.minDistance = 10;
@@ -178,7 +187,7 @@ function animateCloudMovement() {
     clouds.children.forEach(cloud => {
         cloud.scale.set(cloudScale, cloudScale, cloudScale);
         cloud.position.x += cloudSpeed;
-        
+
         if (cloud.position.x > Math.abs(clouds.position.x) + data.width * 0.75) {
             cloud.position.x = Math.abs(clouds.position.x) + -data.width * 0.75;
             cloud.position.y = Math.random() * ((data.width/2) - (-data.width/2) + 1) + (-data.width/2);
