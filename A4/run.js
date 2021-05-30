@@ -8,7 +8,6 @@ buildGui();
 findFacePosition();
 addModels();
 
-calculateColour(theme1);
-console.log(clouds);
+calculateColour();
 
 window.addEventListener('resize', resizeScene);

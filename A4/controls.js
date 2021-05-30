@@ -41,6 +41,8 @@ function buildGui() {
         cloud_speed: cloudSpeed,
         cloud_scale: cloudScale,
         cloud_no: cloudNo,
+        //F3a Pan
+        camera_pan: panOn,
         //F4 Terrain
         terrain_octaves: octaves,
         terrain_frequency: frequency,
@@ -94,9 +96,11 @@ function buildGui() {
     f2b.add(params, 'cloud_speed', 0, 1).onChange(function(val){
         cloudSpeed = val;
     });
+    //Set scale of each cloud
     f2b.add(params, 'cloud_scale', 0.1, 3).onChange(function(val){
         cloudScale = val;
     });
+    //Set number of clouds
     f2b.add(params, 'cloud_no', 0, 20).step(1).onChange(function(val){
         cloudNo = val;
     });
@@ -106,8 +110,11 @@ function buildGui() {
     f3.add(camera2, 'pos2').name("Camera 2");
     f3.add(cameraUnlock, 'unlock').name("Unlock Camera");
     //F3a Pan
-    f3a.add(cameraPan, 'pan').name("On");
-    f3a.add(cameraPanOff, 'panOff').name("Off");
+    // f3a.add(cameraPan, 'pan').name("On");
+    // f3a.add(cameraPanOff, 'panOff').name("Off");
+    f3a.add(params, 'camera_pan').name("Toggle Pan").onChange(function(val){
+        panOn = val;
+    })
 
     //F4 Terrain
     f4.add(params, 'terrain_octaves', 1, 16).onChange(function(val){
