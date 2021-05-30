@@ -9,6 +9,5 @@ findFacePosition();
 addModels();
 
 calculateColour();
-console.log(clouds);
 
 window.addEventListener('resize', resizeScene);

@@ -1,5 +1,5 @@
 //Weather variables & functions
-var cloud = null, boxes = [], cloudsArr = [], cloudsArr2 = [];
+var cloud = null, boxes = [];
 
 var sun = null, sunPosition;
 var moon = null, moonPosition;
@@ -7,18 +7,10 @@ var moon = null, moonPosition;
 var clouds = new THREE.Object3D();
 var cloudNo = 8;
 
-var ambientLight, hemiLight, dirLight, sunPointLight, moonPointLight;
+var sunPointLight, moonPointLight;
 let max = (data.width / 2), min = (-data.width / 2);
 
 var sunGlow, moonGlow;
-
-//Create a generic lighting environment
-//Not used
-function createLight() {
-    hemiLight = new THREE.HemisphereLight(new THREE.Color(0.6, 0.6, 0.6), 0.1);
-    hemiLight.skyColor = new THREE.Color(1, 1, 1);
-    hemiLight.position.set(0, 0, 100);
-}
 
 //create the sun
 function createSun() {
@@ -73,7 +65,7 @@ function createMoon() {
     moonPointLight.intensity = 0.4;
 }
 
-//Create custom Shader object - Sun / Moon Glow
+//Create custom Shader object at sun/moon pos - Sun / Moon Glow
 function createGlow(color, position) {
 
     var geometry = new THREE.SphereBufferGeometry(5, 64, 64);
@@ -99,12 +91,12 @@ function createGlow(color, position) {
     return starGlow;
 }
 
-// //create a cloud in the primary group / array
+//Create a cloud in the cloud group 
 function createCloud() {
     var geo = new THREE.Geometry();
-
     var bodyRadius = 8;
 
+    //Cloud Geometry created from 3 merged SphereGeometry
     var cloudBody = new THREE.SphereGeometry(bodyRadius, 7, 8);
     geo.merge(cloudBody);
 
@@ -129,12 +121,12 @@ function createCloud() {
     cloud = new THREE.Mesh(geo, cloudMaterial);
     cloud.castShadow = true;
 
-    cloudsArr.push(cloud);
     clouds.add(cloud);
 }
 
+//Randomize vertice positions by magnitude
+//Unbalances face positions for rougher appearance
 function cloudJitter(geo, magnitude) {
-
     geo.vertices.forEach(v => {
         v.x += map(Math.random(), 0, 1, -magnitude, magnitude);
         v.y += map(Math.random(), 0, 1, -magnitude, magnitude);
@@ -152,7 +144,7 @@ function allocateClouds(noClouds) {
         createCloud();
     }
     //Randomise x and y coordinates of each cloud within a range
-    cloudsArr.forEach(function(object){
+    clouds.children.forEach(function(object){
         object.position.set(Math.random() * (max - min + 1) + min, Math.random() * (max - min + 1) + min , 80);
     });
 }
@@ -160,7 +152,6 @@ function allocateClouds(noClouds) {
 //calls the weather creation functions
 function createSceneObjects() {
     //Creates the scene objects
-    createLight();
     createSun();
     createMoon();
     allocateClouds(cloudNo);

@@ -177,8 +177,8 @@ function animateCloudMovement() {
 
     clouds.children.forEach(cloud => {
         cloud.scale.set(cloudScale, cloudScale, cloudScale);
-
         cloud.position.x += cloudSpeed;
+        
         if (cloud.position.x > Math.abs(clouds.position.x) + data.width * 0.75) {
             cloud.position.x = Math.abs(clouds.position.x) + -data.width * 0.75;
             cloud.position.y = Math.random() * ((data.width/2) - (-data.width/2) + 1) + (-data.width/2);
@@ -186,6 +186,8 @@ function animateCloudMovement() {
     });
 }
 
+//Listener for changes to cloudNo
+//Updates cloud number
 var tempCloudNo = cloudNo;
 function updateCloudNo() {
     if (tempCloudNo != cloudNo) {
@@ -223,7 +225,8 @@ function animateRain() {
     rainGeo.verticesNeedUpdate = true;
 }
 
-//Updates the volume of the rain in realtime
+//Listener for changes to volume
+//Updates rain volume
 var tempVolume = volume;
 function updateRainVolume() {
     if (tempVolume != volume) {
