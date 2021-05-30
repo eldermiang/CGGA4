@@ -60,6 +60,12 @@ var skybox3 = ["posz", "negz", "posy", "negy", "negx", "posx"];
 var skybox4 = ["cityposz", "citynegz", "cityposy", "citynegy", "citynegx", "cityposx"];
 var format = ".png";
 
+//r79 > r96 changes
+//MeshFaceMaterial deprecated 
+//THREE.MeshFaceMaterial(materialArray) replaced with materialArray
+//ImageUtil.loadTexture deprecated
+//Shifted to TextureLoader instead
+
 function createSkybox() {
     const loader = new THREE.TextureLoader();
     skyGeometry = new THREE.BoxGeometry(2000, 2000, 2000);
@@ -67,6 +73,7 @@ function createSkybox() {
     var materialArray = [];
     for (var i = 0; i < 6; i++) {
         materialArray.push(new THREE.MeshBasicMaterial({
+            //map: THREE.ImageUtils.loadTexture(path + skybox1[i] + format),
             map: loader.load(path + skybox1[i] + format),
             side: THREE.BackSide
         }));
@@ -83,6 +90,7 @@ function changeSkybox(skybox = []) {
     var materialArray = [];
     for (var i = 0; i < 6; i++) {
         materialArray.push(new THREE.MeshBasicMaterial({
+            //map: THREE.ImageUtils.loadTexture(path + skybox[i] + format),
             map: loader.load(path + skybox[i] + format),
             side: THREE.BackSide
         }));
@@ -172,15 +180,19 @@ function createTerrain() {
             v1.z = map(col, 0, 240, -10, 10) //map from 0:255 to -10:10
             
             //exaggerate the peaks
-            //Change integer value in if, to adjust peak sizes. 
+            //Change interger value in if, to adjust peak sizes. 
             if (v1.z > 5) {
                 v1.z *= peakHeight;  
             }  
+            //v1.x += map(Math.random(),0,1,-0.5,0.5) //jitter x
+            //v1.y += map(Math.random(),0,1,-0.5,0.5) //jitter y
         }
     }
         var mesh = new THREE.Mesh(
+            //geo.toNonIndexed(),
             tGeo, 
             material);
+        //mesh.rotateX(-45);
         mesh.traverse(function(child){
             child.castShadow = true;
             child.receiveShadow = true;
@@ -359,6 +371,7 @@ var loader = new THREE.OBJLoader();
      loadModel('models/40 Bank Street.obj', 'big');
      loadModel('models/BuildingBasic.obj', 'small');
      loadModel('models/CentralPlazaOne.obj', 'big');
+     //loadModel('models/CentralPlazaTwo.obj', 'big');
      loadModel('models/EmpireSquare.obj', 'big');
      loadModel('models/IndusHouse.obj', 'big');
      loadModel('models/RiverCityApartment.obj', 'big');
@@ -389,18 +402,19 @@ function findFacePosition() {
         positionsY = [];
         //check faces for position add to array if certain y level
         terrain1.geometry.faces.forEach(f=>{
-
+            //console.log(f);
             //get three verts for the face
                 const a = terrain1.geometry.vertices[f.a]
                 const b = terrain1.geometry.vertices[f.b]
                 const c = terrain1.geometry.vertices[f.c]
         
+                //console.log(a);
             //store position of each face to check later
             var position = new THREE.Vector3();
             position.x = (a.x + b.x + c.x) / 3;
             position.y = (a.y + b.y + c.y) / 3;
             position.z = (a.z + b.z + c.z) / 3;
-
+            // console.log(position);
             const max = Math.max(a.z,Math.max(b.z,c.z))
             //add green positions to the positions array
             if(max > 0.8 && max <= 3.5) { 

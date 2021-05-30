@@ -90,9 +90,33 @@ function setCamera(pos) {
 var panOn = false;
 function panCamera() {
     if (panOn) {
+        //scene.rotation.x += 0.01;
+        //scene.rotation.y += 0.01;
         scene.rotation.z += 0.005;
     }
 }
+
+// function panCamera() {
+//     camera.position.set(0, -200, 400)
+//     camera.up.set(0.5,0, 1);
+//     camera.fov = 90;
+//     controls.minAzimuthAngle = -Math.PI/2.5;
+//     controls.maxAzimuthAngle = Math.PI;
+//     controls.minAzimuthAngle = -Math.PI/2.5;
+//     controls.maxAzimuthAngle = Math.PI;
+//     controls.target = new THREE.Vector3(1,1,1);
+//     controls.autoRotateSpeed = 4;
+//     controls.autoRotate = true;        
+// }
+
+// function disablePan() {
+//     controls.autoRotate = false;
+//     camera.up.set(0,1,0);
+//     controls.minAzimuthAngle = 0;
+//     controls.maxAzimuthAngle = 0;
+//     controls.minPolarAngle = 0;
+//     controls.maxPolarAngle = Math.PI/1.2;
+// }
 
 function unlockCamera() {
     controls.minDistance = 10;
@@ -101,6 +125,17 @@ function unlockCamera() {
     controls.maxPolarAngle = Math.PI;
     controls.minAzimuthAngle = -Math.PI;
     controls.maxAzimuthAngle = Math.PI;
+}
+
+//Not Used
+var alpha = 1;
+function animateSunColor() {
+    var dayColor = new THREE.Color(0xf9d71c);
+    var nightColor = new THREE.Color(0xeaf4fc);
+
+    var sunColor = new THREE.Color(0xeaf4fc);
+    sunColor.lerpColors(nightColor, dayColor, alpha);
+    sun.material.color = sunColor;
 }
 
 //Sun and Moon Orbit / Movement

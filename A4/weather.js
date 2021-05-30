@@ -171,6 +171,7 @@ function createSceneObjects() {
 var volume = 1;
 var rain, rainGeo, rainDrop, rainMaterial, rainCount = 1500;
 
+//R79
 //Creates a geometry
 //Pushes "rainCount" number of vertices to the geometry
 //Each vertice is created at a random position within the bounds of the map

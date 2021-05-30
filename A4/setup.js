@@ -7,8 +7,10 @@ var controls;
 function setScene() {
     scene = new THREE.Scene();
     var ratio = window.innerWidth / window.innerHeight;
+    //camera = new THREE.PerspectiveCamera(60, ratio, 20, 30000);
     camera = new THREE.PerspectiveCamera(60, ratio, 0.1, 30000);
     camera.position.set(0, -75, 30);
+    //camera.lookAt(0, 0, 0);
 
     renderer = new THREE.WebGLRenderer({antialias:true});
     renderer.setSize(window.innerWidth, window.innerHeight);
@@ -23,6 +25,8 @@ function setScene() {
     controls.maxPolarAngle = Math.PI/1.2;
     controls.minAzimuthAngle = 0;
     controls.maxAzimuthAngle = 0;
+
+    //need to fix camera still able to zoom past min and max
 }
 
 //Resize the scene and update the camera aspect to the screen ration
