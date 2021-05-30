@@ -35,14 +35,8 @@ var tGeo;
 
 var undergroundDepth = 10;
 
-//Terrain colour themes
-var theme = [0x67E6FF, 0xF4E459, 0x228800, 0xc29861, 0xcccccc];
-//Normal
+//Terrain colour theme
 var theme1 = [0x67E6FF, 0xF4E459, 0x228800, 0xc29861, 0xcccccc];
-//Fire
-var theme2 = [0xFF5C2C, 0x755E57, 0x342F2E, 0xc1F1D1C, 0x4B2119];
-//Random
-var theme3 = [Math.random() * 0xffffff, Math.random() * 0xffffff, Math.random() * 0xffffff ,Math.random() * 0xffffff ,Math.random() * 0xffffff]
 
 //building map variables
 var buildings = [];
