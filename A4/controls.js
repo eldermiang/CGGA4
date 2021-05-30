@@ -25,8 +25,6 @@ function buildGui() {
     var skyBox3 = {skybox3: function() {changeSkybox(skybox3)}};
     var skyBox4 = {skybox4: function() {changeSkybox(skybox4)}};
 
-    
-
     var params = {
         //F1 Lighting
         sun_intensity: sunPointLight.intensity ,

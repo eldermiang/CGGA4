@@ -40,7 +40,7 @@ function updateTerrain() {
         data = generateTexture();
         terrain1 = createTerrain();
         underground = createUnderground();
-        calculateColour();
+        calculateColour(theme1);
 
         //Updating terrain variables with slider values
         tempOctaves = octaves;

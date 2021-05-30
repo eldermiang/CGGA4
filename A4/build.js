@@ -35,6 +35,15 @@ var tGeo;
 
 var undergroundDepth = 10;
 
+//Terrain colour themes
+var theme = [0x67E6FF, 0xF4E459, 0x228800, 0xc29861, 0xcccccc];
+//Normal
+var theme1 = [0x67E6FF, 0xF4E459, 0x228800, 0xc29861, 0xcccccc];
+//Fire
+var theme2 = [0xFF5C2C, 0x755E57, 0x342F2E, 0xc1F1D1C, 0x4B2119];
+//Random
+var theme3 = [Math.random() * 0xffffff, Math.random() * 0xffffff, Math.random() * 0xffffff ,Math.random() * 0xffffff ,Math.random() * 0xffffff]
+
 //building map variables
 var buildings = [];
 var buildingCount = 100;
@@ -94,7 +103,6 @@ function changeSkybox(skybox = []) {
     }
     skyBox.material = materialArray;
 }
-
 
 function map(val, smin, smax, emin, emax) {
     const t =  (val - smin) / (smax - smin);
@@ -201,7 +209,7 @@ function createTerrain() {
 var terrain1 = createTerrain();
 
 
-function calculateColour() {
+function calculateColour(theme = []) {
     //for every face
     terrain1.geometry.faces.forEach(f=>{
         
@@ -224,15 +232,15 @@ function calculateColour() {
         const max = Math.max(a.z,Math.max(b.z,c.z))
         
              //Water
-             if(max <= 0)   return f.color.set(0x67E6FF);
+             if(max <= 0)   return f.color.set(theme[0]);
              //Beaches
-             if(max <= 0.8) return f.color.set(0xF4E459);
+             if(max <= 0.8) return f.color.set(theme[1]);
              //Land
-             if(max <= 5) return f.color.set(0x228800);
+             if(max <= 5) return f.color.set(theme[2]);
              //Mountain Cliifs
-             if(max <= 10)   return f.color.set(0xc29861);
+             if(max <= 10)   return f.color.set(theme[3]);
              //Mountain Peaks
-             if(max > 15)   return f.color.set(0xcccccc);
+             if(max > 15)   return f.color.set(theme[4]);
             
     //otherwise, return white
     f.color.set(0xFFFFFF);
@@ -240,12 +248,12 @@ function calculateColour() {
 })  
 }
 
-var underground = createUnderground();
+var underground = createUnderground(theme1);
 
-function createUnderground() {
+function createUnderground(theme = []) {
 
     var groundGeo = new THREE.BoxGeometry(1, 1, 1);
-    var groundMat = new THREE.MeshStandardMaterial( {color: 0xc29861} );
+    var groundMat = new THREE.MeshStandardMaterial( {color: theme[3]} );
     groundMat.roughness = 1;
     var ground = new THREE.Mesh(groundGeo, groundMat);
 
