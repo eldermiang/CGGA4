@@ -40,7 +40,7 @@ function updateTerrain() {
         //Update/Recreate noise image and terrain object
         data = generateTexture();
         terrain1 = createTerrain();
-        underground = createUnderground();
+        underground = createUnderground(theme1);
         calculateColour(theme1);
 
         //Updating terrain variables with slider values

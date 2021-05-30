@@ -245,7 +245,7 @@ function createUnderground(theme = []) {
     groundMat.roughness = 1;
     var ground = new THREE.Mesh(groundGeo, groundMat);
 
-    groundGeo.translate(0, 0, -0.6);
+    groundGeo.translate(0, 0, -0.55);
     ground.scale.set(terrainSize * 2, terrainSize * 2, undergroundDepth)
     ground.receiveShadow = false;
     ground.castShadow = true;
